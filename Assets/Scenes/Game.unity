@@ -240,7 +240,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 155000552}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1140599407}
+        m_MethodName: GrassBlast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &155000552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1016,8 +1027,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.45900002, y: 0.8681754}
   m_AnchorMax: {x: 0.45900002, y: 0.8681754}
-  m_AnchoredPosition: {x: 0, y: 3.5800018}
-  m_SizeDelta: {x: 235.08789, y: 56.017822}
+  m_AnchoredPosition: {x: 12.988, y: 3.600006}
+  m_SizeDelta: {x: 316.76825, y: 56.017822}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &692808031
 MonoBehaviour:
@@ -1150,7 +1161,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.838815, y: 0.5}
   m_AnchorMax: {x: 0.838815, y: 0.5}
-  m_AnchoredPosition: {x: -5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 316.76904, y: 404.73343}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &943065283
@@ -1468,6 +1479,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1140599406}
   - component: {fileID: 1140599405}
+  - component: {fileID: 1140599407}
   m_Layer: 0
   m_Name: Game Controller
   m_TagString: Untagged
@@ -1504,6 +1516,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1140599407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140599404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a51f9b7590d20204ab9f283b284098b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UI: {fileID: 959490864}
+  mHealth: {fileID: 1841207943}
+  mAttack: {fileID: 692808031}
+  mDefense: {fileID: 1377556730}
 --- !u!1001 &1235263425
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2072,8 +2100,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.45900002, y: 0.658237}
   m_AnchorMax: {x: 0.45900002, y: 0.658237}
-  m_AnchoredPosition: {x: -1, y: 2}
-  m_SizeDelta: {x: 235.08789, y: 59.159363}
+  m_AnchoredPosition: {x: 12.988, y: 0}
+  m_SizeDelta: {x: 316.76904, y: 59.159363}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1377556730
 MonoBehaviour:
@@ -2252,7 +2280,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1765140906}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1140599407}
+        m_MethodName: Water
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1765140906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2322,10 +2361,10 @@ RectTransform:
   m_Father: {fileID: 821903156}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.45900002, y: 0.43576318}
-  m_AnchorMax: {x: 0.45900002, y: 0.43576318}
-  m_AnchoredPosition: {x: 0.000061035156, y: -1}
-  m_SizeDelta: {x: 235.08801, y: 59.1593}
+  m_AnchorMin: {x: 0.5, y: 0.43564916}
+  m_AnchorMax: {x: 0.5, y: 0.43564916}
+  m_AnchoredPosition: {x: -0.012999535, y: 7.243}
+  m_SizeDelta: {x: 316.76917, y: 48.48633}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1841207943
 MonoBehaviour:
@@ -2637,7 +2676,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1876259694}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1140599407}
+        m_MethodName: FireAttack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1876259694
 MonoBehaviour:
   m_ObjectHideFlags: 0
