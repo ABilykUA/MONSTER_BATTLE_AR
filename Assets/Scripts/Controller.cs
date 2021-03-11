@@ -9,6 +9,10 @@ public class Controller : MonoBehaviour
     public GameObject mPanleTitle;
     public GameObject mStats;
 
+    public GameObject EnemyUI;
+    public GameObject ARcam;
+
+
     private float width;
     private float height;
 
@@ -23,12 +27,16 @@ public class Controller : MonoBehaviour
 
         mPanleTitle.transform.position = new Vector2(Screen.width / 2.0f, Screen.height -150f);
         mStats.transform.position = new Vector2(Screen.width / 2.0f, Screen.height /6f);
+
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        //fix look at 
+        //EnemyUI.transform.Rotate(0f, 0.0f, 0.2f);
+        EnemyUI.transform.LookAt(ARcam.transform);
     }
     
 }

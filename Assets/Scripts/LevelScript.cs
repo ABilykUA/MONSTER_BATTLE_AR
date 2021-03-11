@@ -8,16 +8,29 @@ public class LevelScript : MonoBehaviour
 
     public GameObject UI;
 
+    public TextMeshPro EnemyHealth;
+    public TextMeshPro EnemyType;
+
+
     public TextMeshProUGUI mHealth;
     public TextMeshProUGUI mAttack;
     public TextMeshProUGUI mDefense;
+
+
+    private int MaxPalyer;
+    private int MaxEnemy;
+
 
 
     //for switch
     private int SwitchCounter = 1;
 
     //GG stands 4 GamerGirl
-    private Stats GG = new Stats(30, 45, 150);
+    private Stats GG;
+
+    //Enemy
+    private Stats SIMP;
+
 
     //struct for stats pretty self explanatory  
     private struct Stats
@@ -25,78 +38,197 @@ public class LevelScript : MonoBehaviour
         public int Attack { get; set; }
         public int Defense { get; set; }
         public int Health { get; set; }
-        
-        //public string Type{ get; set; }
+        public string Type { get; set; }
 
-        public Stats(int H, int D, int A) {
+        public Stats(int H, int D, int A,string T) {
             Attack = A;
             Defense = D;
             Health = H;
+            Type = T;
         }
 
         public void hit(int value) {
-
             Health -= value;
-
         }
     }
 
-   private void UpdateUI(Stats GG) {
+   private void UpdateUI(Stats SIMP, Stats GG) {
 
-        mHealth.SetText("Health: " + GG.Health);
+
+        Debug.Log(SIMP.Health);
+
+        //player
+        mHealth.SetText("Health: " + GG.Health + "/" + MaxPalyer);
+        mDefense.SetText("Defense: " + GG.Health);
         mAttack.SetText("Attack: " + GG.Attack); 
-        mDefense.SetText("Defense: " + GG.Defense);
+
+        //enely
+        EnemyHealth.SetText("Health: " + SIMP.Health + "/" + MaxEnemy);
+        EnemyType.SetText("Type: " + SIMP.Type);
 
     }
 
 
     //function for every attack 
-
+    
     //Fire
-    public void FireAttack() {
-
-        SwitchCounter = 2;
-    }
-
-    //Grass
-    public void GrassBlast()
+    public void Attack()
     {
+        
+
+        switch(GG.Type){
 
 
-        SwitchCounter = 2;
+            case "Water":
+
+
+                SIMP.hit(Simp(GG.Type));
+
+                SwitchCounter = 2;
+                break;
+
+            case "Grass":
+
+
+                SIMP.hit(Simp(GG.Type));
+                SwitchCounter = 2;
+                
+                
+                break;
+
+            case "Fire":
+
+               
+
+
+                SIMP.hit(Simp(GG.Type));
+
+                
+              
+
+                SwitchCounter = 2;
+                break;
+
+
+
+        }
+
+        
     }
 
-    //water
-    public void Water()
-    {
+    private int Simp(string type) {
+       
+        switch (SIMP.Type)
+        {
+            case "Water":
 
-        SwitchCounter = 2;
+                if (type == "Water") {
+
+                    return 30;
+
+                } else if (type == "Grass") {
+
+                    return 50;
+
+                }
+                else {
+
+                    return 80;
+                
+                }
+
+              
+
+            case "Grass":
+
+                if (type == "Water")
+                {
+
+                    return 30;
+
+                }
+                else if (type == "Grass")
+                {
+
+                    return 50;
+
+                }
+                else
+                {
+
+                    return 80;
+
+                }
+
+
+
+
+
+            case "Fire":
+                
+                if (type == "Water")
+                {
+
+                    return 30;
+
+                }
+                else if (type == "Grass")
+                {
+
+                    return 50;
+
+                }
+                else
+                {
+
+                    return 80;
+
+                }
+
+
+
+
+            default:
+                
+                return 0;
+                
+               
+        }
+        
     }
-
 
     void Start()
     {
-      
-        
-        //Enemy
-        Stats SIMP = new Stats(15, 80, 130);
 
-    }
+
+         //GG stands 4 GamerGirl
+        GG = new Stats(30, 45, 150, "Fire");
+
+        //Enemy
+        SIMP = new Stats(15, 80, 130, "Water");
+
+
+
+        MaxPalyer = GG.Health;
+        MaxEnemy = SIMP.Health;
+
+     }
 
 
 
     void Update()
     {
 
-        
+        UpdateUI(SIMP, GG);
 
-            switch (SwitchCounter) {
+
+        switch (SwitchCounter) {
 
             case 1:
 
 
 
-                UpdateUI(GG);
+              
                 UI.SetActive(true);
 
                 break;
@@ -105,8 +237,7 @@ public class LevelScript : MonoBehaviour
 
 
 
-
-                UpdateUI(GG);
+              
                 UI.SetActive(false);
 
                 break;
