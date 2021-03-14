@@ -52,8 +52,6 @@ public class LevelScript : MonoBehaviour
     //Enemy
     private Entity SIMP;
 
-    
-
 
         private void GenerateAbilities()
         {
@@ -81,7 +79,7 @@ public class LevelScript : MonoBehaviour
 
             //DUI 
             LmLevel.SetText("You made it to level: " + Level);
-            LmHealth.SetText("Health: " + MaxPalyer);
+            LmHealth.SetText("Health: " + MaxPlayer);
             LmAttack.SetText("Attack: " + GG.Attack); 
             LmDefense.SetText("Defense: " + GG.Defense); 
 
@@ -271,19 +269,21 @@ public class LevelScript : MonoBehaviour
 
             }
 
-            void Start()
-            {
+        void Start()
+        {
 
 
-                mTitle.SetText(Level.ToString());
+            mTitle.SetText(Level.ToString());
 
 
-                GenerateAbilities();
+            GenerateAbilities();
 
-                GenerateStats();
-            }
+            GenerateStats();
+        }
 
-            void Update()
+
+
+        void Update()
             {
 
                 UpdateUI(SIMP, GG);

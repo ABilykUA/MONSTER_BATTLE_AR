@@ -10,7 +10,7 @@ public class Abilities : MonoBehaviour
     public string type { get; set; }
     public int uses { get; set; }
 
-    Abilities(int damage, string type,int heal,int uses, string name)
+    public Abilities(int damage, string type,int heal,int uses, string name)
     {
         this.name = name;
         this.damage = damage;
