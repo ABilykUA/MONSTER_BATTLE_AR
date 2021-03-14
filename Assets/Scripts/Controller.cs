@@ -6,7 +6,7 @@ using UnityEngine;
 
     public class Controller : MonoBehaviour
     {
-        public TextMeshProUGUI mTitle;
+       
         public GameObject mPanleTitle;
         public GameObject mUI;
 
@@ -22,10 +22,7 @@ using UnityEngine;
             height = Screen.height;
             width = Screen.width;
 
-            mTitle.SetText("Level: " + height + " | " + width);
-
-
-            mPanleTitle.transform.position = new Vector2(Screen.width / 2.0f, Screen.height - 150f);
+         mPanleTitle.transform.position = new Vector2(Screen.width / 2.0f, Screen.height - 150f);
              mUI.transform.position = new Vector2(Screen.width / 2.0f, Screen.height / 6f);
 
 

@@ -12,11 +12,19 @@ public class MainMenu : MonoBehaviour
   
     }
 
+
+    public void BacktoMain()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+
     public void ExitGame()
     {
         Application.Quit();
 
-
     }
+
+
 
 }
