@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Abilities
+public class Abilities : MonoBehaviour
 {
     public string name { get; set; }
     public int damage { get; set; }
@@ -10,7 +10,7 @@ public class Abilities
     public string type { get; set; }
     public int uses { get; set; }
 
-    Abilities(string name, int damage, string type,int heal,int uses)
+    Abilities(int damage, string type,int heal,int uses, string name)
     {
         this.name = name;
         this.damage = damage;
