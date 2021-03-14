@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Abilities : MonoBehaviour
+public class Abilities : Object
 {
     public string name { get; set; }
     public int damage { get; set; }

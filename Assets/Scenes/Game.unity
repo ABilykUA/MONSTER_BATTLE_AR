@@ -1301,7 +1301,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &302385162
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2337,7 +2337,6 @@ GameObject:
   - component: {fileID: 1140599406}
   - component: {fileID: 1140599405}
   - component: {fileID: 1140599407}
-  - component: {fileID: 1140599408}
   - component: {fileID: 1140599409}
   m_Layer: 0
   m_Name: Game Controller
@@ -2390,6 +2389,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UI: {fileID: 302385161}
   DefeatUI: {fileID: 0}
+  newAbility: {fileID: 0}
   EnemyHealth: {fileID: 1457110906}
   EnemyType: {fileID: 1629152128}
   mHealth: {fileID: 1841207943}
@@ -2400,18 +2400,6 @@ MonoBehaviour:
   LmHealth: {fileID: 1542026793}
   LmAttack: {fileID: 181471720}
   LmDefense: {fileID: 593684828}
---- !u!114 &1140599408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1140599404}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daf2820a3cdf2584fb6905f4e319126a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1140599409
 MonoBehaviour:
   m_ObjectHideFlags: 0

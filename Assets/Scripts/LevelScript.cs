@@ -34,7 +34,7 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI LmDefense;
 
     //All Abilities
-    public Abilities[] abilities;
+    private Abilities[] abilities = { null, null, null };
 
     //max stats
     private int MaxPlayer;
@@ -176,7 +176,7 @@ public class LevelScript : MonoBehaviour
                 {
                     if (abilities[i].type == TypeMe)
                     {
-                        GG = new Entity(H, D, A, TypeMe, abilities[i]);
+                        GG= new Entity(H, D, A, TypeMe, abilities[i]);
                     }
                     if (abilities[i].type == TypeEnemy)
                     {
@@ -269,67 +269,79 @@ public class LevelScript : MonoBehaviour
 
             }
 
-        void Start()
-        {
 
-
+            private void Start()
+            {
+            
             mTitle.SetText(Level.ToString());
-
 
             GenerateAbilities();
 
-            GenerateStats();
-        }
+            int k = abilities[0].damage;
+
+                GenerateStats();
+
+            int f = GG.Attack;
+
+            Debug.Log(f);
 
 
-
-        void Update()
-            {
-
-                UpdateUI(SIMP, GG);
-                WinOrLoseCheck();
-
-                switch (SwitchCounter) {
-
-                    case 1:
-                        //GG trurn
-
-                        UI.SetActive(true);
-
-                        break;
-
-                    case 2:
-                        //simp turn
-
-                        //change to false test
-
-                        UI.SetActive(false);
-
-                        break;
-
-                    case 3:
-                        //lose 
+            Debug.Log(k);
 
 
-
-                        DefeatUI.SetActive(true);
-
-                        UI.SetActive(false);
-                        break;
-
-
-                    case 4:
-
-                        //win
-
-
-                        AddStats();
-                        UI.SetActive(false);
-                        break;
-
-
-
-                }
             }
+
+
+
+
+    void Update()
+    {
+
+        UpdateUI(SIMP, GG);
+        WinOrLoseCheck();
+
+        switch (SwitchCounter)
+        {
+
+            case 1:
+                //GG trurn
+
+                UI.SetActive(true);
+
+                break;
+
+            case 2:
+                //simp turn
+
+                //change to false test
+
+                UI.SetActive(false);
+
+                break;
+
+            case 3:
+                //lose 
+
+
+
+                DefeatUI.SetActive(true);
+
+                UI.SetActive(false);
+                break;
+
+
+            case 4:
+
+                //win
+
+
+                AddStats();
+                UI.SetActive(false);
+                break;
+
+
+
+        }
     }
+}
 
