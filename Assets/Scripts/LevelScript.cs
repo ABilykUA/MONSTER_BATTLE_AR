@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+
 public class LevelScript : MonoBehaviour
 {
 
     public GameObject UI;
+
 
     public TextMeshPro EnemyHealth;
     public TextMeshPro EnemyType;
@@ -20,46 +22,27 @@ public class LevelScript : MonoBehaviour
     private int MaxPalyer;
     private int MaxEnemy;
 
-
+    private int Level = 1;
 
     //for switch
     private int SwitchCounter = 1;
 
     //GG stands 4 GamerGirl
-    private Stats GG;
-
+    private Entity GG;
+    
     //Enemy
-    private Stats SIMP;
+    private Entity SIMP;
 
 
-    //struct for stats pretty self explanatory  
-    private struct Stats
-    {
-        public int Attack { get; set; }
-        public int Defense { get; set; }
-        public int Health { get; set; }
-        public string Type { get; set; }
+    
 
-        public Stats(int H, int D, int A,string T) {
-            Attack = A;
-            Defense = D;
-            Health = H;
-            Type = T;
-        }
-
-        public void hit(int value) {
-            Health -= value;
-        }
-    }
-
-   private void UpdateUI(Stats SIMP, Stats GG) {
+   private void UpdateUI(Entity SIMP, Entity GG) {
 
 
-        Debug.Log(SIMP.Health);
 
         //player
         mHealth.SetText("Health: " + GG.Health + "/" + MaxPalyer);
-        mDefense.SetText("Defense: " + GG.Health);
+        mDefense.SetText("Defense: " + GG.Defense);
         mAttack.SetText("Attack: " + GG.Attack); 
 
         //enely
@@ -69,43 +52,49 @@ public class LevelScript : MonoBehaviour
     }
 
 
-    //function for every attack 
-    
-    //Fire
     public void Attack()
     {
-        
 
-        switch(GG.Type){
+        Debug.Log("test");
+
+
+        Player();
+    }
+
+    private void Player() {
+
+
+        switch (GG.Type)
+        {
 
 
             case "Water":
 
 
-                SIMP.hit(Simp(GG.Type));
 
+
+                SIMP.EntityISHit(Simp(GG.Type));
                 SwitchCounter = 2;
                 break;
 
             case "Grass":
 
 
-                SIMP.hit(Simp(GG.Type));
+
+
+
+                SIMP.EntityISHit(Simp(GG.Type));
                 SwitchCounter = 2;
-                
-                
                 break;
 
             case "Fire":
 
-               
 
 
-                SIMP.hit(Simp(GG.Type));
 
-                
-              
 
+
+                SIMP.EntityISHit(Simp(GG.Type));
                 SwitchCounter = 2;
                 break;
 
@@ -113,7 +102,8 @@ public class LevelScript : MonoBehaviour
 
         }
 
-        
+
+
     }
 
     private int Simp(string type) {
@@ -162,8 +152,6 @@ public class LevelScript : MonoBehaviour
 
 
 
-
-
             case "Fire":
                 
                 if (type == "Water")
@@ -197,35 +185,64 @@ public class LevelScript : MonoBehaviour
         
     }
 
-    void Start()
-    {
+    private void GenerateStats() {
 
 
-         //GG stands 4 GamerGirl
-        GG = new Stats(30, 45, 150, "Fire");
+        string[] Type = {"Water","Grass","Fire"};
 
-        //Enemy
-        SIMP = new Stats(15, 80, 130, "Water");
+        int A = Random.Range(50, 71);
+        int D = Random.Range(20, 41);
+        int H = Random.Range(300, 401);
 
+        GG = new Entity(H, D, A, Type[Random.Range(0, Type.Length)]);
+        
+        SIMP = new Entity(H, D, A, Type[Random.Range(0,Type.Length)]);
 
-
+        //set MaxHealth
         MaxPalyer = GG.Health;
         MaxEnemy = SIMP.Health;
 
-     }
+    }
 
 
+    private void AddStats() {
+
+        Level++;
+
+        GG.Attack += Random.Range(20, 31);
+        GG.Defense += Random.Range(5, 11);
+        GG.Health += Random.Range(70, 101);
+
+        
+    }
+    
+    private void WinCheck() {
+
+        if (SIMP.Health <= 0) {
+            SwitchCounter = 4;
+        }
+    
+    }
+
+
+    void Start()
+    {
+
+        GenerateStats();
+    
+    }
 
     void Update()
     {
 
         UpdateUI(SIMP, GG);
+        WinCheck();
 
 
         switch (SwitchCounter) {
 
             case 1:
-
+                //GG trurn
 
 
               
@@ -234,13 +251,36 @@ public class LevelScript : MonoBehaviour
                 break;
 
             case 2:
+                //simp turn
 
 
-
-              
+              // change to false test
                 UI.SetActive(false);
 
                 break;
+
+
+
+            case 3:
+                //lose 
+
+
+
+                UI.SetActive(false);
+                break;
+
+            
+            case 4:
+
+          //win
+
+                    
+                AddStats();
+                UI.SetActive(false);
+                break;
+
+
+
 
 
         }
