@@ -11,14 +11,14 @@ public class LevelScript : MonoBehaviour
 {
     public GameObject UI;
 
+    public GameObject VictoryRoyal;
+
     public GameObject DefeatUI;
-    public Abilities newAbility;
-
-
+   
     public TextMeshPro EnemyHealth;
     public TextMeshPro EnemyType;
 
-    //UI
+    //Game UI
     public TextMeshProUGUI mHealth;
     public TextMeshProUGUI mAttack;
     public TextMeshProUGUI mDefense;
@@ -27,19 +27,46 @@ public class LevelScript : MonoBehaviour
     //Level
     public TextMeshProUGUI mTitle;
 
-    //UI 
+    //Lose UI 
     public TextMeshProUGUI LmLevel;
     public TextMeshProUGUI LmHealth;
     public TextMeshProUGUI LmAttack;
     public TextMeshProUGUI LmDefense;
 
+    //Win Ui  
+    public TextMeshProUGUI WHealth;
+    public TextMeshProUGUI WAttack;
+    public TextMeshProUGUI WDefense;
+    
+    //WinUIAbilitys
+    public TextMeshProUGUI AHeal;
+    public TextMeshProUGUI ADamage;
+    public TextMeshProUGUI AType;
+    public TextMeshProUGUI AName;
+    public TextMeshProUGUI AUses;
+
+
+     
+
     //All Abilities
     private Abilities[] abilities = { null, null, null };
 
+    private Abilities newAbility = new Abilities(0, " ", 0, 0, " ");
+
+
     //max stats
     private int MaxPlayer;
-
+    
     private int MaxEnemy;
+
+    // gaind during lvl 
+    private int GaindHealth;
+    
+    private int GainAttack;
+
+    private int GainDefence;
+
+
 
     private int Level = 1;
 
@@ -63,12 +90,11 @@ public class LevelScript : MonoBehaviour
 
 
         private void UpdateUI(Entity SIMP, Entity GG) {
-
+        
             //player
             mHealth.SetText("Health: " + GG.Health + "/" + MaxPlayer);
             mDefense.SetText("Defense: " + GG.Defense);
             mAttack.SetText("Attack: " + GG.Attack);
-
 
             //enely
             EnemyHealth.SetText("Health: " + SIMP.Health + "/" + MaxEnemy);
@@ -81,7 +107,23 @@ public class LevelScript : MonoBehaviour
             LmLevel.SetText("You made it to level: " + Level);
             LmHealth.SetText("Health: " + MaxPlayer);
             LmAttack.SetText("Attack: " + GG.Attack); 
-            LmDefense.SetText("Defense: " + GG.Defense); 
+            LmDefense.SetText("Defense: " + GG.Defense);
+
+            //WUI
+            WHealth.SetText("Health: +" + GaindHealth);
+            WAttack.SetText("Attack: +" + GainAttack);
+            WDefense.SetText("Defense: +" + GainDefence);
+
+            //newAbility
+
+
+            ADamage.SetText("Damage: " + newAbility.damage);
+            AType.SetText("Type: " + newAbility.type);
+            AName.SetText("Name: " + newAbility.name);
+            AUses.SetText("Uses: " + newAbility.uses);
+            AHeal.SetText("Heal: " + newAbility.heal);
+
+
 
         }
 
@@ -111,11 +153,11 @@ public class LevelScript : MonoBehaviour
 
             if (SIMP.Type == ability.type)
             {
-                EntityIsHit(1, ability);
+               SIMP.Hit(EntityIsHit(1, ability));
             }
             else
             {
-                EntityIsHit(2, ability);
+                SIMP.Hit(EntityIsHit(2, ability));
             }
             SwitchCounter = 2;
 
@@ -131,8 +173,8 @@ public class LevelScript : MonoBehaviour
                 {
                     //Immunity
                     case 1:
-
-                        return 0;
+                // Add a poo up
+                        return 110;
 
                     //Deals Damage
                     case 2:
@@ -176,7 +218,7 @@ public class LevelScript : MonoBehaviour
                 {
                     if (abilities[i].type == TypeMe)
                     {
-                        GG= new Entity(H, D, A, TypeMe, abilities[i]);
+                        GG = new Entity(H, D, A, TypeMe, abilities[i]);
                     }
                     if (abilities[i].type == TypeEnemy)
                     {
@@ -211,10 +253,17 @@ public class LevelScript : MonoBehaviour
 
                 Level++;
 
+                GainAttack = Random.Range(20, 31);
 
-                GG.Attack += Random.Range(20, 31);
-                GG.Defense += Random.Range(5, 11);
-                GG.Health += Random.Range(70, 101);
+                GainDefence = Random.Range(5, 11);
+
+                GaindHealth = Random.Range(70, 101);
+
+
+                GG.Attack += GainAttack;
+                GG.Defense += GainDefence;
+                GG.Health += GaindHealth;
+
                 //give ability every time level is 2,4 or 6
                 if (Level == 2 || Level == 4 || Level == 6)
                 {
@@ -273,21 +322,11 @@ public class LevelScript : MonoBehaviour
             private void Start()
             {
             
-            mTitle.SetText(Level.ToString());
+                mTitle.SetText(Level.ToString());
 
-            GenerateAbilities();
-
-            int k = abilities[0].damage;
+                GenerateAbilities();
 
                 GenerateStats();
-
-            int f = GG.Attack;
-
-            Debug.Log(f);
-
-
-            Debug.Log(k);
-
 
             }
 
@@ -337,6 +376,7 @@ public class LevelScript : MonoBehaviour
 
                 AddStats();
                 UI.SetActive(false);
+                VictoryRoyal.SetActive(true);
                 break;
 
 

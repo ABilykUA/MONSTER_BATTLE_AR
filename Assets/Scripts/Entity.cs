@@ -22,10 +22,10 @@ public class Entity : Object{
 
     }
 
-    /*public void EntityIsHit(int value)
+    public void Hit(int value)
     {
         Health -= value;
-    }*/
+    }
 
 
 
