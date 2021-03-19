@@ -18,11 +18,11 @@ public class MainMenu : MonoBehaviour
 
     public void TextSize(float fontSize)
     {
-        scaleTutorial.fontSize = fontSize+30;
-        MainMenuTitle.fontSize = fontSize+30;
+        scaleTutorial.fontSize = fontSize+15;
+        MainMenuTitle.fontSize = fontSize+15;
         PlayButtonText.fontSize = fontSize;
         ExitButtonText.fontSize = fontSize;
-        DisabilityTitle.fontSize = fontSize+30;
+        DisabilityTitle.fontSize = fontSize+15;
         ColorBlindText.fontSize = fontSize;
         BlurredVisionText.fontSize = fontSize;
         NormalVisionText.fontSize = fontSize;
