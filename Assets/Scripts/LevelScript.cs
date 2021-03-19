@@ -160,8 +160,6 @@ public class LevelScript : MonoBehaviour
         }
         SwitchCounter = 2;
 
-
-
     }
 
     private void EnemyAttacking()
@@ -180,7 +178,6 @@ public class LevelScript : MonoBehaviour
     }
 
 
-
     private int EntityIsHit(int damageType, Abilities ability) {
 
                 switch (damageType)
@@ -189,7 +186,7 @@ public class LevelScript : MonoBehaviour
                     //Immunity
                     case 1:
                 // Add a poo up
-                        return 110;
+                        return 0;
 
                     //Deals Damage
                     case 2:
@@ -215,7 +212,7 @@ public class LevelScript : MonoBehaviour
 
 
                 }
-            }
+    }
 
 
 
@@ -346,27 +343,27 @@ public class LevelScript : MonoBehaviour
     {
 
         UpdateUI(SIMP, GG);
-        WinOrLoseCheck();
+        
 
         switch (SwitchCounter)
         {
 
             case 1:
                 //GG trurn
-
+                WinOrLoseCheck();
                 UI.SetActive(true);
-
                 break;
+
 
             case 2:
                 //simp turn
-
+                WinOrLoseCheck();
                 //change to false test
 
                 UI.SetActive(false);
                 EnemyAttacking();
-
                 break;
+
 
             case 3:
                 //lose 
@@ -387,8 +384,12 @@ public class LevelScript : MonoBehaviour
                 AddStats();
                 UI.SetActive(false);
                 VictoryRoyal.SetActive(true);
+                SwitchCounter = 5;
                 break;
 
+
+            case 5:
+                break;
 
 
         }
