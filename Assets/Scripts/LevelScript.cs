@@ -111,11 +111,11 @@ public class LevelScript : MonoBehaviour
 
             if (SIMP.Type == ability.type)
             {
-                EntityIsHit(1, ability);
+                SIMP.Hit(EntityIsHit(1, ability));
             }
             else
             {
-                EntityIsHit(2, ability);
+                SIMP.Hit(EntityIsHit(2, ability));
             }
             SwitchCounter = 2;
 
@@ -264,31 +264,15 @@ public class LevelScript : MonoBehaviour
 
             }
 
-            public void NextLevel() {
-
-
-            }
-
 
             private void Start()
             {
             
-            mTitle.SetText(Level.ToString());
+                mTitle.SetText(Level.ToString());
 
-            GenerateAbilities();
-
-            int k = abilities[0].damage;
+                GenerateAbilities();
 
                 GenerateStats();
-
-            int f = GG.Attack;
-
-            Debug.Log(f);
-
-
-            Debug.Log(k);
-
-
             }
 
 

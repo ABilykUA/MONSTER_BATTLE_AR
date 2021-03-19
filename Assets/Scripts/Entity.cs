@@ -22,11 +22,13 @@ public class Entity : Object{
 
     }
 
-    /*public void EntityIsHit(int value)
+    public void Hit(int value)
     {
         Health -= value;
-    }*/
+    }
 
+    public Abilities GetAbilities(int i) { return abilities[i]; }
+    public void SetAbilities(Abilities newAbility, int i) { abilities[i] = newAbility; }
 
 
 
