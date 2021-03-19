@@ -27,6 +27,8 @@ public class Entity : Object{
         Health -= value;
     }
 
+    public Abilities GetAbilities(int i) { return abilities[i]; }
+    public void SetAbilities(Abilities newAbility, int i) { abilities[i] = newAbility; }
 
 
 
