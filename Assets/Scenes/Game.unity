@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1295,6 +1295,7 @@ GameObject:
   - component: {fileID: 302385162}
   - component: {fileID: 302385164}
   - component: {fileID: 302385163}
+  - component: {fileID: 302385165}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -1361,6 +1362,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 302385161}
   m_CullTransparentMesh: 0
+--- !u!114 &302385165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302385161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d61e802d42dd3d44db201b2138960130, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleTutorial: {fileID: 1841207943}
+  PlayButtonText: {fileID: 198021448}
+  ExitButtonText: {fileID: 189875115}
+  DisabilityTitle: {fileID: 1866117745}
+  ColorBlindText: {fileID: 0}
+  BlurredVisionText: {fileID: 0}
+  NormalVisionText: {fileID: 692808031}
+  BackButtonText: {fileID: 0}
+  PlayButtonTextBlurredVision: {fileID: 0}
+  BackButtonTextBlurredVision: {fileID: 0}
 --- !u!1 &461768249
 GameObject:
   m_ObjectHideFlags: 0
@@ -2412,6 +2435,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d61e802d42dd3d44db201b2138960130, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scaleTutorial: {fileID: 1841207943}
+  PlayButtonText: {fileID: 189875115}
+  ExitButtonText: {fileID: 1866117745}
+  DisabilityTitle: {fileID: 692808031}
+  ColorBlindText: {fileID: 198021448}
+  BlurredVisionText: {fileID: 0}
+  NormalVisionText: {fileID: 0}
+  BackButtonText: {fileID: 0}
+  PlayButtonTextBlurredVision: {fileID: 0}
+  BackButtonTextBlurredVision: {fileID: 0}
 --- !u!1001 &1235263425
 PrefabInstance:
   m_ObjectHideFlags: 0

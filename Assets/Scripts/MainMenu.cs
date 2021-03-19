@@ -7,7 +7,6 @@ using TMPro;
 public class MainMenu : MonoBehaviour
 {
     public TextMeshProUGUI scaleTutorial;
-    public TextMeshProUGUI MainMenuTitle;
     public TextMeshProUGUI PlayButtonText;
     public TextMeshProUGUI ExitButtonText;
     public TextMeshProUGUI DisabilityTitle;
@@ -15,19 +14,60 @@ public class MainMenu : MonoBehaviour
     public TextMeshProUGUI BlurredVisionText;
     public TextMeshProUGUI NormalVisionText;
     public TextMeshProUGUI BackButtonText;
+    public TextMeshProUGUI PlayButtonTextBlurredVision;
+    public TextMeshProUGUI BackButtonTextBlurredVision;
 
-    public void TextSize(float fontSize)
+    public static float fontSizeTitles;
+    public static float fontSizeButtons;
+
+    public void TextSizeTitles(float fontSize)
     {
-        scaleTutorial.fontSize = fontSize+15;
-        MainMenuTitle.fontSize = fontSize+15;
-        PlayButtonText.fontSize = fontSize;
-        ExitButtonText.fontSize = fontSize;
-        DisabilityTitle.fontSize = fontSize+15;
-        ColorBlindText.fontSize = fontSize;
-        BlurredVisionText.fontSize = fontSize;
-        NormalVisionText.fontSize = fontSize;
-        BackButtonText.fontSize = fontSize;
+        fontSizeTitles = fontSize;
+        fontSizeTitles = fontSizeTitles;
+        scaleTutorial.fontSize = fontSizeTitles;
+        DisabilityTitle.fontSize = fontSizeTitles;
 
+    }
+    void Update()
+    {
+        fontSizeTitles = fontSizeTitles;
+        scaleTutorial.fontSize = fontSizeTitles;
+        DisabilityTitle.fontSize = fontSizeTitles;
+        PlayButtonText.fontSize = fontSizeButtons;
+        ExitButtonText.fontSize = fontSizeButtons;
+        ColorBlindText.fontSize = fontSizeButtons;
+        BlurredVisionText.fontSize = fontSizeButtons;
+        NormalVisionText.fontSize = fontSizeButtons;
+        BackButtonText.fontSize = fontSizeButtons;
+        PlayButtonTextBlurredVision.fontSize = fontSizeButtons;
+        BackButtonTextBlurredVision.fontSize = fontSizeButtons;
+    }
+    void Start()
+    {
+        fontSizeTitles = fontSizeTitles;
+        scaleTutorial.fontSize = 90;
+        DisabilityTitle.fontSize = 90;
+        PlayButtonText.fontSize = fontSizeButtons;
+        ExitButtonText.fontSize = fontSizeButtons;
+        ColorBlindText.fontSize = fontSizeButtons;
+        BlurredVisionText.fontSize = fontSizeButtons;
+        NormalVisionText.fontSize = fontSizeButtons;
+        BackButtonText.fontSize = fontSizeButtons;
+        PlayButtonTextBlurredVision.fontSize = fontSizeButtons;
+        BackButtonTextBlurredVision.fontSize = fontSizeButtons;
+    }
+
+    public void TextSizeButtons(float fontSize)
+    {
+        fontSizeButtons = fontSize;
+        PlayButtonText.fontSize = fontSizeButtons;
+        ExitButtonText.fontSize = fontSizeButtons;
+        ColorBlindText.fontSize = fontSizeButtons;
+        BlurredVisionText.fontSize = fontSizeButtons;
+        NormalVisionText.fontSize = fontSizeButtons;
+        BackButtonText.fontSize = fontSizeButtons;
+        PlayButtonTextBlurredVision.fontSize = fontSizeButtons;
+        BackButtonTextBlurredVision.fontSize = fontSizeButtons;
     }
     public void PlayGame() {
 

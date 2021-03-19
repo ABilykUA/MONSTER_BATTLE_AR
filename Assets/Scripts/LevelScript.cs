@@ -10,7 +10,7 @@ using UnityEngine;
 public class LevelScript : MonoBehaviour
 {
     public GameObject UI;
-
+    
     public GameObject DefeatUI;
     public Abilities newAbility;
 
@@ -52,6 +52,7 @@ public class LevelScript : MonoBehaviour
     //Enemy
     private Entity SIMP;
 
+    
 
         private void GenerateAbilities()
         {
