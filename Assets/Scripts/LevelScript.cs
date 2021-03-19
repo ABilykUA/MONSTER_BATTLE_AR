@@ -1,11 +1,10 @@
 ﻿
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using TMPro;
 using UnityEngine;
-
-
-
+using Debug = UnityEngine.Debug;
 
 public class LevelScript : MonoBehaviour
 {
@@ -94,7 +93,6 @@ public class LevelScript : MonoBehaviour
         }
         public void AttackSlot2()
         {
-
             Debug.Log("test");
 
             Attacking(GG.abilities[1]);
@@ -107,20 +105,36 @@ public class LevelScript : MonoBehaviour
             Attacking(GG.abilities[2]);
         }
 
-        private void Attacking(Abilities ability) {
+    private void Attacking(Abilities ability)
+    {
 
-            if (SIMP.Type == ability.type)
-            {
-                SIMP.Hit(EntityIsHit(1, ability));
-            }
-            else
-            {
-                SIMP.Hit(EntityIsHit(2, ability));
-            }
-            SwitchCounter = 2;
-
-
+        if (SIMP.Type == ability.type)
+        {
+            SIMP.Hit(EntityIsHit(1, ability));
         }
+        else
+        {
+            SIMP.Hit(EntityIsHit(2, ability));
+        }
+        SwitchCounter = 2;
+
+
+    }
+
+    private void EnemyAttacking()
+    {
+        Abilities temp = SIMP.GetAbilities(0);
+        if (GG.Type == temp.type)
+        {
+            GG.Hit(EntityIsHit(1, temp));
+        }
+        else
+        {
+            GG.Hit(EntityIsHit(2, temp));
+        }
+        SwitchCounter = 1;
+
+    }
 
 
 
@@ -300,6 +314,7 @@ public class LevelScript : MonoBehaviour
                 //change to false test
 
                 UI.SetActive(false);
+                EnemyAttacking();
 
                 break;
 
@@ -318,7 +333,7 @@ public class LevelScript : MonoBehaviour
 
                 //win
 
-
+               
                 AddStats();
                 UI.SetActive(false);
                 break;
