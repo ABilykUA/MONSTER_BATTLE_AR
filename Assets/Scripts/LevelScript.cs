@@ -1,24 +1,23 @@
 ﻿
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using TMPro;
 using UnityEngine;
-
-
-
+using Debug = UnityEngine.Debug;
 
 public class LevelScript : MonoBehaviour
 {
     public GameObject UI;
-    
+
+    public GameObject VictoryRoyal;
+
     public GameObject DefeatUI;
-    public Abilities newAbility;
-
-
+   
     public TextMeshPro EnemyHealth;
     public TextMeshPro EnemyType;
 
-    //UI
+    //Game UI
     public TextMeshProUGUI mHealth;
     public TextMeshProUGUI mAttack;
     public TextMeshProUGUI mDefense;
@@ -27,19 +26,46 @@ public class LevelScript : MonoBehaviour
     //Level
     public TextMeshProUGUI mTitle;
 
-    //UI 
+    //Lose UI 
     public TextMeshProUGUI LmLevel;
     public TextMeshProUGUI LmHealth;
     public TextMeshProUGUI LmAttack;
     public TextMeshProUGUI LmDefense;
 
+    //Win Ui  
+    public TextMeshProUGUI WHealth;
+    public TextMeshProUGUI WAttack;
+    public TextMeshProUGUI WDefense;
+    
+    //WinUIAbilitys
+    public TextMeshProUGUI AHeal;
+    public TextMeshProUGUI ADamage;
+    public TextMeshProUGUI AType;
+    public TextMeshProUGUI AName;
+    public TextMeshProUGUI AUses;
+
+
+     
+
     //All Abilities
     private Abilities[] abilities = { null, null, null };
 
+    private Abilities newAbility = new Abilities(0, " ", 0, 0, " ");
+
+
     //max stats
     private int MaxPlayer;
-
+    
     private int MaxEnemy;
+
+    // gaind during lvl 
+    private int GaindHealth;
+    
+    private int GainAttack;
+
+    private int GainDefence;
+
+
 
     private int Level = 1;
 
@@ -64,12 +90,11 @@ public class LevelScript : MonoBehaviour
 
 
         private void UpdateUI(Entity SIMP, Entity GG) {
-
+        
             //player
             mHealth.SetText("Health: " + GG.Health + "/" + MaxPlayer);
             mDefense.SetText("Defense: " + GG.Defense);
             mAttack.SetText("Attack: " + GG.Attack);
-
 
             //enely
             EnemyHealth.SetText("Health: " + SIMP.Health + "/" + MaxEnemy);
@@ -82,7 +107,23 @@ public class LevelScript : MonoBehaviour
             LmLevel.SetText("You made it to level: " + Level);
             LmHealth.SetText("Health: " + MaxPlayer);
             LmAttack.SetText("Attack: " + GG.Attack); 
-            LmDefense.SetText("Defense: " + GG.Defense); 
+            LmDefense.SetText("Defense: " + GG.Defense);
+
+            //WUI
+            WHealth.SetText("Health: +" + GaindHealth);
+            WAttack.SetText("Attack: +" + GainAttack);
+            WDefense.SetText("Defense: +" + GainDefence);
+
+            //newAbility
+
+
+            ADamage.SetText("Damage: " + newAbility.damage);
+            AType.SetText("Type: " + newAbility.type);
+            AName.SetText("Name: " + newAbility.name);
+            AUses.SetText("Uses: " + newAbility.uses);
+            AHeal.SetText("Heal: " + newAbility.heal);
+
+
 
         }
 
@@ -95,7 +136,6 @@ public class LevelScript : MonoBehaviour
         }
         public void AttackSlot2()
         {
-
             Debug.Log("test");
 
             Attacking(GG.abilities[1]);
@@ -108,21 +148,35 @@ public class LevelScript : MonoBehaviour
             Attacking(GG.abilities[2]);
         }
 
-        private void Attacking(Abilities ability) {
+    private void Attacking(Abilities ability)
+    {
 
-            if (SIMP.Type == ability.type)
-            {
-                EntityIsHit(1, ability);
-            }
-            else
-            {
-                EntityIsHit(2, ability);
-            }
-            SwitchCounter = 2;
-
-
+        if (SIMP.Type == ability.type)
+        {
+            SIMP.Hit(EntityIsHit(1, ability));
         }
+        else
+        {
+            SIMP.Hit(EntityIsHit(2, ability));
+        }
+        SwitchCounter = 2;
 
+    }
+
+    private void EnemyAttacking()
+    {
+        Abilities temp = SIMP.GetAbilities(0);
+        if (GG.Type == temp.type)
+        {
+            GG.Hit(EntityIsHit(1, temp));
+        }
+        else
+        {
+            GG.Hit(EntityIsHit(2, temp));
+        }
+        SwitchCounter = 1;
+
+    }
 
 
     private int EntityIsHit(int damageType, Abilities ability) {
@@ -132,7 +186,7 @@ public class LevelScript : MonoBehaviour
                 {
                     //Immunity
                     case 1:
-
+                // Add a poo up
                         return 0;
 
                     //Deals Damage
@@ -159,7 +213,7 @@ public class LevelScript : MonoBehaviour
 
 
                 }
-            }
+    }
 
 
 
@@ -177,7 +231,7 @@ public class LevelScript : MonoBehaviour
                 {
                     if (abilities[i].type == TypeMe)
                     {
-                        GG= new Entity(H, D, A, TypeMe, abilities[i]);
+                        GG = new Entity(H, D, A, TypeMe, abilities[i]);
                     }
                     if (abilities[i].type == TypeEnemy)
                     {
@@ -212,10 +266,17 @@ public class LevelScript : MonoBehaviour
 
                 Level++;
 
+                GainAttack = Random.Range(20, 31);
 
-                GG.Attack += Random.Range(20, 31);
-                GG.Defense += Random.Range(5, 11);
-                GG.Health += Random.Range(70, 101);
+                GainDefence = Random.Range(5, 11);
+
+                GaindHealth = Random.Range(70, 101);
+
+
+                GG.Attack += GainAttack;
+                GG.Defense += GainDefence;
+                GG.Health += GaindHealth;
+
                 //give ability every time level is 2,4 or 6
                 if (Level == 2 || Level == 4 || Level == 6)
                 {
@@ -265,31 +326,15 @@ public class LevelScript : MonoBehaviour
 
             }
 
-            public void NextLevel() {
-
-
-            }
-
 
             private void Start()
             {
             
-            mTitle.SetText(Level.ToString());
+                mTitle.SetText(Level.ToString());
 
-            GenerateAbilities();
-
-            int k = abilities[0].damage;
+                GenerateAbilities();
 
                 GenerateStats();
-
-            int f = GG.Attack;
-
-            Debug.Log(f);
-
-
-            Debug.Log(k);
-
-
             }
 
 
@@ -299,26 +344,27 @@ public class LevelScript : MonoBehaviour
     {
 
         UpdateUI(SIMP, GG);
-        WinOrLoseCheck();
+        
 
         switch (SwitchCounter)
         {
 
             case 1:
                 //GG trurn
-
+                WinOrLoseCheck();
                 UI.SetActive(true);
-
                 break;
+
 
             case 2:
                 //simp turn
-
+                WinOrLoseCheck();
                 //change to false test
 
                 UI.SetActive(false);
-
+                EnemyAttacking();
                 break;
+
 
             case 3:
                 //lose 
@@ -335,11 +381,16 @@ public class LevelScript : MonoBehaviour
 
                 //win
 
-
+               
                 AddStats();
                 UI.SetActive(false);
+                VictoryRoyal.SetActive(true);
+                SwitchCounter = 5;
                 break;
 
+
+            case 5:
+                break;
 
 
         }
