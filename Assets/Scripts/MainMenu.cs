@@ -16,46 +16,36 @@ public class MainMenu : MonoBehaviour
     public TextMeshProUGUI BackButtonText;
     public TextMeshProUGUI PlayButtonTextBlurredVision;
     public TextMeshProUGUI BackButtonTextBlurredVision;
-
-
-
+    public TextMeshProUGUI GameAttack;
+    public TextMeshProUGUI GameDefense;
+    public TextMeshProUGUI GameHealth;
 
     public static float fontSizeTitles;
     public static float fontSizeButtons;
-    public static bool Scaled=false;
-
 
     public void TextSizeTitles(float fontSize)
     {
         fontSizeTitles = fontSize;
-        
+        fontSizeTitles = fontSizeTitles;
         scaleTutorial.fontSize = fontSizeTitles;
         DisabilityTitle.fontSize = fontSizeTitles;
+
     }
     void Update()
     {
-        if (Scaled == false)
-        {
-            scaleTutorial.fontSize = fontSizeTitles;
-            DisabilityTitle.fontSize = fontSizeTitles;
-            PlayButtonText.fontSize = fontSizeButtons;
-            ExitButtonText.fontSize = fontSizeButtons;
-            ColorBlindText.fontSize = fontSizeButtons;
-            BlurredVisionText.fontSize = fontSizeButtons;
-            NormalVisionText.fontSize = fontSizeButtons;
-            BackButtonText.fontSize = fontSizeButtons;
-            PlayButtonTextBlurredVision.fontSize = fontSizeButtons;
-            BackButtonTextBlurredVision.fontSize = fontSizeButtons;
-        }
-        else
-        {
-            PlayButtonText.fontSize = fontSizeButtons-10;
-            ExitButtonText.fontSize = fontSizeButtons-10;
-            ColorBlindText.fontSize = fontSizeButtons-10;
-            BackButtonText.fontSize = fontSizeButtons+50;
-            PlayButtonTextBlurredVision.fontSize = fontSizeButtons+50;
-            BackButtonTextBlurredVision.fontSize = fontSizeButtons+50;
-        }
+        scaleTutorial.fontSize = fontSizeTitles;
+        DisabilityTitle.fontSize = fontSizeTitles;
+        PlayButtonText.fontSize = fontSizeButtons;
+        ExitButtonText.fontSize = fontSizeButtons;
+        ColorBlindText.fontSize = fontSizeButtons;
+        BlurredVisionText.fontSize = fontSizeButtons;
+        NormalVisionText.fontSize = fontSizeButtons;
+        BackButtonText.fontSize = fontSizeButtons;
+        PlayButtonTextBlurredVision.fontSize = fontSizeButtons;
+        BackButtonTextBlurredVision.fontSize = fontSizeButtons;
+        GameAttack.fontSize = fontSizeButtons;
+        GameDefense.fontSize = fontSizeButtons;
+        GameHealth.fontSize = fontSizeButtons;
     }
     void Start()
     {
@@ -71,10 +61,10 @@ public class MainMenu : MonoBehaviour
         BackButtonText.fontSize = 60;
         PlayButtonTextBlurredVision.fontSize = 60;
         BackButtonTextBlurredVision.fontSize = 60;
-        
+        GameAttack.fontSize = 40;
+        GameDefense.fontSize = 40;
+        GameHealth.fontSize = 10;
     }
-
-
 
     public void TextSizeButtons(float fontSize)
     {
@@ -89,9 +79,9 @@ public class MainMenu : MonoBehaviour
         BackButtonTextBlurredVision.fontSize = fontSizeButtons;
     }
     public void PlayGame() {
-        Scaled = true;
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        
+  
     }
 
     public void BacktoMain()
