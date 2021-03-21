@@ -86,6 +86,10 @@ public class LevelScript : MonoBehaviour
         abilities[0] = new Abilities(50, "Fire", 0, 10, "Fire blast");
         abilities[1] = new Abilities(40, "Water", 0, 15, "Water blast");
         abilities[2] = new Abilities(25, "Grass", 50, 10, "Grass blast");
+        abilities[2] = new Abilities(25, "Grass", 10, 10, "Grass blast");
+        abilities[3] = new Abilities(20, "Fire", 5, 10, "Flame Wheel");
+        abilities[4] = new Abilities(60, "Water", 15, 8, "Tsunami");
+        abilities[5] = new Abilities(50, "Grass", 0, 10, "Branch slam");
     }
 
 
@@ -124,8 +128,6 @@ public class LevelScript : MonoBehaviour
         AUses.SetText("Uses: " + newAbility.uses);
         AHeal.SetText("Heal: " + newAbility.heal);
 
-
-
     }
 
     public void AttackSlot1()
@@ -159,6 +161,20 @@ public class LevelScript : MonoBehaviour
         else
         {
             SIMP.Hit(EntityIsHit(2, ability));
+
+            //If ability heals
+            if (ability.heal > 0)
+            {
+                if (GG.Health < MaxPlayer)
+                {
+                    GG.Health += ability.heal;
+                    //checks if you overhealed so it sets your Health to your max Health instead
+                    if (GG.Health > MaxPlayer)
+                    {
+                        GG.Health = MaxPlayer;
+                    }
+                }
+            }
         }
         SwitchCounter = 2;
 
@@ -174,6 +190,19 @@ public class LevelScript : MonoBehaviour
         else
         {
             GG.Hit(EntityIsHit(2, temp));
+            //If ability heals
+            if (temp.heal > 0)
+            {
+                if (SIMP.Health < MaxPlayer)
+                {
+                    SIMP.Health += temp.heal;
+                    //checks if you overhealed so it sets your Health to your max Health instead
+                    if (SIMP.Health > MaxPlayer)
+                    {
+                        SIMP.Health = MaxPlayer;
+                    }
+                }
+            }
         }
         SwitchCounter = 1;
 
@@ -191,22 +220,8 @@ public class LevelScript : MonoBehaviour
                 return 0;
 
             //Deals Damage
-            case 2:
-                //If ability heals
-                if (ability.heal > 0)
-                {
-                    if (GG.Health < MaxPlayer)
-                    {
-                        GG.Health += ability.heal;
-                        //checks if you overhealed so it sets your Health to your max Health instead
-                        if (GG.Health > MaxPlayer)
-                        {
-                            GG.Health = MaxPlayer;
-                        }
-                    }
-                }
+            case 2:              
                 return ability.damage;
-
 
             default:
 
@@ -220,6 +235,17 @@ public class LevelScript : MonoBehaviour
         //whatever type you get for enemy or you you get the same type of ability
         string TypeMe = Type[Random.Range(0, Type.Length)];
         string TypeEnemy = Type[Random.Range(0, Type.Length)];
+        for (int i = 0; i < 6; i++)
+        {
+            if (TypeEnemy != TypeMe)
+            {
+                break;
+            }
+            else
+            {
+                TypeEnemy = Type[Random.Range(0, Type.Length)];
+            }
+        }
         int A = Random.Range(50, 71);
         int D = Random.Range(20, 41);
         int H = Random.Range(300, 401);

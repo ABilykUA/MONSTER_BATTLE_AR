@@ -31,9 +31,10 @@ using UnityEngine;
         // Update is called once per frame
         void Update()
         {
-            //fix look at 
-            EnemyUI.transform.Rotate(0f, 0.0f, 0.2f);
-            //EnemyUI.transform.LookAt(ARcam.transform);
-        }
+        //fix look at 
+        EnemyUI.transform.LookAt(ARcam.transform.position);
+        EnemyUI.transform.Rotate(-90, 180, 0);
+        //EnemyUI.transform.LookAt(ARcam.transform);
+    }
 
     }
