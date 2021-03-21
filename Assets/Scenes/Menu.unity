@@ -684,7 +684,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1456923427}
+      - m_Target: {fileID: 0}
         m_MethodName: PlayGame
         m_Mode: 1
         m_Arguments:
@@ -975,7 +975,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1456923427}
+      - m_Target: {fileID: 0}
         m_MethodName: TextSizeTitles
         m_Mode: 0
         m_Arguments:
@@ -1008,6 +1008,9 @@ MonoBehaviour:
   BackButtonText: {fileID: 0}
   PlayButtonTextBlurredVision: {fileID: 0}
   BackButtonTextBlurredVision: {fileID: 0}
+  GameAttack: {fileID: 0}
+  GameDefense: {fileID: 0}
+  GameHealth: {fileID: 0}
 --- !u!1 &566111994
 GameObject:
   m_ObjectHideFlags: 0
@@ -2243,16 +2246,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d61e802d42dd3d44db201b2138960130, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleTutorial: {fileID: 119361476}
-  PlayButtonText: {fileID: 1217103615}
-  ExitButtonText: {fileID: 1844454128}
-  DisabilityTitle: {fileID: 2066993735}
-  ColorBlindText: {fileID: 587257812}
-  BlurredVisionText: {fileID: 1056411542}
-  NormalVisionText: {fileID: 1528289334}
-  BackButtonText: {fileID: 1885463193}
-  PlayButtonTextBlurredVision: {fileID: 1569876498}
-  BackButtonTextBlurredVision: {fileID: 1920911161}
+  scaleTutorial: {fileID: 0}
+  PlayButtonText: {fileID: 0}
+  ExitButtonText: {fileID: 0}
+  DisabilityTitle: {fileID: 0}
+  ColorBlindText: {fileID: 0}
+  BlurredVisionText: {fileID: 0}
+  NormalVisionText: {fileID: 0}
+  BackButtonText: {fileID: 0}
+  PlayButtonTextBlurredVision: {fileID: 0}
+  BackButtonTextBlurredVision: {fileID: 0}
+  GameAttack: {fileID: 0}
+  GameDefense: {fileID: 0}
+  GameHealth: {fileID: 0}
 --- !u!1 &1516433096
 GameObject:
   m_ObjectHideFlags: 0
@@ -3868,6 +3874,9 @@ MonoBehaviour:
   BackButtonText: {fileID: 0}
   PlayButtonTextBlurredVision: {fileID: 0}
   BackButtonTextBlurredVision: {fileID: 0}
+  GameAttack: {fileID: 0}
+  GameDefense: {fileID: 0}
+  GameHealth: {fileID: 0}
 --- !u!114 &1984044697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3918,7 +3927,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1456923427}
+      - m_Target: {fileID: 0}
         m_MethodName: TextSizeButtons
         m_Mode: 0
         m_Arguments:
@@ -4011,7 +4020,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1456923427}
+      - m_Target: {fileID: 0}
         m_MethodName: ExitGame
         m_Mode: 1
         m_Arguments:
@@ -4122,6 +4131,9 @@ MonoBehaviour:
   BackButtonText: {fileID: 0}
   PlayButtonTextBlurredVision: {fileID: 0}
   BackButtonTextBlurredVision: {fileID: 0}
+  GameAttack: {fileID: 0}
+  GameDefense: {fileID: 0}
+  GameHealth: {fileID: 0}
 --- !u!1 &2054297020
 GameObject:
   m_ObjectHideFlags: 0
