@@ -16,6 +16,9 @@ public class MainMenu : MonoBehaviour
     public TextMeshProUGUI BackButtonText;
     public TextMeshProUGUI PlayButtonTextBlurredVision;
     public TextMeshProUGUI BackButtonTextBlurredVision;
+    public TextMeshProUGUI GameAttack;
+    public TextMeshProUGUI GameDefense;
+    public TextMeshProUGUI GameHealth;
 
     public static float fontSizeTitles;
     public static float fontSizeButtons;
@@ -30,7 +33,6 @@ public class MainMenu : MonoBehaviour
     }
     void Update()
     {
-        fontSizeTitles = fontSizeTitles;
         scaleTutorial.fontSize = fontSizeTitles;
         DisabilityTitle.fontSize = fontSizeTitles;
         PlayButtonText.fontSize = fontSizeButtons;
@@ -41,20 +43,27 @@ public class MainMenu : MonoBehaviour
         BackButtonText.fontSize = fontSizeButtons;
         PlayButtonTextBlurredVision.fontSize = fontSizeButtons;
         BackButtonTextBlurredVision.fontSize = fontSizeButtons;
+        GameAttack.fontSize = fontSizeButtons;
+        GameDefense.fontSize = fontSizeButtons;
+        GameHealth.fontSize = fontSizeButtons;
     }
     void Start()
     {
-        fontSizeTitles = fontSizeTitles;
+        fontSizeTitles = 90;
+        fontSizeButtons = 60;
         scaleTutorial.fontSize = 90;
         DisabilityTitle.fontSize = 90;
-        PlayButtonText.fontSize = fontSizeButtons;
-        ExitButtonText.fontSize = fontSizeButtons;
-        ColorBlindText.fontSize = fontSizeButtons;
-        BlurredVisionText.fontSize = fontSizeButtons;
-        NormalVisionText.fontSize = fontSizeButtons;
-        BackButtonText.fontSize = fontSizeButtons;
-        PlayButtonTextBlurredVision.fontSize = fontSizeButtons;
-        BackButtonTextBlurredVision.fontSize = fontSizeButtons;
+        PlayButtonText.fontSize = 60;
+        ExitButtonText.fontSize = 60;
+        ColorBlindText.fontSize = 60;
+        BlurredVisionText.fontSize = 60;
+        NormalVisionText.fontSize = 60;
+        BackButtonText.fontSize = 60;
+        PlayButtonTextBlurredVision.fontSize = 60;
+        BackButtonTextBlurredVision.fontSize = 60;
+        GameAttack.fontSize = 40;
+        GameDefense.fontSize = 40;
+        GameHealth.fontSize = 10;
     }
 
     public void TextSizeButtons(float fontSize)
