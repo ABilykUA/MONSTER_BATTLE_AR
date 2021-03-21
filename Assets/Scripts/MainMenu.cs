@@ -22,7 +22,6 @@ public class MainMenu : MonoBehaviour
 
     public static float fontSizeTitles;
     public static float fontSizeButtons;
-    public static bool Scaled=false;
 
 
     public void TextSizeTitles(float fontSize)
@@ -34,28 +33,19 @@ public class MainMenu : MonoBehaviour
     }
     void Update()
     {
-        if (Scaled == false)
-        {
-            scaleTutorial.fontSize = fontSizeTitles;
-            DisabilityTitle.fontSize = fontSizeTitles;
-            PlayButtonText.fontSize = fontSizeButtons;
-            ExitButtonText.fontSize = fontSizeButtons;
-            ColorBlindText.fontSize = fontSizeButtons;
-            BlurredVisionText.fontSize = fontSizeButtons;
-            NormalVisionText.fontSize = fontSizeButtons;
-            BackButtonText.fontSize = fontSizeButtons;
-            PlayButtonTextBlurredVision.fontSize = fontSizeButtons;
-            BackButtonTextBlurredVision.fontSize = fontSizeButtons;
-        }
-        else
-        {
-            PlayButtonText.fontSize = fontSizeButtons-10;
-            ExitButtonText.fontSize = fontSizeButtons-10;
-            ColorBlindText.fontSize = fontSizeButtons-10;
-            BackButtonText.fontSize = fontSizeButtons+50;
-            PlayButtonTextBlurredVision.fontSize = fontSizeButtons+50;
-            BackButtonTextBlurredVision.fontSize = fontSizeButtons+50;
-        }
+        
+        scaleTutorial.fontSize = fontSizeTitles;
+        DisabilityTitle.fontSize = fontSizeTitles;
+        PlayButtonText.fontSize = fontSizeButtons;
+        ExitButtonText.fontSize = fontSizeButtons;
+        ColorBlindText.fontSize = fontSizeButtons;
+        BlurredVisionText.fontSize = fontSizeButtons;
+        NormalVisionText.fontSize = fontSizeButtons;
+        BackButtonText.fontSize = fontSizeButtons;
+        PlayButtonTextBlurredVision.fontSize = fontSizeButtons;
+        BackButtonTextBlurredVision.fontSize = fontSizeButtons;
+        
+        
     }
     void Start()
     {
@@ -89,7 +79,6 @@ public class MainMenu : MonoBehaviour
         BackButtonTextBlurredVision.fontSize = fontSizeButtons;
     }
     public void PlayGame() {
-        Scaled = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         
     }
