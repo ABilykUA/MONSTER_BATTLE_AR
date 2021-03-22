@@ -12,6 +12,7 @@ public class LevelScript : MonoBehaviour
     public GameObject UI;
 
     public GameObject VictoryRoyal;
+    public GameObject SettingsScreen;
 
     public GameObject DefeatUI;
 
@@ -464,5 +465,9 @@ public class LevelScript : MonoBehaviour
         }
         UpdateUI(SIMP, GG);
     }
+
+
+
+   
 }
 
