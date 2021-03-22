@@ -12,6 +12,7 @@ public class LevelScript : MonoBehaviour
     public GameObject UI;
 
     public GameObject VictoryRoyal;
+    public GameObject SettingsScreen;
 
     public GameObject DefeatUI;
 
@@ -77,6 +78,8 @@ public class LevelScript : MonoBehaviour
 
     private int GainDefence = 0;
 
+    private string TypeMe;
+
     private int Level = 1;
 
     //for switch
@@ -105,9 +108,9 @@ public class LevelScript : MonoBehaviour
     private void UpdateUI(Entity SIMP, Entity GG) {
 
         //player
-        mHealth.SetText("Health: " + GG.Health + "/" + MaxPlayer);
-        mDefense.SetText("Defense: " + GG.Defense);
-        mAttack.SetText("Attack: " + GG.Attack);
+        mHealth.SetText(GG.Health + "/" + MaxPlayer);
+        mDefense.SetText(""+GG.Defense);
+        mAttack.SetText(""+GG.Attack);
 
         //enely
         EnemyHealth.SetText("Health: " + SIMP.Health + "/" + MaxEnemy);
@@ -248,7 +251,7 @@ public class LevelScript : MonoBehaviour
         {
             //Immunity
             case 1:
-                // Add a poo up
+                // Add a pop up
                 return 0;
 
             //Deals Damage
@@ -266,7 +269,23 @@ public class LevelScript : MonoBehaviour
     //generates stats on the first frame 
     private void GenerateStats() {
         //whatever type you get for enemy or you you get the same type of ability
-        string TypeMe = Type[Random.Range(0, Type.Length)];
+        TypeMe = Type[Random.Range(0, Type.Length - 1)];
+        int A = Random.Range(50, 71);
+        int D = Random.Range(20, 41);
+        int H = Random.Range(300, 401);
+        for (int i = 0; i < abilities.Length; i++)
+        {
+            if (abilities[i].type == TypeMe)
+            {
+                GG = new Entity(H, D, A, TypeMe, abilities[i]);
+            }
+        }
+        //set MaxHealth
+        MaxPlayer = GG.Health;
+
+    }
+    private void GenerateEnemyStats()
+    {
         string TypeEnemy = Type[Random.Range(0, Type.Length)];
         for (int i = 0; i < 6; i++)
         {
@@ -282,42 +301,38 @@ public class LevelScript : MonoBehaviour
         int A = Random.Range(50, 71);
         int D = Random.Range(20, 41);
         int H = Random.Range(300, 401);
-
-
         for (int i = 0; i < abilities.Length; i++)
         {
-            if (abilities[i].type == TypeMe)
-            {
-                GG = new Entity(H, D, A, TypeMe, abilities[i]);
-            }
             if (abilities[i].type == TypeEnemy)
             {
                 SIMP = new Entity(H, D, A, TypeEnemy, abilities[i]);
             }
         }
-
-        //set MaxHealth
-        MaxPlayer = GG.Health;
         MaxEnemy = SIMP.Health;
-
     }
-    //adds stats when 
 
-    //checks if new ability exists in players' inventory
-    private bool ifExists(Abilities newAbility)
-    {
-        for (int i = 0; i < GG.abilities.Length; i++)
+        //adds stats when 
+
+        //checks if new ability exists in players' inventory
+        private bool ifExists(Abilities newAbility)
         {
-            if (GG.abilities[i].name == newAbility.name)
-            {
-                return true;
-            }
-        }
+        //for (int i = 0; i < GG.abilities.Length; i++)
+        //{
+        //    Debug.Log(GG.abilities[i].name + " " + newAbility.name);
+        //    //GG.GetAbilities(i);
+        //    if (GG.abilities[i].name == newAbility.name)
+        //    {
+
+        //        return true;
+        //    }
+        //}
+        Debug.Log("False??");
         return false;
-    }
+        }
     private void AddStats() {
 
         Level++;
+        mTitle.SetText(Level.ToString());
 
         GainAttack = Random.Range(20, 31);
 
@@ -325,32 +340,47 @@ public class LevelScript : MonoBehaviour
 
         GaindHealth = Random.Range(70, 101);
 
+        GG.Health = MaxPlayer;
 
         GG.Attack += GainAttack;
         GG.Defense += GainDefence;
         GG.Health += GaindHealth;
 
-        //give ability every time level is 2,4 or 6
-        if (Level == 2 || Level == 4 || Level == 6)
-        {
-            //chooses random new ability
+        MaxPlayer = GG.Health;
 
+            //chooses random new ability
+            
             for (int i = 0; i < abilities.Length; i++)
             {
-                bool maxCapacity = true;
-                newAbility = abilities[Random.Range(0, abilities.Length)];
-                if (ifExists(newAbility) == false)
+            Debug.Log(abilities.Length);
+            string maxCapacity = "No";
+            newAbility = abilities[Random.Range(0, abilities.Length - 1)];
+            Debug.Log(newAbility.name);
+                if (newAbility.name != GG.abilities[0].name && newAbility.name != GG.abilities[1].name && newAbility.name != GG.abilities[2].name)
                 {
-                    for (int j = 0; j < GG.abilities.Length; j++)
+                Debug.Log("If exists");
+                for (int j = 0; j < GG.abilities.Length; j++)
                     {
-                        if (GG.abilities[j].name == null)
+                        if (GG.abilities[j] == null)
                         {
                             GG.abilities[j] = newAbility;
-                            maxCapacity = false;
+                            if (j == 1)
+                            {
+                            Debug.Log("Activate new button");
+                                Button2.SetActive(true);
+                                GG.SetAbilities(newAbility, 1);
+                            }
+                            else
+                            {
+                            Debug.Log("Activate new button 2");
+                            Button3.SetActive(true);
+                                GG.SetAbilities(newAbility, 2);
+                            }
                         }
+                        maxCapacity = "Yes";
                     }
 
-                    if (maxCapacity == true)
+                    if (maxCapacity == "Yes")
                     {
                         //TODO needs to get the new window where the player chooses which ability to replace!!!
                         break;
@@ -359,9 +389,8 @@ public class LevelScript : MonoBehaviour
 
             }
 
-        }
 
-        mTitle.SetText(Level.ToString());
+        
     }
     private void WinOrLoseCheck() {
 
@@ -373,6 +402,8 @@ public class LevelScript : MonoBehaviour
             Skely.SetBool("IsDead", true);
             
             SwitchCounter = 4;
+
+            AddStats();
         }
 
         if (GG.Health <= 0)
@@ -398,13 +429,11 @@ public class LevelScript : MonoBehaviour
 
     public void NextLevel(){
 
-
-    
-
-
-
-
-
+        
+        SwitchCounter = 1;
+        VictoryRoyal.SetActive(false);
+        GenerateEnemyStats();
+        GG.Health = MaxPlayer;
     }
 
 
@@ -420,14 +449,15 @@ public class LevelScript : MonoBehaviour
                 GenerateAbilities();
 
                 GenerateStats();
+                GenerateEnemyStats();
             }
 
     void Update()
     {
 
-        UpdateUI(SIMP, GG);
-        
 
+
+        UpdateUI(SIMP, GG);
         switch (SwitchCounter)
         {
 
@@ -442,7 +472,6 @@ public class LevelScript : MonoBehaviour
                 //simp turn
                 WinOrLoseCheck();
                 //change to false test
-
                 UI.SetActive(false);
                 EnemyAttacking();
                 break;
@@ -462,8 +491,7 @@ public class LevelScript : MonoBehaviour
 
                 //win
 
-               
-                AddStats();
+                
                 UI.SetActive(false);
                 VictoryRoyal.SetActive(true);
                 SwitchCounter = 5;
@@ -475,6 +503,11 @@ public class LevelScript : MonoBehaviour
 
 
         }
+        
     }
+
+
+
+   
 }
 
