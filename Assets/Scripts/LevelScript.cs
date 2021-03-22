@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
 
 public class LevelScript : MonoBehaviour
@@ -13,6 +14,13 @@ public class LevelScript : MonoBehaviour
     public GameObject VictoryRoyal;
 
     public GameObject DefeatUI;
+
+
+    public GameObject Button1;
+    public GameObject Button2;
+    public GameObject Button3;
+
+
 
     public TextMeshPro EnemyHealth;
     public TextMeshPro EnemyType;
@@ -47,7 +55,7 @@ public class LevelScript : MonoBehaviour
 
 
     //All Abilities
-    private Abilities[] abilities = { null, null, null };
+    private Abilities[] abilities = { null, null, null, null, null,null };
 
     private Abilities newAbility = new Abilities(0, " ", 0, 0, " ");
 
@@ -86,7 +94,6 @@ public class LevelScript : MonoBehaviour
         abilities[0] = new Abilities(50, "Fire", 0, 10, "Fire blast");
         abilities[1] = new Abilities(40, "Water", 0, 15, "Water blast");
         abilities[2] = new Abilities(25, "Grass", 50, 10, "Grass blast");
-        abilities[2] = new Abilities(25, "Grass", 10, 10, "Grass blast");
         abilities[3] = new Abilities(20, "Fire", 5, 10, "Flame Wheel");
         abilities[4] = new Abilities(60, "Water", 15, 8, "Tsunami");
         abilities[5] = new Abilities(50, "Grass", 0, 10, "Branch slam");
@@ -208,7 +215,6 @@ public class LevelScript : MonoBehaviour
 
     }
 
-
     private int EntityIsHit(int damageType, Abilities ability) {
 
         switch (damageType)
@@ -230,6 +236,7 @@ public class LevelScript : MonoBehaviour
 
         }
     }
+   
     //generates stats on the first frame 
     private void GenerateStats() {
         //whatever type you get for enemy or you you get the same type of ability
@@ -345,8 +352,30 @@ public class LevelScript : MonoBehaviour
 
     }
 
+    public void BacktoMain()
+    {
+        SceneManager.LoadScene(0);
+    }
 
-    public void NextLevel(){}
+
+    public void ExitGame()
+    {
+        Application.Quit();
+
+    }
+
+
+
+    public void NextLevel(){
+
+
+    
+
+
+
+
+
+    }
 
 
 
@@ -393,7 +422,6 @@ public class LevelScript : MonoBehaviour
 
 
                 DefeatUI.SetActive(true);
-
                 UI.SetActive(false);
                 break;
 
