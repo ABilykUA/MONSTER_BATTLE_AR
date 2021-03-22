@@ -1008,9 +1008,6 @@ MonoBehaviour:
   BackButtonText: {fileID: 0}
   PlayButtonTextBlurredVision: {fileID: 0}
   BackButtonTextBlurredVision: {fileID: 0}
-  GameAttack: {fileID: 0}
-  GameDefense: {fileID: 0}
-  GameHealth: {fileID: 0}
 --- !u!1 &566111994
 GameObject:
   m_ObjectHideFlags: 0
@@ -2256,9 +2253,6 @@ MonoBehaviour:
   BackButtonText: {fileID: 0}
   PlayButtonTextBlurredVision: {fileID: 0}
   BackButtonTextBlurredVision: {fileID: 0}
-  GameAttack: {fileID: 0}
-  GameDefense: {fileID: 0}
-  GameHealth: {fileID: 0}
 --- !u!1 &1516433096
 GameObject:
   m_ObjectHideFlags: 0
@@ -3874,9 +3868,6 @@ MonoBehaviour:
   BackButtonText: {fileID: 0}
   PlayButtonTextBlurredVision: {fileID: 0}
   BackButtonTextBlurredVision: {fileID: 0}
-  GameAttack: {fileID: 0}
-  GameDefense: {fileID: 0}
-  GameHealth: {fileID: 0}
 --- !u!114 &1984044697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4131,9 +4122,6 @@ MonoBehaviour:
   BackButtonText: {fileID: 0}
   PlayButtonTextBlurredVision: {fileID: 0}
   BackButtonTextBlurredVision: {fileID: 0}
-  GameAttack: {fileID: 0}
-  GameDefense: {fileID: 0}
-  GameHealth: {fileID: 0}
 --- !u!1 &2054297020
 GameObject:
   m_ObjectHideFlags: 0
