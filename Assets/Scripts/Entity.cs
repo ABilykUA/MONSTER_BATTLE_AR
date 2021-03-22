@@ -18,6 +18,8 @@ public class Entity : Object{
         this.Health = H;
         this.Type = T; 
         this.abilities[0] = Abilities;
+        this.abilities[1] = null;
+        this.abilities[2] = null;
     }
 
     public void Hit(int value)

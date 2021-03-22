@@ -242,7 +242,7 @@ public class LevelScript : MonoBehaviour
     //generates stats on the first frame 
     private void GenerateStats() {
         //whatever type you get for enemy or you you get the same type of ability
-        TypeMe = Type[Random.Range(0, Type.Length)];
+        TypeMe = Type[Random.Range(0, Type.Length - 1)];
         int A = Random.Range(50, 71);
         int D = Random.Range(20, 41);
         int H = Random.Range(300, 401);
@@ -288,19 +288,24 @@ public class LevelScript : MonoBehaviour
 
         //checks if new ability exists in players' inventory
         private bool ifExists(Abilities newAbility)
-    {
-        for (int i = 0; i < GG.abilities.Length; i++)
         {
-            if (GG.abilities[i].name == newAbility.name)
-            {
-                return true;
-            }
-        }
+        //for (int i = 0; i < GG.abilities.Length; i++)
+        //{
+        //    Debug.Log(GG.abilities[i].name + " " + newAbility.name);
+        //    //GG.GetAbilities(i);
+        //    if (GG.abilities[i].name == newAbility.name)
+        //    {
+
+        //        return true;
+        //    }
+        //}
+        Debug.Log("False??");
         return false;
-    }
+        }
     private void AddStats() {
 
         Level++;
+        mTitle.SetText(Level.ToString());
 
         GainAttack = Random.Range(20, 31);
 
@@ -316,37 +321,39 @@ public class LevelScript : MonoBehaviour
 
         MaxPlayer = GG.Health;
 
-        //give ability every time level is 2,4 or 6
-        if (Level == 2 || Level == 4 || Level == 6)
-        {
             //chooses random new ability
-
+            
             for (int i = 0; i < abilities.Length; i++)
             {
-                bool maxCapacity = true;
-                newAbility = abilities[Random.Range(0, abilities.Length)];
-                if (ifExists(newAbility) == false)
+            Debug.Log(abilities.Length);
+            string maxCapacity = "No";
+            newAbility = abilities[Random.Range(0, abilities.Length - 1)];
+            Debug.Log(newAbility.name);
+                if (newAbility.name != GG.abilities[0].name && newAbility.name != GG.abilities[1].name && newAbility.name != GG.abilities[2].name)
                 {
-                    for (int j = 0; j < GG.abilities.Length; j++)
+                Debug.Log("If exists");
+                for (int j = 0; j < GG.abilities.Length; j++)
                     {
-                        if (GG.abilities[j].name == null)
+                        if (GG.abilities[j] == null)
                         {
                             GG.abilities[j] = newAbility;
                             if (j == 1)
                             {
+                            Debug.Log("Activate new button");
                                 Button2.SetActive(true);
                                 GG.SetAbilities(newAbility, 1);
                             }
                             else
                             {
-                                Button3.SetActive(true);
+                            Debug.Log("Activate new button 2");
+                            Button3.SetActive(true);
                                 GG.SetAbilities(newAbility, 2);
                             }
-                            maxCapacity = false;
                         }
+                        maxCapacity = "Yes";
                     }
 
-                    if (maxCapacity == true)
+                    if (maxCapacity == "Yes")
                     {
                         //TODO needs to get the new window where the player chooses which ability to replace!!!
                         break;
@@ -355,9 +362,8 @@ public class LevelScript : MonoBehaviour
 
             }
 
-        }
 
-        mTitle.SetText(Level.ToString());
+        
     }
     private void WinOrLoseCheck() {
 
@@ -365,6 +371,7 @@ public class LevelScript : MonoBehaviour
 
         if (SIMP.Health <= 0) {
             SwitchCounter = 4;
+
             AddStats();
         }
 
@@ -415,9 +422,9 @@ public class LevelScript : MonoBehaviour
     void Update()
     {
 
-        
-        
 
+
+        UpdateUI(SIMP, GG);
         switch (SwitchCounter)
         {
 
@@ -463,7 +470,7 @@ public class LevelScript : MonoBehaviour
 
 
         }
-        UpdateUI(SIMP, GG);
+        
     }
 
 
