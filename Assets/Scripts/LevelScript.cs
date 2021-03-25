@@ -351,45 +351,49 @@ public class LevelScript : MonoBehaviour
             
             for (int i = 0; i < abilities.Length; i++)
             {
-            Debug.Log(abilities.Length);
+            
             string maxCapacity = "No";
+            bool added = false;
             newAbility = abilities[Random.Range(0, abilities.Length - 1)];
             Debug.Log(newAbility.name);
                 if (newAbility.name != GG.abilities[0].name && newAbility.name != GG.abilities[1].name && newAbility.name != GG.abilities[2].name)
                 {
                 Debug.Log("If exists");
-                for (int j = 0; j < GG.abilities.Length; j++)
+                    if (GG.abilities[1] == null)
                     {
-                        if (GG.abilities[j] == null)
-                        {
-                            GG.abilities[j] = newAbility;
-                            if (j == 1)
-                            {
-                            Debug.Log("Activate new button");
-                                Button2.SetActive(true);
-                                GG.SetAbilities(newAbility, 1);
-                            }
-                            else
-                            {
-                            Debug.Log("Activate new button 2");
-                            Button3.SetActive(true);
-                                GG.SetAbilities(newAbility, 2);
-                            }
-                        }
-                        maxCapacity = "Yes";
-                    }
-
-                    if (maxCapacity == "Yes")
-                    {
-                        //TODO needs to get the new window where the player chooses which ability to replace!!!
+                        GG.abilities[1] = newAbility;
+                        Debug.Log("Activate new button 1");
+                        Button2.SetActive(true);
+                        GG.SetAbilities(newAbility, 1);
+                        added = true;
                         break;
                     }
+                    else if (GG.abilities[2] == null)
+                    {
+                        Debug.Log("Activate new button 2");
+                        Button3.SetActive(true);
+                        GG.SetAbilities(newAbility, 2);
+                        added = true;
+                        break;
+                    }
+                    else 
+                    { 
+                        maxCapacity = "Yes";
+                    }
+                    
+                
+                if (maxCapacity == "Yes")
+                {
+                    //TODO needs to get the new window where the player chooses which ability to replace!!!
+                    added = true;
+                    
                 }
-
+                }
+            if (added == true)
+            {
+                break;
             }
-
-
-        
+            }
     }
     private void WinOrLoseCheck() {
 
@@ -441,7 +445,8 @@ public class LevelScript : MonoBehaviour
 
 
     private void Start()
-            {
+    {
+            Debug.Log(abilities[0].name + " " + abilities[1].name + " " + abilities[2].name);            
 
                 Skely = ObjrctSkely.GetComponent<Animator>();
 
@@ -451,11 +456,12 @@ public class LevelScript : MonoBehaviour
 
                 GenerateStats();
                 GenerateEnemyStats();
-            }
+        
+    }
 
     void Update()
     {
-
+        
 
 
         UpdateUI(SIMP, GG);

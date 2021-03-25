@@ -41,9 +41,7 @@ public class Settings : MonoBehaviour
         AttackNum.fontSize = fontSizeTitles - 10;
         DefenseNum.fontSize = fontSizeTitles - 10;
         HealthNum.fontSize = fontSizeTitles - 10;
-        Ability1.fontSize = fontSizeTitles - 10;
-        Ability2.fontSize = fontSizeTitles - 10;
-        Ability3.fontSize = fontSizeTitles - 10;
+        
     }
     void Update()
     {
@@ -90,5 +88,8 @@ public class Settings : MonoBehaviour
         BackButtonText.fontSize = fontSizeButtons;
         PlayButtonTextBlurredVision.fontSize = fontSizeButtons;
         BackButtonTextBlurredVision.fontSize = fontSizeButtons;
+        Ability1.fontSize = fontSizeTitles - 10;
+        Ability2.fontSize = fontSizeTitles - 10;
+        Ability3.fontSize = fontSizeTitles - 10;
     }
 }
