@@ -52,7 +52,10 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI AName;
     public TextMeshProUGUI AUses;
 
+    //animations 
 
+    public GameObject ObjrctSkely;
+    private Animator Skely;
 
 
     //All Abilities
@@ -76,7 +79,6 @@ public class LevelScript : MonoBehaviour
     private int GainDefence = 0;
 
     private string TypeMe;
-
 
     private int Level = 1;
 
@@ -142,30 +144,44 @@ public class LevelScript : MonoBehaviour
     public void AttackSlot1()
     {
 
-        Debug.Log("test");
+        Skely.SetBool("IsDamage", true);
 
         Attacking(GG.abilities[0]);
+
+        Skely.SetBool("BackToIdle", true);
+
+        
+
     }
     public void AttackSlot2()
     {
-        Debug.Log("test");
+     
 
         Attacking(GG.abilities[1]);
+
+      
     }
     public void AttackSlot3()
     {
 
-        Debug.Log("test");
+
 
         Attacking(GG.abilities[2]);
+
+   
     }
 
     private void Attacking(Abilities ability)
     {
+        //animations
+
+        Skely.SetBool("IsDamage", false);
+
 
         if (SIMP.Type == ability.type)
         {
             SIMP.Hit(EntityIsHit(1, ability));
+            
         }
         else
         {
@@ -185,12 +201,19 @@ public class LevelScript : MonoBehaviour
                 }
             }
         }
+
+
         SwitchCounter = 2;
 
     }
 
     private void EnemyAttacking()
     {
+
+
+        //animations
+    
+
         Abilities temp = SIMP.GetAbilities(0);
         if (GG.Type == temp.type)
         {
@@ -213,6 +236,10 @@ public class LevelScript : MonoBehaviour
                 }
             }
         }
+
+
+   
+
         SwitchCounter = 1;
 
     }
@@ -374,6 +401,10 @@ public class LevelScript : MonoBehaviour
         //if health of the entity is lower than 0 switch state
 
         if (SIMP.Health <= 0) {
+
+            //Add death animation
+            Skely.SetBool("IsDead", true);
+            
             SwitchCounter = 4;
 
             AddStats();
@@ -414,7 +445,10 @@ public class LevelScript : MonoBehaviour
 
     private void Start()
     {
-            Debug.Log(abilities[0].name + " " + abilities[1].name + " " + abilities[2].name);
+            Debug.Log(abilities[0].name + " " + abilities[1].name + " " + abilities[2].name);            
+
+                Skely = ObjrctSkely.GetComponent<Animator>();
+
                 mTitle.SetText(Level.ToString());
 
                 GenerateAbilities();
