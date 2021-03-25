@@ -22,6 +22,12 @@ public class LevelScript : MonoBehaviour
     public GameObject Button3;
 
 
+    public GameObject replaceAbilityButton;
+    public GameObject replaceAbility1;
+    public GameObject replaceAbility2;
+    public GameObject replaceAbility3;
+
+
 
     public TextMeshPro EnemyHealth;
     public TextMeshPro EnemyType;
@@ -55,7 +61,9 @@ public class LevelScript : MonoBehaviour
     //animations 
 
     public GameObject ObjrctSkely;
+    public GameObject Player;
     private Animator Skely;
+    private Animator SkelyPlayer;
 
 
     //All Abilities
@@ -170,6 +178,8 @@ public class LevelScript : MonoBehaviour
     {
         //animations
 
+        SkelyPlayer.SetTrigger("Attack");
+        
         Skely.SetTrigger("IsDamage");
 
         if (SIMP.Type == ability.type)
@@ -200,9 +210,6 @@ public class LevelScript : MonoBehaviour
         SwitchCounter = 2;
 
 
-       
-
-
     }
 
     private void EnemyAttacking()
@@ -210,7 +217,11 @@ public class LevelScript : MonoBehaviour
 
 
         //animations
-    
+        SkelyPlayer.SetTrigger("Damage");
+
+        Skely.SetTrigger("IaAttack");
+        
+
 
         Abilities temp = SIMP.GetAbilities(0);
         if (GG.Type == temp.type)
@@ -411,6 +422,8 @@ public class LevelScript : MonoBehaviour
 
         if (GG.Health <= 0)
         {
+            SkelyPlayer.SetBool("IsDead", true);
+
             SwitchCounter = 3;
         }
 
@@ -438,19 +451,26 @@ public class LevelScript : MonoBehaviour
         GenerateEnemyStats();
         GG.Health = MaxPlayer;
         Skely.SetBool("IsDead", false);
+        
+    }
 
+    public void ReplaceAbility()
+    {
+    
     }
 
 
 
-
-    private void Start()
+        private void Start()
     {
                         
 
                 Skely = ObjrctSkely.GetComponent<Animator>();
 
-                mTitle.SetText(Level.ToString());
+                SkelyPlayer = Player.GetComponent<Animator>();
+
+
+        mTitle.SetText(Level.ToString());
 
                 GenerateAbilities();
 
