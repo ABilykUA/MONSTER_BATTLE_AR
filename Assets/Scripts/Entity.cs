@@ -11,13 +11,16 @@ public class Entity : Object{
     public Abilities[] abilities = new Abilities[3];
 
 
-    public Entity(int H, int D, int A, string T, Abilities Abilities) {
+    public Entity(int H, int D, int A, string T, Abilities Abilities, Abilities emptyA) {
 
         this.Attack = A;
         this.Defense = D;
         this.Health = H;
         this.Type = T; 
         this.abilities[0] = Abilities;
+        this.abilities[1] = emptyA;
+        this.abilities[2] = emptyA;
+
     }
 
     public void Hit(int value)
