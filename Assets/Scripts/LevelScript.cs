@@ -456,7 +456,6 @@ public class LevelScript : MonoBehaviour
 
                 GenerateStats();
                 GenerateEnemyStats();
-        Debug.Log(GG.abilities[0].name + " " + GG.abilities[1].name + " " + GG.abilities[2].name);
 
     }
 
