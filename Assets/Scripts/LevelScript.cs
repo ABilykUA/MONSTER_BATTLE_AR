@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -69,6 +70,8 @@ public class LevelScript : MonoBehaviour
     //All Abilities
     private Abilities[] abilities = { null, null, null, null, null,null };
 
+    private Abilities EmptyAbility = new Abilities(0, " ", 0, 0, " ");
+
     private Abilities newAbility = new Abilities(0, " ", 0, 0, " ");
 
     private string[] Type = { "Water", "Grass", "Fire" };
@@ -105,7 +108,7 @@ public class LevelScript : MonoBehaviour
     {
         abilities[0] = new Abilities(50, "Fire", 0, 10, "Fire blast");
         abilities[1] = new Abilities(40, "Water", 0, 15, "Water blast");
-        abilities[2] = new Abilities(25, "Grass", 50, 10, "Grass blast");
+        abilities[2] = new Abilities(25, "Grass", 10, 10, "Grass blast");
         abilities[3] = new Abilities(20, "Fire", 5, 10, "Flame Wheel");
         abilities[4] = new Abilities(60, "Water", 15, 8, "Tsunami");
         abilities[5] = new Abilities(50, "Grass", 0, 10, "Branch slam");
@@ -286,7 +289,7 @@ public class LevelScript : MonoBehaviour
         {
             if (abilities[i].type == TypeMe)
             {
-                GG = new Entity(H, D, A, TypeMe, abilities[i]);
+                GG = new Entity(H, D, A, TypeMe, abilities[i], EmptyAbility);
                 break;
             }
         }
@@ -315,7 +318,7 @@ public class LevelScript : MonoBehaviour
         {
             if (abilities[i].type == TypeEnemy)
             {
-                SIMP = new Entity(H, D, A, TypeEnemy, abilities[i]);
+                SIMP = new Entity(H, D, A, TypeEnemy, abilities[i], EmptyAbility);
             }
         }
         MaxEnemy = SIMP.Health;
@@ -359,33 +362,34 @@ public class LevelScript : MonoBehaviour
         MaxPlayer = GG.Health;
 
             //chooses random new ability
-            
+            bool added = false;
+            string maxCapacity = "No";
             for (int i = 0; i < abilities.Length; i++)
             {
-            
-            string maxCapacity = "No";
-            bool added = false;
+
             newAbility = abilities[Random.Range(0, abilities.Length - 1)];
             Debug.Log(newAbility.name);
-                if (newAbility.name != GG.abilities[0].name && newAbility.name != GG.abilities[1].name && newAbility.name != GG.abilities[2].name)
+                if (newAbility.name != GG.abilities[0].name 
+                && newAbility.name != GG.abilities[1].name 
+                && newAbility.name != GG.abilities[2].name)
                 {
                 Debug.Log("If exists");
-                    if (GG.abilities[1] == null)
+                    if (GG.abilities[1].name == " ")
                     {
                         GG.abilities[1] = newAbility;
                         Debug.Log("Activate new button 1");
                         Button2.SetActive(true);
                         GG.SetAbilities(newAbility, 1);
                         added = true;
-                        break;
+                        
                     }
-                    else if (GG.abilities[2] == null)
+                    else if (GG.abilities[2].name == " " && added != true)
                     {
                         Debug.Log("Activate new button 2");
                         Button3.SetActive(true);
                         GG.SetAbilities(newAbility, 2);
                         added = true;
-                        break;
+                        
                     }
                     else 
                     { 
@@ -416,8 +420,8 @@ public class LevelScript : MonoBehaviour
             Skely.SetBool("IsDead", true);
             
             SwitchCounter = 4;
-
-            AddStats();
+            Debug.Log("Won 11");
+            
         }
 
         if (GG.Health <= 0)
@@ -517,8 +521,8 @@ public class LevelScript : MonoBehaviour
             case 4:
 
                 //win
-
-                
+                AddStats();
+                Debug.Log("Won");
                 UI.SetActive(false);
                 VictoryRoyal.SetActive(true);
                 SwitchCounter = 5;
