@@ -3461,15 +3461,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UI: {fileID: 302385161}
   VictoryRoyal: {fileID: 1674408012}
+  SettingsScreen: {fileID: 0}
   DefeatUI: {fileID: 827482625}
   Button1: {fileID: 1876259691}
   Button2: {fileID: 155000549}
   Button3: {fileID: 1765140903}
   EnemyHealth: {fileID: 1457110906}
   EnemyType: {fileID: 1629152128}
-  mHealth: {fileID: 1841207943}
-  mAttack: {fileID: 692808031}
-  mDefense: {fileID: 1377556730}
+  mHealth: {fileID: 528855314}
+  mAttack: {fileID: 307551437}
+  mDefense: {fileID: 767859757}
   mTitle: {fileID: 1353301984}
   LmLevel: {fileID: 171451033}
   LmHealth: {fileID: 1542026793}
