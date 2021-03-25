@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -194,7 +194,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.51600003, y: 0.31672144}
   m_AnchorMax: {x: 0.51600003, y: 0.31672144}
-  m_AnchoredPosition: {x: -17.335, y: 1.3999939}
+  m_AnchoredPosition: {x: -17.335, y: 1.4000244}
   m_SizeDelta: {x: 1086.322, y: 304.19913}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &27583710
@@ -1691,7 +1691,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &215079157
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2618,7 +2618,7 @@ GameObject:
   - component: {fileID: 296354639}
   - component: {fileID: 296354638}
   m_Layer: 5
-  m_Name: 'slot 2 '
+  m_Name: Ability 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2688,8 +2688,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1140599407}
-        m_MethodName: AttackSlot2
-        m_Mode: 1
+        m_MethodName: ReplaceAbility
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 708279375}
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2752,7 +2763,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &302385162
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5122,7 +5133,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &708279376
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5572,7 +5583,7 @@ GameObject:
   - component: {fileID: 806213843}
   - component: {fileID: 806213842}
   m_Layer: 5
-  m_Name: Slot 1
+  m_Name: Ability 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5642,8 +5653,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1140599407}
-        m_MethodName: AttackSlot1
-        m_Mode: 1
+        m_MethodName: ReplaceAbility
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 708279375}
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5724,7 +5746,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.8196908}
   m_AnchorMax: {x: 0.5, y: 0.8196908}
-  m_AnchoredPosition: {x: 0.0007472, y: 5.790222}
+  m_AnchoredPosition: {x: 0.0007472, y: 5.790283}
   m_SizeDelta: {x: 1086.2336, y: 159.8924}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &827482625
@@ -6342,10 +6364,13 @@ MonoBehaviour:
   Button1: {fileID: 1876259691}
   Button2: {fileID: 155000549}
   Button3: {fileID: 1765140903}
-  replaceAbilityButton: {fileID: 0}
-  replaceAbility1: {fileID: 0}
-  replaceAbility2: {fileID: 0}
-  replaceAbility3: {fileID: 0}
+  replaceAbilityButton: {fileID: 215079156}
+  replaceAbility1: {fileID: 806213840}
+  replaceAbility2: {fileID: 296354636}
+  replaceAbility3: {fileID: 1614470641}
+  replaceAbilityText1: {fileID: 451344532}
+  replaceAbilityText2: {fileID: 387633189}
+  replaceAbilityText3: {fileID: 1394966139}
   EnemyHealth: {fileID: 1457110906}
   EnemyType: {fileID: 1629152128}
   mHealth: {fileID: 528855314}
@@ -6359,6 +6384,9 @@ MonoBehaviour:
   WHealth: {fileID: 1303928987}
   WAttack: {fileID: 832286933}
   WDefense: {fileID: 48597011}
+  Ability1: {fileID: 189875115}
+  Ability2: {fileID: 1866117745}
+  Ability3: {fileID: 198021448}
   AHeal: {fileID: 1286062307}
   ADamage: {fileID: 1739339196}
   AType: {fileID: 1906563527}
@@ -6382,7 +6410,6 @@ MonoBehaviour:
   DisabilityTitle: {fileID: 1554430968}
   ColorBlindText: {fileID: 639707676}
   BlurredVisionText: {fileID: 799692374}
-  NormalVisionText: {fileID: 0}
   BackButtonText: {fileID: 2066994919}
   PlayButtonTextBlurredVision: {fileID: 2109129245}
   BackButtonTextBlurredVision: {fileID: 1073725214}
@@ -8982,7 +9009,7 @@ GameObject:
   - component: {fileID: 1614470644}
   - component: {fileID: 1614470643}
   m_Layer: 5
-  m_Name: 'slot 3 '
+  m_Name: Ability 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9052,14 +9079,25 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1140599407}
-        m_MethodName: AttackSlot3
-        m_Mode: 1
+        m_MethodName: ReplaceAbility
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: Grass
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 708279375}
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Grass
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1614470644
