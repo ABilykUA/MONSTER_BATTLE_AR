@@ -9,7 +9,6 @@ public class Settings : MonoBehaviour
     public TextMeshProUGUI DisabilityTitle;
     public TextMeshProUGUI ColorBlindText;
     public TextMeshProUGUI BlurredVisionText;
-    public TextMeshProUGUI NormalVisionText;
     public TextMeshProUGUI BackButtonText;
     public TextMeshProUGUI PlayButtonTextBlurredVision;
     public TextMeshProUGUI BackButtonTextBlurredVision;
@@ -84,12 +83,11 @@ public class Settings : MonoBehaviour
         
         ColorBlindText.fontSize = fontSizeButtons;
         BlurredVisionText.fontSize = fontSizeButtons;
-        NormalVisionText.fontSize = fontSizeButtons;
         BackButtonText.fontSize = fontSizeButtons;
         PlayButtonTextBlurredVision.fontSize = fontSizeButtons;
         BackButtonTextBlurredVision.fontSize = fontSizeButtons;
-        Ability1.fontSize = fontSizeTitles - 10;
-        Ability2.fontSize = fontSizeTitles - 10;
-        Ability3.fontSize = fontSizeTitles - 10;
+        Ability1.fontSize = fontSizeButtons;
+        Ability2.fontSize = fontSizeButtons;
+        Ability3.fontSize = fontSizeButtons;
     }
 }
