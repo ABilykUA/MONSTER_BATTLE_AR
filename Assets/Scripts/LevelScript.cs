@@ -143,14 +143,10 @@ public class LevelScript : MonoBehaviour
     public void AttackSlot1()
     {
 
-        Skely.SetBool("IsDamage", true);
-
+    
         Attacking(GG.abilities[0]);
 
-        Skely.SetBool("BackToIdle", true);
-
-        
-
+ 
     }
     public void AttackSlot2()
     {
@@ -174,8 +170,7 @@ public class LevelScript : MonoBehaviour
     {
         //animations
 
-        Skely.SetBool("IsDamage", false);
-
+        Skely.SetTrigger("IsDamage");
 
         if (SIMP.Type == ability.type)
         {
@@ -203,6 +198,10 @@ public class LevelScript : MonoBehaviour
 
 
         SwitchCounter = 2;
+
+
+       
+
 
     }
 
@@ -438,6 +437,8 @@ public class LevelScript : MonoBehaviour
         VictoryRoyal.SetActive(false);
         GenerateEnemyStats();
         GG.Health = MaxPlayer;
+        Skely.SetBool("IsDead", false);
+
     }
 
 
@@ -502,6 +503,7 @@ public class LevelScript : MonoBehaviour
                 UI.SetActive(false);
                 VictoryRoyal.SetActive(true);
                 SwitchCounter = 5;
+                
                 break;
 
 
