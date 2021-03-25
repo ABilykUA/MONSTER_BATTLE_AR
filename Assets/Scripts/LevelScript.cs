@@ -106,7 +106,6 @@ public class LevelScript : MonoBehaviour
 
 
     private void UpdateUI(Entity SIMP, Entity GG) {
-
         //player
         mHealth.SetText(GG.Health + "/" + MaxPlayer);
         mDefense.SetText(""+GG.Defense);
@@ -278,6 +277,7 @@ public class LevelScript : MonoBehaviour
             if (abilities[i].type == TypeMe)
             {
                 GG = new Entity(H, D, A, TypeMe, abilities[i]);
+                break;
             }
         }
         //set MaxHealth
@@ -445,7 +445,7 @@ public class LevelScript : MonoBehaviour
 
     private void Start()
     {
-            Debug.Log(abilities[0].name + " " + abilities[1].name + " " + abilities[2].name);            
+                        
 
                 Skely = ObjrctSkely.GetComponent<Animator>();
 
@@ -455,7 +455,8 @@ public class LevelScript : MonoBehaviour
 
                 GenerateStats();
                 GenerateEnemyStats();
-        
+        Debug.Log(GG.abilities[0].name + " " + GG.abilities[1].name + " " + GG.abilities[2].name);
+
     }
 
     void Update()

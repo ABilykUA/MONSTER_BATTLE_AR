@@ -4873,7 +4873,7 @@ MonoBehaviour:
   mPanleTitle: {fileID: 1879038982}
   mUI: {fileID: 302385161}
   EnemyUI: {fileID: 718373274}
-  ARcam: {fileID: 0}
+  ARcam: {fileID: 1635027483}
 --- !u!4 &1140599406
 Transform:
   m_ObjectHideFlags: 0
@@ -4925,6 +4925,7 @@ MonoBehaviour:
   AType: {fileID: 1906563527}
   AName: {fileID: 112209552}
   AUses: {fileID: 1607400904}
+  ObjrctSkely: {fileID: 589207897}
 --- !u!114 &1140599408
 MonoBehaviour:
   m_ObjectHideFlags: 0
