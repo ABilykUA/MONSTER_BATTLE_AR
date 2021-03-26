@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,7 +23,17 @@ public class LevelScript : MonoBehaviour
     public GameObject Button3;
 
 
+
     public TextMeshPro EnemyGetDamage;
+
+    public GameObject replaceAbilityButton;
+    public GameObject replaceAbility1;
+    public GameObject replaceAbility2;
+    public GameObject replaceAbility3;
+    public TextMeshProUGUI replaceAbilityText1;
+    public TextMeshProUGUI replaceAbilityText2;
+    public TextMeshProUGUI replaceAbilityText3;
+
     public TextMeshPro EnemyHealth;
     public TextMeshPro EnemyType;
 
@@ -30,20 +41,25 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI mHealth;
     public TextMeshProUGUI mAttack;
     public TextMeshProUGUI mDefense;
-    
+
     //Level
     public TextMeshProUGUI mTitle;
 
-    //Lose UI 
+    //Lose UI
     public TextMeshProUGUI LmLevel;
     public TextMeshProUGUI LmHealth;
     public TextMeshProUGUI LmAttack;
     public TextMeshProUGUI LmDefense;
 
-    //Win Ui  
+    //Win Ui
     public TextMeshProUGUI WHealth;
     public TextMeshProUGUI WAttack;
     public TextMeshProUGUI WDefense;
+
+    //AbilityButtonsText
+    public TextMeshProUGUI Ability1;
+    public TextMeshProUGUI Ability2;
+    public TextMeshProUGUI Ability3;
 
     //WinUIAbilitys
     public TextMeshProUGUI AHeal;
@@ -52,16 +68,23 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI AName;
     public TextMeshProUGUI AUses;
 
-    //animations 
-
+    //animations
+    public GameObject Player;
     public GameObject FloatingText;
     public GameObject ObjrctSkely;
+
     private Animator FloatingTxt;
+
+  
+
     private Animator Skely;
+    private Animator SkelyPlayer;
 
 
     //All Abilities
     private Abilities[] abilities = { null, null, null, null, null,null };
+
+    private Abilities EmptyAbility = new Abilities(0, " ", 0, 0, " ");
 
     private Abilities newAbility = new Abilities(0, " ", 0, 0, " ");
 
@@ -73,7 +96,7 @@ public class LevelScript : MonoBehaviour
 
     private int MaxEnemy;
 
-    // gaind during lvl 
+    // gaind during lvl
     private int GaindHealth = 0 ;
 
     private int GainAttack = 0 ;
@@ -99,7 +122,7 @@ public class LevelScript : MonoBehaviour
     {
         abilities[0] = new Abilities(50, "Fire", 0, 10, "Fire blast");
         abilities[1] = new Abilities(40, "Water", 0, 15, "Water blast");
-        abilities[2] = new Abilities(25, "Grass", 50, 10, "Grass blast");
+        abilities[2] = new Abilities(25, "Grass", 10, 10, "Grass blast");
         abilities[3] = new Abilities(20, "Fire", 5, 10, "Flame Wheel");
         abilities[4] = new Abilities(60, "Water", 15, 8, "Tsunami");
         abilities[5] = new Abilities(50, "Grass", 0, 10, "Branch slam");
@@ -120,7 +143,7 @@ public class LevelScript : MonoBehaviour
         //Level
         mTitle.SetText("Level: " + Level);
 
-        //DUI 
+        //DUI
         LmLevel.SetText("You made it to level: " + Level);
         LmHealth.SetText("Health: " + MaxPlayer);
         LmAttack.SetText("Attack: " + GG.Attack);
@@ -130,6 +153,7 @@ public class LevelScript : MonoBehaviour
         WHealth.SetText("Health: +" + GaindHealth);
         WAttack.SetText("Attack: +" + GainAttack);
         WDefense.SetText("Defense: +" + GainDefence);
+
 
         //newAbility
 
@@ -145,18 +169,18 @@ public class LevelScript : MonoBehaviour
     public void AttackSlot1()
     {
 
-        
+
         Attacking(GG.abilities[0]);
 
- 
+
     }
     public void AttackSlot2()
     {
-     
+
 
         Attacking(GG.abilities[1]);
 
-      
+
     }
     public void AttackSlot3()
     {
@@ -165,19 +189,21 @@ public class LevelScript : MonoBehaviour
 
         Attacking(GG.abilities[2]);
 
-   
+
     }
 
     private void Attacking(Abilities ability)
     {
         //animations
 
+        SkelyPlayer.SetTrigger("Attack");
+
         Skely.SetTrigger("IsDamage");
 
         if (SIMP.Type == ability.type)
         {
             SIMP.Hit(EntityIsHit(1, ability));
-            
+
         }
         else
         {
@@ -202,9 +228,6 @@ public class LevelScript : MonoBehaviour
         SwitchCounter = 2;
 
 
-       
-
-
     }
 
     private void EnemyAttacking()
@@ -212,7 +235,11 @@ public class LevelScript : MonoBehaviour
 
 
         //animations
-    
+        SkelyPlayer.SetTrigger("Damage");
+
+        Skely.SetTrigger("IaAttack");
+
+
 
         Abilities temp = SIMP.GetAbilities(0);
         if (GG.Type == temp.type)
@@ -238,7 +265,7 @@ public class LevelScript : MonoBehaviour
         }
 
 
-   
+
 
         SwitchCounter = 1;
 
@@ -257,7 +284,7 @@ public class LevelScript : MonoBehaviour
             //Deals Damage
             case 2:
 
-                
+
                 EnemyGetDamage.SetText("-" + ability.damage);
                 FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
                 return ability.damage;
@@ -270,8 +297,8 @@ public class LevelScript : MonoBehaviour
 
         }
     }
-   
-    //generates stats on the first frame 
+
+    //generates stats on the first frame
     private void GenerateStats() {
         //whatever type you get for enemy or you you get the same type of ability
         TypeMe = Type[Random.Range(0, Type.Length - 1)];
@@ -282,7 +309,9 @@ public class LevelScript : MonoBehaviour
         {
             if (abilities[i].type == TypeMe)
             {
-                GG = new Entity(H, D, A, TypeMe, abilities[i]);
+
+                GG = new Entity(H, D, A, TypeMe, abilities[i], EmptyAbility);
+                Ability1.text = abilities[i].name;
                 break;
             }
         }
@@ -311,13 +340,13 @@ public class LevelScript : MonoBehaviour
         {
             if (abilities[i].type == TypeEnemy)
             {
-                SIMP = new Entity(H, D, A, TypeEnemy, abilities[i]);
+                SIMP = new Entity(H, D, A, TypeEnemy, abilities[3], EmptyAbility);
             }
         }
         MaxEnemy = SIMP.Health;
     }
 
-        //adds stats when 
+        //adds stats when
 
         //checks if new ability exists in players' inventory
         private bool ifExists(Abilities newAbility)
@@ -355,45 +384,50 @@ public class LevelScript : MonoBehaviour
         MaxPlayer = GG.Health;
 
             //chooses random new ability
-            
+            bool added = false;
+            string maxCapacity = "No";
             for (int i = 0; i < abilities.Length; i++)
             {
-            
-            string maxCapacity = "No";
-            bool added = false;
+
             newAbility = abilities[Random.Range(0, abilities.Length - 1)];
             Debug.Log(newAbility.name);
-                if (newAbility.name != GG.abilities[0].name && newAbility.name != GG.abilities[1].name && newAbility.name != GG.abilities[2].name)
+                if (newAbility.name != GG.abilities[0].name
+                && newAbility.name != GG.abilities[1].name
+                && newAbility.name != GG.abilities[2].name)
                 {
                 Debug.Log("If exists");
-                    if (GG.abilities[1] == null)
+                    if (GG.abilities[1].name == " ")
                     {
+
                         GG.abilities[1] = newAbility;
                         Debug.Log("Activate new button 1");
                         Button2.SetActive(true);
                         GG.SetAbilities(newAbility, 1);
                         added = true;
-                        break;
+                        Ability2.text = newAbility.name;
+
                     }
-                    else if (GG.abilities[2] == null)
+                    else if (GG.abilities[2].name == " " && added != true)
                     {
                         Debug.Log("Activate new button 2");
                         Button3.SetActive(true);
                         GG.SetAbilities(newAbility, 2);
                         added = true;
-                        break;
+                        Ability3.text = newAbility.name;
+
                     }
-                    else 
-                    { 
+                    else
+                    {
                         maxCapacity = "Yes";
                     }
-                    
-                
+
+
                 if (maxCapacity == "Yes")
                 {
                     //TODO needs to get the new window where the player chooses which ability to replace!!!
+                    replaceAbilityButton.SetActive(true);
                     added = true;
-                    
+
                 }
                 }
             if (added == true)
@@ -410,14 +444,16 @@ public class LevelScript : MonoBehaviour
 
             //Add death animation
             Skely.SetBool("IsDead", true);
-            
-            SwitchCounter = 4;
 
-            AddStats();
+            SwitchCounter = 4;
+            Debug.Log("Won 11");
+
         }
 
         if (GG.Health <= 0)
         {
+            SkelyPlayer.SetBool("IsDead", true);
+
             SwitchCounter = 3;
         }
 
@@ -439,7 +475,7 @@ public class LevelScript : MonoBehaviour
 
     public void NextLevel(){
 
-        
+
         SwitchCounter = 1;
         VictoryRoyal.SetActive(false);
         GenerateEnemyStats();
@@ -448,17 +484,41 @@ public class LevelScript : MonoBehaviour
 
     }
 
-
-
-
-    private void Start()
+    public void ReplaceAbility(int i)
     {
-                        
+        replaceAbilityText1.text = GG.abilities[0].name;
+        replaceAbilityText2.text = GG.abilities[1].name;
+        replaceAbilityText3.text = GG.abilities[2].name;
+        GG.SetAbilities(newAbility, i);
+        if(i == 0)
+        {
+            Ability1.text = newAbility.name;
+        }
+        else if(i == 1)
+        {
+            Ability2.text = newAbility.name;
+        }
+        else
+        {
+            Ability3.text = newAbility.name;
+        }
+
+        SwitchCounter = 1;
+    }
+
+
+
+        private void Start()
+    {
+
 
                 Skely = ObjrctSkely.GetComponent<Animator>();
                 FloatingTxt = FloatingText.GetComponent<Animator>();
 
-                mTitle.SetText(Level.ToString());
+                SkelyPlayer = Player.GetComponent<Animator>();
+
+
+        mTitle.SetText(Level.ToString());
 
                 GenerateAbilities();
 
@@ -469,7 +529,7 @@ public class LevelScript : MonoBehaviour
 
     void Update()
     {
-        
+
 
 
         UpdateUI(SIMP, GG);
@@ -493,7 +553,7 @@ public class LevelScript : MonoBehaviour
 
 
             case 3:
-                //lose 
+                //lose
 
 
 
@@ -505,12 +565,12 @@ public class LevelScript : MonoBehaviour
             case 4:
 
                 //win
-
-                
+                AddStats();
+                Debug.Log("Won");
                 UI.SetActive(false);
                 VictoryRoyal.SetActive(true);
                 SwitchCounter = 5;
-                
+
                 break;
 
 
@@ -519,11 +579,10 @@ public class LevelScript : MonoBehaviour
 
 
         }
-        
+
     }
 
 
 
-   
-}
 
+}
