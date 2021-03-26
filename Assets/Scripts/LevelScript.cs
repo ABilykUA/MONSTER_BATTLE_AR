@@ -31,10 +31,12 @@ public class LevelScript : MonoBehaviour
     public GameObject replaceAbility1;
     public GameObject replaceAbility2;
     public GameObject replaceAbility3;
+
     
     public TextMeshProUGUI replaceAbilityText1;
     public TextMeshProUGUI replaceAbilityText2;
     public TextMeshProUGUI replaceAbilityText3;
+
 
     public TextMeshPro EnemyHealth;
     public TextMeshPro EnemyType;
@@ -57,11 +59,6 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI WHealth;
     public TextMeshProUGUI WAttack;
     public TextMeshProUGUI WDefense;
-
-    //AbilityButtonsText
-    public TextMeshProUGUI Ability1;
-    public TextMeshProUGUI Ability2;
-    public TextMeshProUGUI Ability3;
 
     //WinUIAbilitys
     public TextMeshProUGUI AHeal;
@@ -159,7 +156,6 @@ public class LevelScript : MonoBehaviour
         WHealth.SetText("Health: +" + GaindHealth);
         WAttack.SetText("Attack: +" + GainAttack);
         WDefense.SetText("Defense: +" + GainDefence);
-
 
         //newAbility
 
@@ -314,9 +310,7 @@ public class LevelScript : MonoBehaviour
         {
             if (abilities[i].type == TypeMe)
             {
-
                 GG = new Entity(H, D, A, TypeMe, abilities[i], EmptyAbility);
-                Ability1.text = abilities[i].name;
                 break;
             }
         }
@@ -345,7 +339,7 @@ public class LevelScript : MonoBehaviour
         {
             if (abilities[i].type == TypeEnemy)
             {
-                SIMP = new Entity(H, D, A, TypeEnemy, abilities[3], EmptyAbility);
+                SIMP = new Entity(H, D, A, TypeEnemy, abilities[i], EmptyAbility);
             }
         }
         MaxEnemy = SIMP.Health;
@@ -403,14 +397,16 @@ public class LevelScript : MonoBehaviour
                 Debug.Log("If exists");
                     if (GG.abilities[1].name == " ")
                     {
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of d6b36d8 (Worked on replacing abilities)
                         GG.abilities[1] = newAbility;
                         Debug.Log("Activate new button 1");
                         Button2.SetActive(true);
                         GG.SetAbilities(newAbility, 1);
                         added = true;
-                        Ability2.text = newAbility.name;
-
+                        
                     }
                     else if (GG.abilities[2].name == " " && added != true)
                     {
@@ -418,8 +414,12 @@ public class LevelScript : MonoBehaviour
                         Button3.SetActive(true);
                         GG.SetAbilities(newAbility, 2);
                         added = true;
+<<<<<<< HEAD
                         Ability3.text = newAbility.name;
 
+=======
+                        
+>>>>>>> parent of d6b36d8 (Worked on replacing abilities)
                     }
                     else
                     {
@@ -431,7 +431,6 @@ public class LevelScript : MonoBehaviour
                 if (maxCapacity == "Yes")
                 {
                     //TODO needs to get the new window where the player chooses which ability to replace!!!
-                    replaceAbilityButton.SetActive(true);
                     added = true;
 
                 }
@@ -490,8 +489,9 @@ public class LevelScript : MonoBehaviour
 
     }
 
-    public void ReplaceAbility(int i)
+    public void ReplaceAbility()
     {
+<<<<<<< HEAD
         replaceAbilityText1.text = GG.abilities[0].name;
         replaceAbilityText2.text = GG.abilities[1].name;
         replaceAbilityText3.text = GG.abilities[2].name;
@@ -510,6 +510,9 @@ public class LevelScript : MonoBehaviour
         }
 
         SwitchCounter = 1;
+=======
+    
+>>>>>>> parent of d6b36d8 (Worked on replacing abilities)
     }
 
 
