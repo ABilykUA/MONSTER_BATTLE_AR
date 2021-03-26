@@ -23,6 +23,9 @@ public class LevelScript : MonoBehaviour
     public GameObject Button3;
 
 
+
+    public TextMeshPro EnemyGetDamage;
+
     public GameObject replaceAbilityButton;
 
     public GameObject replaceAbility1;
@@ -33,8 +36,6 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI replaceAbilityText2;
     public TextMeshProUGUI replaceAbilityText3;
 
-
-
     public TextMeshPro EnemyHealth;
     public TextMeshPro EnemyType;
 
@@ -42,17 +43,17 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI mHealth;
     public TextMeshProUGUI mAttack;
     public TextMeshProUGUI mDefense;
-    
+
     //Level
     public TextMeshProUGUI mTitle;
 
-    //Lose UI 
+    //Lose UI
     public TextMeshProUGUI LmLevel;
     public TextMeshProUGUI LmHealth;
     public TextMeshProUGUI LmAttack;
     public TextMeshProUGUI LmDefense;
 
-    //Win Ui  
+    //Win Ui
     public TextMeshProUGUI WHealth;
     public TextMeshProUGUI WAttack;
     public TextMeshProUGUI WDefense;
@@ -69,10 +70,15 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI AName;
     public TextMeshProUGUI AUses;
 
-    //animations 
-
-    public GameObject ObjrctSkely;
+    //animations
     public GameObject Player;
+    public GameObject FloatingText;
+    public GameObject ObjrctSkely;
+
+    private Animator FloatingTxt;
+
+  
+
     private Animator Skely;
     private Animator SkelyPlayer;
 
@@ -92,7 +98,7 @@ public class LevelScript : MonoBehaviour
 
     private int MaxEnemy;
 
-    // gaind during lvl 
+    // gaind during lvl
     private int GaindHealth = 0 ;
 
     private int GainAttack = 0 ;
@@ -139,7 +145,7 @@ public class LevelScript : MonoBehaviour
         //Level
         mTitle.SetText("Level: " + Level);
 
-        //DUI 
+        //DUI
         LmLevel.SetText("You made it to level: " + Level);
         LmHealth.SetText("Health: " + MaxPlayer);
         LmAttack.SetText("Attack: " + GG.Attack);
@@ -164,18 +170,18 @@ public class LevelScript : MonoBehaviour
     public void AttackSlot1()
     {
 
-    
+
         Attacking(GG.abilities[0]);
 
- 
+
     }
     public void AttackSlot2()
     {
-     
+
 
         Attacking(GG.abilities[1]);
 
-      
+
     }
     public void AttackSlot3()
     {
@@ -184,7 +190,7 @@ public class LevelScript : MonoBehaviour
 
         Attacking(GG.abilities[2]);
 
-   
+
     }
 
     private void Attacking(Abilities ability)
@@ -192,13 +198,13 @@ public class LevelScript : MonoBehaviour
         //animations
 
         SkelyPlayer.SetTrigger("Attack");
-        
+
         Skely.SetTrigger("IsDamage");
 
         if (SIMP.Type == ability.type)
         {
             SIMP.Hit(EntityIsHit(1, ability));
-            
+
         }
         else
         {
@@ -233,7 +239,7 @@ public class LevelScript : MonoBehaviour
         SkelyPlayer.SetTrigger("Damage");
 
         Skely.SetTrigger("IaAttack");
-        
+
 
 
         Abilities temp = SIMP.GetAbilities(0);
@@ -260,7 +266,7 @@ public class LevelScript : MonoBehaviour
         }
 
 
-   
+
 
         SwitchCounter = 1;
 
@@ -277,8 +283,13 @@ public class LevelScript : MonoBehaviour
                 return 0;
 
             //Deals Damage
-            case 2:              
+            case 2:
+
+
+                EnemyGetDamage.SetText("-" + ability.damage);
+                FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
                 return ability.damage;
+                //Destroy(EnemyGetDamage, 1f);
 
             default:
 
@@ -287,8 +298,8 @@ public class LevelScript : MonoBehaviour
 
         }
     }
-   
-    //generates stats on the first frame 
+
+    //generates stats on the first frame
     private void GenerateStats() {
         //whatever type you get for enemy or you you get the same type of ability
         TypeMe = Type[Random.Range(0, Type.Length - 1)];
@@ -299,7 +310,7 @@ public class LevelScript : MonoBehaviour
         {
             if (abilities[i].type == TypeMe)
             {
-                
+
                 GG = new Entity(H, D, A, TypeMe, abilities[i], EmptyAbility);
                 Ability1.text = abilities[i].name;
                 break;
@@ -336,7 +347,7 @@ public class LevelScript : MonoBehaviour
         MaxEnemy = SIMP.Health;
     }
 
-        //adds stats when 
+        //adds stats when
 
         //checks if new ability exists in players' inventory
         private bool ifExists(Abilities newAbility)
@@ -381,14 +392,14 @@ public class LevelScript : MonoBehaviour
 
             newAbility = abilities[Random.Range(0, abilities.Length - 1)];
             Debug.Log(newAbility.name);
-                if (newAbility.name != GG.abilities[0].name 
-                && newAbility.name != GG.abilities[1].name 
+                if (newAbility.name != GG.abilities[0].name
+                && newAbility.name != GG.abilities[1].name
                 && newAbility.name != GG.abilities[2].name)
                 {
                 Debug.Log("If exists");
                     if (GG.abilities[1].name == " ")
                     {
-                        
+
                         GG.abilities[1] = newAbility;
                         Debug.Log("Activate new button 1");
                         Button2.SetActive(true);
@@ -404,20 +415,20 @@ public class LevelScript : MonoBehaviour
                         GG.SetAbilities(newAbility, 2);
                         added = true;
                         Ability3.text = newAbility.name;
-                        
+
                     }
-                    else 
-                    { 
+                    else
+                    {
                         maxCapacity = "Yes";
                     }
-                    
-                
+
+
                 if (maxCapacity == "Yes")
                 {
                     //TODO needs to get the new window where the player chooses which ability to replace!!!
                     replaceAbilityButton.SetActive(true);
                     added = true;
-                    
+
                 }
                 }
             if (added == true)
@@ -434,10 +445,10 @@ public class LevelScript : MonoBehaviour
 
             //Add death animation
             Skely.SetBool("IsDead", true);
-            
+
             SwitchCounter = 4;
             Debug.Log("Won 11");
-            
+
         }
 
         if (GG.Health <= 0)
@@ -465,13 +476,13 @@ public class LevelScript : MonoBehaviour
 
     public void NextLevel(){
 
-        
+
         SwitchCounter = 1;
         VictoryRoyal.SetActive(false);
         GenerateEnemyStats();
         GG.Health = MaxPlayer;
         Skely.SetBool("IsDead", false);
-        
+
     }
 
     public void ReplaceAbility(int i)
@@ -492,7 +503,7 @@ public class LevelScript : MonoBehaviour
         {
             Ability3.text = newAbility.name;
         }
-        
+
         SwitchCounter = 1;
     }
 
@@ -500,9 +511,10 @@ public class LevelScript : MonoBehaviour
 
         private void Start()
     {
-                        
+
 
                 Skely = ObjrctSkely.GetComponent<Animator>();
+                FloatingTxt = FloatingText.GetComponent<Animator>();
 
                 SkelyPlayer = Player.GetComponent<Animator>();
 
@@ -518,7 +530,7 @@ public class LevelScript : MonoBehaviour
 
     void Update()
     {
-        
+
 
 
         UpdateUI(SIMP, GG);
@@ -542,7 +554,7 @@ public class LevelScript : MonoBehaviour
 
 
             case 3:
-                //lose 
+                //lose
 
 
 
@@ -559,7 +571,7 @@ public class LevelScript : MonoBehaviour
                 UI.SetActive(false);
                 VictoryRoyal.SetActive(true);
                 SwitchCounter = 5;
-                
+
                 break;
 
 
@@ -568,11 +580,10 @@ public class LevelScript : MonoBehaviour
 
 
         }
-        
+
     }
 
 
 
-   
-}
 
+}
