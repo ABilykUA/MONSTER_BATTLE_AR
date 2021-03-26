@@ -22,7 +22,7 @@ public class LevelScript : MonoBehaviour
     public GameObject Button3;
 
 
-
+    public TextMeshPro EnemyGetDamage;
     public TextMeshPro EnemyHealth;
     public TextMeshPro EnemyType;
 
@@ -54,7 +54,9 @@ public class LevelScript : MonoBehaviour
 
     //animations 
 
+    public GameObject FloatingText;
     public GameObject ObjrctSkely;
+    private Animator FloatingTxt;
     private Animator Skely;
 
 
@@ -143,7 +145,7 @@ public class LevelScript : MonoBehaviour
     public void AttackSlot1()
     {
 
-    
+        
         Attacking(GG.abilities[0]);
 
  
@@ -253,8 +255,13 @@ public class LevelScript : MonoBehaviour
                 return 0;
 
             //Deals Damage
-            case 2:              
+            case 2:
+
+                
+                EnemyGetDamage.SetText("-" + ability.damage);
+                FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
                 return ability.damage;
+                //Destroy(EnemyGetDamage, 1f);
 
             default:
 
@@ -449,6 +456,7 @@ public class LevelScript : MonoBehaviour
                         
 
                 Skely = ObjrctSkely.GetComponent<Animator>();
+                FloatingTxt = FloatingText.GetComponent<Animator>();
 
                 mTitle.SetText(Level.ToString());
 
