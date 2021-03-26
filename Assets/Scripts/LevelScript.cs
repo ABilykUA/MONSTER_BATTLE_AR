@@ -52,6 +52,10 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI AType;
     public TextMeshProUGUI AName;
     public TextMeshProUGUI AUses;
+    //AbilityButtonsText
+    public TextMeshProUGUI Ability1;
+    public TextMeshProUGUI Ability2;
+    public TextMeshProUGUI Ability3;
 
     //animations 
 
@@ -279,6 +283,7 @@ public class LevelScript : MonoBehaviour
             if (abilities[i].type == TypeMe)
             {
                 GG = new Entity(H, D, A, TypeMe, abilities[i], EmptyAbility);
+                Ability1.text = abilities[i].name;
                 break;
             }
         }
@@ -370,6 +375,7 @@ public class LevelScript : MonoBehaviour
                         Button2.SetActive(true);
                         GG.SetAbilities(newAbility, 1);
                         added = true;
+                        Ability2.text = newAbility.name;
                         
                     }
                     else if (GG.abilities[2].name == " " && added != true)
@@ -378,8 +384,8 @@ public class LevelScript : MonoBehaviour
                         Button3.SetActive(true);
                         GG.SetAbilities(newAbility, 2);
                         added = true;
-                        
-                    }
+                        Ability3.text = newAbility.name;
+                }
                     else 
                     { 
                         maxCapacity = "Yes";

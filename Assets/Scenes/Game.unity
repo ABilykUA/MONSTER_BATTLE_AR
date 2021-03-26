@@ -4640,6 +4640,9 @@ MonoBehaviour:
   AType: {fileID: 1906563527}
   AName: {fileID: 112209552}
   AUses: {fileID: 1607400904}
+  Ability1: {fileID: 189875115}
+  Ability2: {fileID: 1866117745}
+  Ability3: {fileID: 198021448}
   ObjrctSkely: {fileID: 646363546}
 --- !u!114 &1140599408
 MonoBehaviour:
@@ -4657,7 +4660,6 @@ MonoBehaviour:
   DisabilityTitle: {fileID: 1554430968}
   ColorBlindText: {fileID: 639707676}
   BlurredVisionText: {fileID: 799692374}
-  NormalVisionText: {fileID: 0}
   BackButtonText: {fileID: 2066994919}
   PlayButtonTextBlurredVision: {fileID: 2109129245}
   BackButtonTextBlurredVision: {fileID: 1073725214}
