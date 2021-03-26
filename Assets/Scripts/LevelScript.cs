@@ -27,9 +27,14 @@ public class LevelScript : MonoBehaviour
     public GameObject replaceAbility1;
     public GameObject replaceAbility2;
     public GameObject replaceAbility3;
+    
     public TextMeshProUGUI replaceAbilityText1;
     public TextMeshProUGUI replaceAbilityText2;
     public TextMeshProUGUI replaceAbilityText3;
+
+
+
+
 
 
 
@@ -67,14 +72,20 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI AName;
     public TextMeshProUGUI AUses;
 
-    //animations 
+    public TextMeshPro EnemyGetDamage;
 
+
+    //animations 
+    public GameObject FloatingText;
     public GameObject ObjrctSkely;
     public GameObject Player;
+
     private Animator Skely;
     private Animator SkelyPlayer;
+    private Animator FloatingTxt;
 
 
+  
     //All Abilities
     private Abilities[] abilities = { null, null, null, null, null,null };
 
@@ -194,16 +205,29 @@ public class LevelScript : MonoBehaviour
         
         Skely.SetTrigger("IsDamage");
 
-        if (SIMP.Type == ability.type)
-        {
-            SIMP.Hit(EntityIsHit(1, ability));
+        int damage;
 
-        }
-        else
+        if (SIMP.Type == ability.type)
         {
             Debug.Log(ability.damage);
             Debug.Log(SIMP.Health);
-            SIMP.Hit(EntityIsHit(2, ability));
+
+            damage = EntityIsHit(1, ability);
+
+            EnemyGetDamage.SetText("-" + damage);
+            FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
+
+            SIMP.Hit(damage);
+        }
+        else
+        {
+
+            damage = EntityIsHit(2, ability);
+
+            EnemyGetDamage.SetText("-" + damage);
+            FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
+
+            SIMP.Hit(damage);
 
             //If ability heals
             if (ability.heal > 0)
@@ -240,7 +264,13 @@ public class LevelScript : MonoBehaviour
         Abilities temp = SIMP.GetAbilities(0);
         if (GG.Type == temp.type)
         {
+        
+            
+            
             GG.Hit(EntityIsHit(1, temp));
+        
+        
+        
         }
         else
         {
@@ -487,16 +517,17 @@ public class LevelScript : MonoBehaviour
 
 
 
-        private void Start()
+    void Start()
     {
-                        
 
+                FloatingTxt = FloatingText.GetComponent<Animator>();
+                
                 Skely = ObjrctSkely.GetComponent<Animator>();
 
                 SkelyPlayer = Player.GetComponent<Animator>();
 
 
-        mTitle.SetText(Level.ToString());
+                 mTitle.SetText(Level.ToString());
 
                 GenerateAbilities();
 
