@@ -116,8 +116,8 @@ public class LevelScript : MonoBehaviour
     {
         abilities[0] = new Abilities(50, "Fire", 0, 10, "Fire blast");
         abilities[1] = new Abilities(40, "Water", 0, 15, "Water blast");
-        abilities[2] = new Abilities(25, "Grass", 10, 10, "Grass blast");
-        abilities[3] = new Abilities(20, "Fire", 5, 10, "Flame Wheel");
+        abilities[2] = new Abilities(25, "Grass", 5, 10, "Grass blast");
+        abilities[3] = new Abilities(10, "Fire", 0, 10, "Flame Wheel");
         abilities[4] = new Abilities(60, "Water", 15, 8, "Tsunami");
         abilities[5] = new Abilities(50, "Grass", 0, 10, "Branch slam");
     }
@@ -197,10 +197,12 @@ public class LevelScript : MonoBehaviour
         if (SIMP.Type == ability.type)
         {
             SIMP.Hit(EntityIsHit(1, ability));
-            
+
         }
         else
         {
+            Debug.Log(ability.damage);
+            Debug.Log(SIMP.Health);
             SIMP.Hit(EntityIsHit(2, ability));
 
             //If ability heals
@@ -335,24 +337,6 @@ public class LevelScript : MonoBehaviour
         MaxEnemy = SIMP.Health;
     }
 
-        //adds stats when 
-
-        //checks if new ability exists in players' inventory
-        private bool ifExists(Abilities newAbility)
-        {
-        //for (int i = 0; i < GG.abilities.Length; i++)
-        //{
-        //    Debug.Log(GG.abilities[i].name + " " + newAbility.name);
-        //    //GG.GetAbilities(i);
-        //    if (GG.abilities[i].name == newAbility.name)
-        //    {
-
-        //        return true;
-        //    }
-        //}
-        Debug.Log("False??");
-        return false;
-        }
     private void AddStats() {
 
         Level++;
@@ -414,6 +398,9 @@ public class LevelScript : MonoBehaviour
                 if (maxCapacity == "Yes")
                 {
                     //TODO needs to get the new window where the player chooses which ability to replace!!!
+                    replaceAbilityText1.text = GG.abilities[0].name;
+                    replaceAbilityText2.text = GG.abilities[1].name;
+                    replaceAbilityText3.text = GG.abilities[2].name;
                     replaceAbilityButton.SetActive(true);
                     added = true;
                     
@@ -470,29 +457,32 @@ public class LevelScript : MonoBehaviour
         GenerateEnemyStats();
         GG.Health = MaxPlayer;
         Skely.SetBool("IsDead", false);
-        
+
     }
 
     public void ReplaceAbility(int i)
     {
-        replaceAbilityText1.text = GG.abilities[0].name;
-        replaceAbilityText2.text = GG.abilities[1].name;
-        replaceAbilityText3.text = GG.abilities[2].name;
+        //replaceAbilityText1.text = GG.abilities[0].name;
+        //replaceAbilityText2.text = GG.abilities[1].name;
+        //replaceAbilityText3.text = GG.abilities[2].name;
         GG.SetAbilities(newAbility, i);
         if(i == 0)
         {
             Ability1.text = newAbility.name;
+            NextLevel();
         }
         else if(i == 1)
         {
             Ability2.text = newAbility.name;
+            NextLevel();
         }
         else
         {
             Ability3.text = newAbility.name;
+            NextLevel();
         }
-        
         SwitchCounter = 1;
+        
     }
 
 
@@ -517,8 +507,6 @@ public class LevelScript : MonoBehaviour
 
     void Update()
     {
-        
-
 
         UpdateUI(SIMP, GG);
         switch (SwitchCounter)
