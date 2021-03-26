@@ -24,9 +24,11 @@ public class LevelScript : MonoBehaviour
 
 
     public GameObject replaceAbilityButton;
+
     public GameObject replaceAbility1;
     public GameObject replaceAbility2;
     public GameObject replaceAbility3;
+    
     public TextMeshProUGUI replaceAbilityText1;
     public TextMeshProUGUI replaceAbilityText2;
     public TextMeshProUGUI replaceAbilityText3;
@@ -150,7 +152,6 @@ public class LevelScript : MonoBehaviour
 
 
         //newAbility
-
 
         ADamage.SetText("Damage: " + newAbility.damage);
         AType.SetText("Type: " + newAbility.type);
