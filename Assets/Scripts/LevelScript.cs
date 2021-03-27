@@ -268,9 +268,10 @@ public class LevelScript : MonoBehaviour
             HeroGetDamage.SetText("-" + damage);
             PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
             GG.Hit(damage);
-        
-        
-        
+
+           
+
+
         }
         else
         {
