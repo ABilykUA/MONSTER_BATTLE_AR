@@ -300,7 +300,7 @@ public class LevelScript : MonoBehaviour
                     }
                 }
             }
-        }
+    
 
         StopCoroutine(ExampleCoroutine());
         SwitchCounter = 1;
