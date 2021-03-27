@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
 public class LevelScript : MonoBehaviour
@@ -31,11 +32,6 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI replaceAbilityText1;
     public TextMeshProUGUI replaceAbilityText2;
     public TextMeshProUGUI replaceAbilityText3;
-
-
-
-
-
 
 
     public TextMeshPro EnemyHealth;
@@ -122,7 +118,6 @@ public class LevelScript : MonoBehaviour
     private Entity SIMP;
 
 
-
     private void GenerateAbilities()
     {
         abilities[0] = new Abilities(50, "Fire", 0, 10, "Fire blast");
@@ -132,8 +127,6 @@ public class LevelScript : MonoBehaviour
         abilities[4] = new Abilities(60, "Water", 15, 8, "Tsunami");
         abilities[5] = new Abilities(50, "Grass", 0, 10, "Branch slam");
     }
-
-
 
     private void UpdateUI(Entity SIMP, Entity GG) {
         //player
@@ -169,19 +162,20 @@ public class LevelScript : MonoBehaviour
         AUses.SetText("Uses: " + newAbility.uses);
         AHeal.SetText("Heal: " + newAbility.heal);
 
+
+
+
     }
 
     public void AttackSlot1()
     {
 
-    
         Attacking(GG.abilities[0]);
 
  
     }
     public void AttackSlot2()
     {
-     
 
         Attacking(GG.abilities[1]);
 
@@ -191,7 +185,8 @@ public class LevelScript : MonoBehaviour
     {
 
 
-
+        
+        
         Attacking(GG.abilities[2]);
 
    
@@ -202,8 +197,10 @@ public class LevelScript : MonoBehaviour
         //animations
 
         SkelyPlayer.SetTrigger("Attack");
-        
-        Skely.SetTrigger("IsDamage");
+
+
+
+
 
         int damage;
 
@@ -252,14 +249,9 @@ public class LevelScript : MonoBehaviour
 
     private void EnemyAttacking()
     {
+        Skely.SetTrigger("IsDamage");
 
-
-        //animations
-        SkelyPlayer.SetTrigger("Damage");
-
-        Skely.SetTrigger("IaAttack");
-        
-
+        StartCoroutine(ExampleCoroutine());
 
         Abilities temp = SIMP.GetAbilities(0);
         if (GG.Type == temp.type)
@@ -291,7 +283,7 @@ public class LevelScript : MonoBehaviour
         }
 
 
-   
+        StopCoroutine(ExampleCoroutine());
 
         SwitchCounter = 1;
 
@@ -366,7 +358,6 @@ public class LevelScript : MonoBehaviour
         }
         MaxEnemy = SIMP.Health;
     }
-
     private void AddStats() {
 
         Level++;
@@ -464,21 +455,15 @@ public class LevelScript : MonoBehaviour
         }
 
     }
-
     public void BacktoMain()
     {
         SceneManager.LoadScene(0);
     }
-
-
     public void ExitGame()
     {
         Application.Quit();
 
     }
-
-
-
     public void NextLevel(){
 
         
@@ -489,7 +474,6 @@ public class LevelScript : MonoBehaviour
         Skely.SetBool("IsDead", false);
 
     }
-
     public void ReplaceAbility(int i)
     {
         //replaceAbilityText1.text = GG.abilities[0].name;
@@ -515,24 +499,33 @@ public class LevelScript : MonoBehaviour
         
     }
 
+    IEnumerator ExampleCoroutine()
+    {
+        yield return new WaitForSeconds(2f);
+
+
+        UI.SetActive(true);
+    }
 
 
     void Start()
     {
-
+            
                 FloatingTxt = FloatingText.GetComponent<Animator>();
                 
                 Skely = ObjrctSkely.GetComponent<Animator>();
 
                 SkelyPlayer = Player.GetComponent<Animator>();
 
-
-                 mTitle.SetText(Level.ToString());
+                mTitle.SetText(Level.ToString());
 
                 GenerateAbilities();
 
                 GenerateStats();
+
                 GenerateEnemyStats();
+
+                UI.SetActive(true);
 
     }
 
@@ -546,16 +539,25 @@ public class LevelScript : MonoBehaviour
             case 1:
                 //GG trurn
                 WinOrLoseCheck();
-                UI.SetActive(true);
+             
+
+                //Skely.SetTrigger("IaAttack");
+              
+
+
                 break;
 
 
             case 2:
+
+                //SkelyPlayer.SetTrigger("Attack");
                 //simp turn
                 WinOrLoseCheck();
                 //change to false test
                 UI.SetActive(false);
                 EnemyAttacking();
+                
+
                 break;
 
 
