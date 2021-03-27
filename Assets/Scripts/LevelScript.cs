@@ -256,11 +256,7 @@ public class LevelScript : MonoBehaviour
     private void EnemyAttacking()
     {
         Skely.SetTrigger("IsDamage");
-
-        //animations
-        SkelyPlayer.SetTrigger("Damage");
-
-        Skely.SetTrigger("IaAttack");
+        
         StartCoroutine(ExampleCoroutine());
 
         Abilities temp = SIMP.GetAbilities(0);
@@ -570,7 +566,6 @@ public class LevelScript : MonoBehaviour
     IEnumerator ExampleCoroutine()
     {
         yield return new WaitForSeconds(2f);
-
 
         UI.SetActive(true);
     }
