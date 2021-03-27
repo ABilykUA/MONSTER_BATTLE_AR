@@ -10,13 +10,16 @@ public class Abilities : Object
     public string type { get; set; }
     public int uses { get; set; }
 
-    public Abilities(int damage, string type,int heal,int uses, string name)
+    public string counter { get; set; }
+
+    public Abilities(int damage, string type,int heal,int uses, string name, string counter)
     {
         this.name = name;
         this.damage = damage;
         this.type = type;
         this.heal = heal;
         this.uses = uses;
+        this.counter = counter;
     }
 
 }
