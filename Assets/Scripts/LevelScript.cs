@@ -69,19 +69,25 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI AUses;
 
     public TextMeshPro EnemyGetDamage;
+    public TextMeshProUGUI HeroGetDamage;
 
 
     //animations 
+    public GameObject PopupHeroText;
     public GameObject FloatingText;
+
     public GameObject ObjrctSkely;
     public GameObject Player;
 
+    
     private Animator Skely;
     private Animator SkelyPlayer;
+
     private Animator FloatingTxt;
+    private Animator PopupHeroTxt;
 
 
-  
+
     //All Abilities
     private Abilities[] abilities = { null, null, null, null, null,null };
 
@@ -199,9 +205,6 @@ public class LevelScript : MonoBehaviour
         SkelyPlayer.SetTrigger("Attack");
 
 
-
-
-
         int damage;
 
         if (SIMP.Type == ability.type)
@@ -252,21 +255,29 @@ public class LevelScript : MonoBehaviour
         Skely.SetTrigger("IsDamage");
 
         StartCoroutine(ExampleCoroutine());
+        
+		int damage;
+
 
         Abilities temp = SIMP.GetAbilities(0);
         if (GG.Type == temp.type)
         {
-        
-            
-            
-            GG.Hit(EntityIsHit(1, temp));
+
+            damage = EntityIsHit(1, temp);
+
+            HeroGetDamage.SetText("-" + damage);
+            PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+            GG.Hit(damage);
         
         
         
         }
         else
         {
-            GG.Hit(EntityIsHit(2, temp));
+            damage = EntityIsHit(2, temp);
+            HeroGetDamage.SetText("-" + damage);
+            PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+            GG.Hit(damage);
             //If ability heals
             if (temp.heal > 0)
             {
@@ -512,7 +523,9 @@ public class LevelScript : MonoBehaviour
     {
             
                 FloatingTxt = FloatingText.GetComponent<Animator>();
-                
+
+                PopupHeroTxt = PopupHeroText.GetComponent<Animator>();
+
                 Skely = ObjrctSkely.GetComponent<Animator>();
 
                 SkelyPlayer = Player.GetComponent<Animator>();
@@ -539,21 +552,13 @@ public class LevelScript : MonoBehaviour
             case 1:
                 //GG trurn
                 WinOrLoseCheck();
-             
-
-                //Skely.SetTrigger("IaAttack");
-              
-
-
+           
                 break;
 
 
             case 2:
-
-                //SkelyPlayer.SetTrigger("Attack");
                 //simp turn
                 WinOrLoseCheck();
-                //change to false test
                 UI.SetActive(false);
                 EnemyAttacking();
                 
