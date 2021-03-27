@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
 public class LevelScript : MonoBehaviour
@@ -31,11 +32,6 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI replaceAbilityText1;
     public TextMeshProUGUI replaceAbilityText2;
     public TextMeshProUGUI replaceAbilityText3;
-
-
-
-
-
 
 
     public TextMeshPro EnemyHealth;
@@ -73,19 +69,25 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI AUses;
 
     public TextMeshPro EnemyGetDamage;
+    public TextMeshProUGUI HeroGetDamage;
 
 
     //animations 
+    public GameObject PopupHeroText;
     public GameObject FloatingText;
+
     public GameObject ObjrctSkely;
     public GameObject Player;
 
+    
     private Animator Skely;
     private Animator SkelyPlayer;
+
     private Animator FloatingTxt;
+    private Animator PopupHeroTxt;
 
 
-  
+
     //All Abilities
     private Abilities[] abilities = { null, null, null, null, null, null, null, null };
 
@@ -122,7 +124,6 @@ public class LevelScript : MonoBehaviour
     private Entity SIMP;
 
 
-
     private void GenerateAbilities()
     {
         abilities[0] = new Abilities(40, "Fire", 0, 10, "Fire bolt", "Grass");
@@ -134,8 +135,6 @@ public class LevelScript : MonoBehaviour
         abilities[6] = new Abilities(0, "Grass", 50, 5, "Synthesis", "Water");
         abilities[7] = new Abilities(90, "Fire", -10, 5, "Flare Blitz", "Grass");
     }
-
-
 
     private void UpdateUI(Entity SIMP, Entity GG) {
         //player
@@ -171,19 +170,20 @@ public class LevelScript : MonoBehaviour
         AUses.SetText("Uses: " + newAbility.uses);
         AHeal.SetText("Heal: " + newAbility.heal);
 
+
+
+
     }
 
     public void AttackSlot1()
     {
 
-    
         Attacking(GG.abilities[0]);
 
  
     }
     public void AttackSlot2()
     {
-     
 
         Attacking(GG.abilities[1]);
 
@@ -193,7 +193,8 @@ public class LevelScript : MonoBehaviour
     {
 
 
-
+        
+        
         Attacking(GG.abilities[2]);
 
    
@@ -204,8 +205,7 @@ public class LevelScript : MonoBehaviour
         //animations
 
         SkelyPlayer.SetTrigger("Attack");
-        
-        Skely.SetTrigger("IsDamage");
+
 
         double damage;
 
@@ -255,11 +255,13 @@ public class LevelScript : MonoBehaviour
 
     private void EnemyAttacking()
     {
+        Skely.SetTrigger("IsDamage");
 
         //animations
         SkelyPlayer.SetTrigger("Damage");
 
         Skely.SetTrigger("IaAttack");
+        StartCoroutine(ExampleCoroutine());
 
         Abilities temp = SIMP.GetAbilities(0);
 
@@ -279,7 +281,12 @@ public class LevelScript : MonoBehaviour
             Debug.Log("EnemyAB: " + SIMP.abilities[0].name);
             Debug.Log("Player: " + damage + " " + temp.type + GG.Type);
             Debug.Log("Enemy health:" + GG.Health);
+
+
+            HeroGetDamage.SetText("-" + damage);
+            PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
             GG.Hit(damage);
+        }
             //If ability heals
             if (temp.heal > 0)
             {
@@ -295,6 +302,7 @@ public class LevelScript : MonoBehaviour
             }
         }
 
+        StopCoroutine(ExampleCoroutine());
         SwitchCounter = 1;
 
     }
@@ -412,7 +420,6 @@ public class LevelScript : MonoBehaviour
         }
         MaxEnemy = SIMP.Health;
     }
-
     private void AddStats() {
 
         Level++;
@@ -510,21 +517,15 @@ public class LevelScript : MonoBehaviour
         }
 
     }
-
     public void BacktoMain()
     {
         SceneManager.LoadScene(0);
     }
-
-
     public void ExitGame()
     {
         Application.Quit();
 
     }
-
-
-
     public void NextLevel(){
 
         
@@ -535,7 +536,6 @@ public class LevelScript : MonoBehaviour
         Skely.SetBool("IsDead", false);
 
     }
-
     public void ReplaceAbility(int i)
     {
         //replaceAbilityText1.text = GG.abilities[0].name;
@@ -561,24 +561,35 @@ public class LevelScript : MonoBehaviour
         
     }
 
+    IEnumerator ExampleCoroutine()
+    {
+        yield return new WaitForSeconds(2f);
+
+
+        UI.SetActive(true);
+    }
 
 
     void Start()
     {
-
+            
                 FloatingTxt = FloatingText.GetComponent<Animator>();
-                
+
+                PopupHeroTxt = PopupHeroText.GetComponent<Animator>();
+
                 Skely = ObjrctSkely.GetComponent<Animator>();
 
                 SkelyPlayer = Player.GetComponent<Animator>();
 
-
-                 mTitle.SetText(Level.ToString());
+                mTitle.SetText(Level.ToString());
 
                 GenerateAbilities();
 
                 GenerateStats();
+
                 GenerateEnemyStats();
+
+                UI.SetActive(true);
 
     }
 
@@ -592,16 +603,17 @@ public class LevelScript : MonoBehaviour
             case 1:
                 //GG trurn
                 WinOrLoseCheck();
-                UI.SetActive(true);
+           
                 break;
 
 
             case 2:
                 //simp turn
                 WinOrLoseCheck();
-                //change to false test
                 UI.SetActive(false);
                 EnemyAttacking();
+                
+
                 break;
 
 
