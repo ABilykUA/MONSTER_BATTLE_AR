@@ -227,7 +227,7 @@ public class LevelScript : MonoBehaviour
             damage = EntityIsHit(2, ability, SIMP.Type, SIMP.Defense, GG.Attack);
             Debug.Log("MePlayer: " + damage + " " + ability.type + SIMP.Type);
             Debug.Log("Enemy health:" + SIMP.Health);
-            EnemyGetDamage.SetText("-" + damage);
+            EnemyGetDamage.SetText("-" + (int)damage);
             FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
 
             SIMP.Hit(damage);
@@ -284,7 +284,7 @@ public class LevelScript : MonoBehaviour
             Debug.Log("Enemy health:" + GG.Health);
 
 
-            HeroGetDamage.SetText("-" + damage);
+            HeroGetDamage.SetText("-" + (int)damage);
             PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
             GG.Hit(damage);
         }
