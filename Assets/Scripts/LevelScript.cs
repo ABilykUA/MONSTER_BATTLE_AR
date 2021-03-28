@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
 public class LevelScript : MonoBehaviour
@@ -115,13 +116,13 @@ public class LevelScript : MonoBehaviour
     //for switch
     private int SwitchCounter = 1;
 
-    //GG stands 4 GamerGirl
+    //GG for the player
     private Entity GG;
 
     //Enemy
     private Entity SIMP;
-
-
+    private Settings settings;
+    public GameObject controller;
 
     private void GenerateAbilities()
     {
@@ -133,15 +134,75 @@ public class LevelScript : MonoBehaviour
         abilities[5] = new Abilities(50, "Grass", 0, 10, "Branch slam");
     }
 
-
+    private void ColorChange(Entity GG)
+    {
+        Debug.Log("ColorBlindVal "+settings.ColorBlindVal);
+        if (settings.ColorBlindVal == 1)
+        {
+            GameObject[] buttons = { Button1, Button2, Button3 };
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                if (GG.abilities[i].type == "Fire")
+                {
+                    buttons[i].GetComponent<Image>().color = Color.blue;
+                }
+                else if (GG.abilities[i].type == "Water")
+                {
+                    buttons[i].GetComponent<Image>().color = Color.green;
+                }
+                else if (GG.abilities[i].type == "Grass")
+                {
+                    buttons[i].GetComponent<Image>().color = Color.red;
+                }
+            }
+        }
+        else if(settings.ColorBlindVal == 2)
+        {
+            GameObject[] buttons = { Button1, Button2, Button3 };
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                if (GG.abilities[i].type == "Fire")
+                {
+                    buttons[i].GetComponent<Image>().color = Color.green;
+                }
+                else if (GG.abilities[i].type == "Water")
+                {
+                    buttons[i].GetComponent<Image>().color = Color.blue;
+                }
+                else if (GG.abilities[i].type == "Grass")
+                {
+                    buttons[i].GetComponent<Image>().color = Color.red;
+                }
+            }
+        }
+        else
+        {
+            GameObject[] buttons = { Button1, Button2, Button3 };
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                if (GG.abilities[i].type == "Fire")
+                {
+                    buttons[i].GetComponent<Image>().color = Color.red;
+                }
+                else if (GG.abilities[i].type == "Water")
+                {
+                    buttons[i].GetComponent<Image>().color = Color.blue;
+                }
+                else if (GG.abilities[i].type == "Grass")
+                {
+                    buttons[i].GetComponent<Image>().color = Color.green;
+                }
+            }
+        }
+    }
 
     private void UpdateUI(Entity SIMP, Entity GG) {
         //player
         mHealth.SetText(GG.Health + "/" + MaxPlayer);
         mDefense.SetText(""+GG.Defense);
         mAttack.SetText(""+GG.Attack);
-
-        //enely
+        ColorChange(GG);
+        //enemy
         EnemyHealth.SetText("Health: " + SIMP.Health + "/" + MaxEnemy);
         EnemyType.SetText("Type: " + SIMP.Type);
 
@@ -520,19 +581,19 @@ public class LevelScript : MonoBehaviour
     void Start()
     {
 
-                FloatingTxt = FloatingText.GetComponent<Animator>();
+            FloatingTxt = FloatingText.GetComponent<Animator>();
                 
-                Skely = ObjrctSkely.GetComponent<Animator>();
+            Skely = ObjrctSkely.GetComponent<Animator>();
 
-                SkelyPlayer = Player.GetComponent<Animator>();
+            SkelyPlayer = Player.GetComponent<Animator>();
 
+        settings = controller.GetComponent<Settings>();
+                mTitle.SetText(Level.ToString());
 
-                 mTitle.SetText(Level.ToString());
+            GenerateAbilities();
 
-                GenerateAbilities();
-
-                GenerateStats();
-                GenerateEnemyStats();
+            GenerateStats();
+            GenerateEnemyStats();
 
     }
 

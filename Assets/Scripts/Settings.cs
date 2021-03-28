@@ -5,6 +5,7 @@ using TMPro;
 
 public class Settings : MonoBehaviour
 {
+    //This is a work in progress and will eventually be done with a vector instead of individual things but for now this will do.
     public TextMeshProUGUI scaleTutorial;
     public TextMeshProUGUI DisabilityTitle;
     public TextMeshProUGUI ColorBlindText;
@@ -60,6 +61,7 @@ public class Settings : MonoBehaviour
     }
     void Start()
     {
+        ColorBlindVal = 5;
         /*fontSizeTitles = 90;
         fontSizeButtons = 60;
         scaleTutorial.fontSize = 90;
@@ -89,5 +91,10 @@ public class Settings : MonoBehaviour
         Ability1.fontSize = fontSizeButtons;
         Ability2.fontSize = fontSizeButtons;
         Ability3.fontSize = fontSizeButtons;
+    }
+    public int ColorBlindVal=5;
+    public void HandleDropdown(int val)
+    {
+        ColorBlindVal = val;
     }
 }
