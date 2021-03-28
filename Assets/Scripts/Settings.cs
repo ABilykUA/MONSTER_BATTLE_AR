@@ -92,7 +92,7 @@ public class Settings : MonoBehaviour
         Ability2.fontSize = fontSizeButtons;
         Ability3.fontSize = fontSizeButtons;
     }
-    public int ColorBlindVal=5;
+    public int ColorBlindVal;
     public void HandleDropdown(int val)
     {
         ColorBlindVal = val;

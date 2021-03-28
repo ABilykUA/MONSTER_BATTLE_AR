@@ -145,47 +145,67 @@ public class LevelScript : MonoBehaviour
     private void ColorChange(Entity GG)
     {
         Debug.Log("ColorBlindVal "+settings.ColorBlindVal);
-        if (settings.ColorBlindVal == 1)
+        GameObject[] buttons = { Button1, Button2, Button3 };
+        if (settings.ColorBlindVal == 0)
         {
-            GameObject[] buttons = { Button1, Button2, Button3 };
+            
             for (int i = 0; i < buttons.Length; i++)
             {
                 if (GG.abilities[i].type == "Fire")
                 {
-                    buttons[i].GetComponent<Image>().color = Color.blue;
+                    buttons[i].GetComponent<Image>().color = new Color(255,192,0);
                 }
                 else if (GG.abilities[i].type == "Water")
                 {
-                    buttons[i].GetComponent<Image>().color = Color.green;
+                    buttons[i].GetComponent<Image>().color = new Color(0, 115, 255);
                 }
                 else if (GG.abilities[i].type == "Grass")
                 {
-                    buttons[i].GetComponent<Image>().color = Color.red;
+                    buttons[i].GetComponent<Image>().color = new Color(255,0,0);
                 }
             }
         }
-        else if(settings.ColorBlindVal == 2)
+        else if(settings.ColorBlindVal == 1)
         {
-            GameObject[] buttons = { Button1, Button2, Button3 };
+            
             for (int i = 0; i < buttons.Length; i++)
             {
                 if (GG.abilities[i].type == "Fire")
                 {
-                    buttons[i].GetComponent<Image>().color = Color.green;
+                    buttons[i].GetComponent<Image>().color = new Color(48, 255, 0);
                 }
                 else if (GG.abilities[i].type == "Water")
                 {
-                    buttons[i].GetComponent<Image>().color = Color.blue;
+                    buttons[i].GetComponent<Image>().color = new Color(255, 0, 221);
                 }
                 else if (GG.abilities[i].type == "Grass")
                 {
-                    buttons[i].GetComponent<Image>().color = Color.red;
+                    buttons[i].GetComponent<Image>().color = new Color(255, 0, 0);
+                }
+            }
+        }
+        else if (settings.ColorBlindVal == 2)
+        {
+
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                if (GG.abilities[i].type == "Fire")
+                {
+                    buttons[i].GetComponent<Image>().color = new Color(255, 0, 0);
+                }
+                else if (GG.abilities[i].type == "Water")
+                {
+                    buttons[i].GetComponent<Image>().color = new Color(0, 255, 58);
+                }
+                else if (GG.abilities[i].type == "Grass")
+                {
+                    buttons[i].GetComponent<Image>().color = new Color(0, 38, 255);
                 }
             }
         }
         else
         {
-            GameObject[] buttons = { Button1, Button2, Button3 };
+            
             for (int i = 0; i < buttons.Length; i++)
             {
                 if (GG.abilities[i].type == "Fire")
