@@ -103,6 +103,10 @@ public class LevelScript : MonoBehaviour
 
     private double MaxEnemy;
 
+    private int MaxUses1;
+    private int MaxUses2;
+    private int MaxUses3;
+
     // gaind during lvl 
     private int GaindHealth = 0 ;
 
@@ -131,9 +135,9 @@ public class LevelScript : MonoBehaviour
 
     private void GenerateAbilities()
     {
-        abilities[0] = new Abilities(40, "Fire", 0, 10, "Fire bolt", "Grass");
-        abilities[1] = new Abilities(40, "Water", 0, 15, "Water gun", "Fire");
-        abilities[2] = new Abilities(35, "Grass", 0, 10, "Grass slap", "Water");
+        abilities[0] = new Abilities(40, "Fire", 0, 5, "Fire bolt", "Grass");
+        abilities[1] = new Abilities(40, "Water", 0, 5, "Water gun", "Fire");
+        abilities[2] = new Abilities(35, "Grass", 0, 5, "Grass slap", "Water");
         abilities[3] = new Abilities(10, "Fire", 0, 10, "Flame Wheel", "Grass");
         abilities[4] = new Abilities(70, "Water", 15, 5, "Tsunami", "Fire");
         abilities[5] = new Abilities(50, "Grass", 0, 10, "Branch slam", "Water");
@@ -144,7 +148,7 @@ public class LevelScript : MonoBehaviour
 
     private void ColorChange(Entity GG)
     {
-        Debug.Log("ColorBlindVal "+settings.ColorBlindVal);
+        
         if (settings.ColorBlindVal == 1)
         {
             GameObject[] buttons = { Button1, Button2, Button3 };
@@ -234,6 +238,10 @@ public class LevelScript : MonoBehaviour
         WAttack.SetText("Attack: +" + GainAttack);
         WDefense.SetText("Defense: +" + GainDefence);
 
+        //Current Abilities
+        Ability1.text = GG.abilities[0].name + "   " + GG.abilities[0].uses + "/" + MaxUses1;
+        Ability2.text = GG.abilities[1].name + "   " + GG.abilities[1].uses + "/" + MaxUses2;
+        Ability3.text = GG.abilities[2].name + "   " + GG.abilities[2].uses + "/" + MaxUses3;
 
         //newAbility
 
@@ -251,39 +259,41 @@ public class LevelScript : MonoBehaviour
 
     public void AttackSlot1()
     {
-
+        
         Attacking(GG.abilities[0]);
-
- 
+        if (GG.abilities[0].uses > 0)
+            GG.abilities[0].uses -= 1;
     }
     public void AttackSlot2()
     {
 
         Attacking(GG.abilities[1]);
-
-      
+        if (GG.abilities[1].uses > 0)
+            GG.abilities[1].uses -= 1;
     }
     public void AttackSlot3()
     {
 
-
-        
-        
         Attacking(GG.abilities[2]);
-
-   
+        if(GG.abilities[2].uses > 0)
+            GG.abilities[2].uses -= 1;
+            
+        
     }
 
     private void Attacking(Abilities ability)
     {
         //animations
-
         SkelyPlayer.SetTrigger("Attack");
 
 
         double damage;
-
-        if (SIMP.Type == ability.type)
+        if (ability.uses <= 0)
+        {
+            Debug.Log("Out of uses:" + EntityIsHit(3, ability, SIMP.Type, SIMP.Defense, GG.Attack));
+            SIMP.Hit(EntityIsHit(3, ability, SIMP.Type, SIMP.Defense, GG.Attack));
+        }
+        else if (SIMP.Type == ability.type)
         {
             
 
@@ -380,7 +390,7 @@ public class LevelScript : MonoBehaviour
 
     private double EntityIsHit(int damageType, Abilities ability,
         string targetType, int def, int charAttack) {
-
+        double PlusMinus = Random.Range(-5, 5);
         double modifier = (100.0 / (100.0 + def));
         int randomizer = Random.Range(0, 101);
         double crit = 1.0;
@@ -406,12 +416,16 @@ public class LevelScript : MonoBehaviour
             case 2:
                 if(ability.counter == targetType)
                 {
-                    return ((((ability.damage * charAttack) / 100) * modifier)*2)*crit;
+                    return (((((ability.damage + PlusMinus) * charAttack) / 100) * modifier)*2)*crit;
                 }
                 else
                 {
-                    return (((ability.damage * charAttack) / 100) * modifier)*crit;
+                    return ((((ability.damage + PlusMinus) * charAttack) / 100) * modifier)*crit;
                 }
+
+            case 3:
+                return (((10 * charAttack) / 100) * modifier) * crit;
+            
             default:
                 Debug.Log("WHERE IS THE DAMAGE??");
                 return 0;
@@ -434,6 +448,7 @@ public class LevelScript : MonoBehaviour
                 
                 GG = new Entity(H, D, A, TypeMe, abilities[i], EmptyAbility);
                 Ability1.text = abilities[i].name;
+                MaxUses1 = abilities[i].uses;
                 break;
             }
         }
@@ -537,6 +552,7 @@ public class LevelScript : MonoBehaviour
                         GG.SetAbilities(newAbility, 1);
                         added = true;
                         Ability2.text = newAbility.name;
+                        MaxUses2 = newAbility.uses;
 
                     }
                     else if (GG.abilities[2].name == " " && added != true)
@@ -546,7 +562,7 @@ public class LevelScript : MonoBehaviour
                         GG.SetAbilities(newAbility, 2);
                         added = true;
                         Ability3.text = newAbility.name;
-                        
+                        MaxUses3 = newAbility.uses;
                     }
                     else 
                     { 
