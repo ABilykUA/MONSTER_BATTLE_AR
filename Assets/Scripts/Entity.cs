@@ -6,12 +6,12 @@ public class Entity : Object{
 
     public int Attack { get; set; }
     public int Defense { get; set; }
-    public int Health { get; set; }
+    public double Health { get; set; }
     public string Type { get; set; }
     public Abilities[] abilities = new Abilities[3];
 
 
-    public Entity(int H, int D, int A, string T, Abilities Abilities, Abilities emptyA) {
+    public Entity(double H, int D, int A, string T, Abilities Abilities, Abilities emptyA) {
 
         this.Attack = A;
         this.Defense = D;
@@ -23,7 +23,7 @@ public class Entity : Object{
 
     }
 
-    public void Hit(int value)
+    public void Hit(double value)
     {
         Health -= value;
     }
