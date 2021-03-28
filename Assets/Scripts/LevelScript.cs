@@ -642,6 +642,8 @@ public class LevelScript : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         UI.SetActive(true);
+ 
+
     }
 
 
