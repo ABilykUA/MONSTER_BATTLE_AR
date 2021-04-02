@@ -23,6 +23,8 @@ public class LevelScript : MonoBehaviour
     public GameObject Button2;
     public GameObject Button3;
 
+    public GameObject Boss;
+    public GameObject Skelly;
 
     public GameObject replaceAbilityButton;
     public GameObject replaceAbility1;
@@ -130,19 +132,21 @@ public class LevelScript : MonoBehaviour
     private Settings settings;
     public GameObject controller;
 
+    
+
 
 
 
     private void GenerateAbilities()
     {
-        abilities[0] = new Abilities(40, "Fire", 0, 15, "Fire bolt", "Grass");
-        abilities[1] = new Abilities(40, "Water", 0, 15, "Water gun", "Fire");
-        abilities[2] = new Abilities(35, "Grass", 0, 15, "Grass slap", "Water");
-        abilities[3] = new Abilities(35, "Fire", 0, 10, "Flame Wheel", "Grass");
-        abilities[4] = new Abilities(70, "Water", 5, 5, "Tsunami", "Fire");
-        abilities[5] = new Abilities(50, "Grass", 0, 10, "Branch slam", "Water");
+        abilities[0] = new Abilities(40, "Fire", 0, 30, "Fire bolt", "Grass");
+        abilities[1] = new Abilities(40, "Water", 0, 30, "Water gun", "Fire");
+        abilities[2] = new Abilities(35, "Grass", 0, 30, "Grass slap", "Water");
+        abilities[3] = new Abilities(35, "Fire", 0, 30, "Flame Wheel", "Grass");
+        abilities[4] = new Abilities(70, "Water", 5, 10, "Tsunami", "Fire");
+        abilities[5] = new Abilities(50, "Grass", 0, 20, "Branch slam", "Water");
         abilities[6] = new Abilities(0, "Grass", 50, 5, "Synthesis", "Water");
-        abilities[7] = new Abilities(90, "Fire", -10, 5, "Flare Blitz", "Grass");
+        abilities[7] = new Abilities(90, "Fire", -10, 10, "Flare Blitz", "Grass");
     }
 
 
@@ -310,10 +314,14 @@ public class LevelScript : MonoBehaviour
         double damage;
         if (ability.uses <= 0)
         {
+            damage = EntityIsHit(3, ability, SIMP.Type, SIMP.Defense, GG.Attack);
             Debug.Log("Out of uses:" + EntityIsHit(3, ability, SIMP.Type, SIMP.Defense, GG.Attack));
-            SIMP.Hit(EntityIsHit(3, ability, SIMP.Type, SIMP.Defense, GG.Attack));
+            EnemyGetDamage.SetText("-" + (int)damage);
+            FloatingTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+            SIMP.Hit(damage);
+
         }
-        else if (SIMP.Type == ability.type)
+        else if (ability.uses > 0 && SIMP.Type == ability.type)
         {
             
 
@@ -382,6 +390,8 @@ public class LevelScript : MonoBehaviour
         {
             damage = EntityIsHit(1, temp, GG.Type, GG.Defense, SIMP.Attack);
             Debug.Log("EnemyAttack: Immune");
+            HeroGetDamage.SetText("- Immune");
+            PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
             GG.Hit(damage);
 
         }
@@ -389,7 +399,6 @@ public class LevelScript : MonoBehaviour
         {
             damage = EntityIsHit(2, temp, GG.Type, GG.Defense, SIMP.Attack);
             Debug.Log("Enemy(AbilityType/MyType): " + damage + " " + temp.type + GG.Type);
-
 
             HeroGetDamage.SetText("-" + (int)damage);
             PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
@@ -402,9 +411,9 @@ public class LevelScript : MonoBehaviour
                 {
                     SIMP.Health += ((MaxEnemy * temp.heal) / 100 );
                     //checks if you overhealed so it sets your Health to your max Health instead
-                    if (SIMP.Health > MaxPlayer)
+                    if (SIMP.Health > MaxEnemy)
                     {
-                        SIMP.Health = MaxPlayer;
+                        SIMP.Health = MaxEnemy;
                     }
                 }
             }
@@ -451,6 +460,7 @@ public class LevelScript : MonoBehaviour
                 }
 
             case 3:
+
                 return (((10 * charAttack) / 100) * modifier) * crit;
             
             default:
@@ -488,7 +498,7 @@ public class LevelScript : MonoBehaviour
         string TypeEnemy = Type[Random.Range(0, Type.Length)];
         for (int i = 0; i < 6; i++)
         {
-            if (TypeEnemy != TypeMe)
+            if (TypeEnemy != TypeMe && TypeEnemy == GG.abilities[0].counter)
             {
                 break;
             }
@@ -517,64 +527,75 @@ public class LevelScript : MonoBehaviour
     {
         Abilities tempA;
         string TypeEnemy = Type[Random.Range(0, Type.Length)];
-
-        GainAttack = Random.Range(20, 31) * (Level - 1);
-
-        GainDefence = Random.Range(5, 11) * (Level-1);
-
-        GaindHealth = Random.Range(70, 101) * (Level - 1);
-
-
-        int A = Random.Range(50, 71) + GainAttack;
-        int D = Random.Range(20, 41) + GainDefence;
-        int H = Random.Range(300, 401) + GaindHealth;
-
-        if (Level == 2)
+        //boss fight every 5 levels
+        if (Level % 5 == 0)
         {
-            for (int i = 0; i < abilities.Length; i++)
-            {
-                tempA = abilities[Random.Range(0, abilities.Length)];
-                if (tempA.type == TypeEnemy && tempA.damage != 0)
-                {
-                    SIMP = new Entity(H, D, A, TypeEnemy, abilities[i], EmptyAbility);
-                }
-            }
-            for (int i = 0; i < abilities.Length; i++)
-            {
-                tempA = abilities[Random.Range(0, abilities.Length)];
-                if (tempA.type == TypeEnemy && tempA.damage != 0)
-                {
-                    SIMP.SetAbilities(tempA, 1);
-                }
-            }
+            Boss.SetActive(true);
+            Skelly.SetActive(false);
         }
         else
         {
-            for (int i = 0; i < abilities.Length; i++)
-            {
-                tempA = abilities[Random.Range(0, abilities.Length)];
-                if (tempA.type == TypeEnemy && tempA.damage != 0)
-                {
-                    SIMP = new Entity(H, D, A, TypeEnemy, abilities[i], EmptyAbility);
-                }
-            }
-            for (int i = 0; i < abilities.Length; i++)
-            {
-                tempA = abilities[Random.Range(0, abilities.Length)];
-                if (tempA.type == TypeEnemy && tempA.damage != 0)
-                {
-                    SIMP.SetAbilities(tempA, 1);
-                }
-            }
-            for (int i = 0; i < abilities.Length; i++)
-            {
-                tempA = abilities[Random.Range(0, abilities.Length)];
-                if (tempA.type == TypeEnemy && tempA.damage != 0)
-                {
-                    SIMP.SetAbilities(tempA, 2);
-                }
-            }
+            Boss.SetActive(false);
+            Skelly.SetActive(true);
         }
+            GainAttack = Random.Range(20, 31) * (Level - 1);
+
+            GainDefence = Random.Range(5, 11) * (Level - 1);
+
+            GaindHealth = Random.Range(70, 101) * (Level - 1);
+
+
+            int A = Random.Range(50, 71) + GainAttack;
+            int D = Random.Range(20, 41) + GainDefence;
+            int H = Random.Range(300, 401) + GaindHealth;
+            //level 2 enemies have 2 abilities
+            if (Level == 2)
+            {
+                for (int i = 0; i < abilities.Length; i++)
+                {
+                    tempA = abilities[Random.Range(0, abilities.Length)];
+                    if (tempA.type == TypeEnemy && tempA.damage != 0)
+                    {
+                        SIMP = new Entity(H, D, A, TypeEnemy, abilities[i], EmptyAbility);
+                    }
+                }
+                for (int i = 0; i < abilities.Length; i++)
+                {
+                    tempA = abilities[Random.Range(0, abilities.Length)];
+                    if (tempA.type == TypeEnemy && tempA.damage != 0 && tempA.name != SIMP.abilities[0].name)
+                    {
+                        SIMP.SetAbilities(tempA, 1);
+                    }
+                }
+            }
+            else
+            {
+            //level 3 and above enemies have 3 abilities
+                for (int i = 0; i < abilities.Length; i++)
+                {
+                    tempA = abilities[Random.Range(0, abilities.Length)];
+                    if (tempA.type == TypeEnemy && tempA.damage != 0)
+                    {
+                        SIMP = new Entity(H, D, A, TypeEnemy, abilities[i], EmptyAbility);
+                    }
+                }
+                for (int i = 0; i < abilities.Length; i++)
+                {
+                    tempA = abilities[Random.Range(0, abilities.Length)];
+                    if (tempA.type == TypeEnemy && tempA.damage != 0 && tempA.name != SIMP.abilities[0].name)
+                    {
+                        SIMP.SetAbilities(tempA, 1);
+                    }
+                }
+                for (int i = 0; i < abilities.Length; i++)
+                {
+                    tempA = abilities[Random.Range(0, abilities.Length)];
+                    if (tempA.type == TypeEnemy && tempA.damage != 0 && tempA.name != SIMP.abilities[0].name && tempA.name != SIMP.abilities[1].name)
+                    {
+                        SIMP.SetAbilities(tempA, 2);
+                    }
+                }
+            }
         MaxEnemy = SIMP.Health;
     }
     private void AddStats() {
@@ -673,6 +694,7 @@ public class LevelScript : MonoBehaviour
             SkelyPlayer.SetBool("IsDead", true);
 
             SwitchCounter = 3;
+            GG.Health = MaxEnemy;
         }
 
     }
@@ -718,7 +740,6 @@ public class LevelScript : MonoBehaviour
             Ability3.text = newAbility.name;
             NextLevel();
         }
-        SwitchCounter = 1;
         
     }
 
@@ -749,7 +770,6 @@ public class LevelScript : MonoBehaviour
 
         GenerateAbilities();
 
-
         GenerateStats();
         GenerateEnemyStats();
 
@@ -768,7 +788,6 @@ public class LevelScript : MonoBehaviour
             case 1:
                 //GG trurn
                 WinOrLoseCheck();
-                
                 break;
 
 

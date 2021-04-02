@@ -1641,6 +1641,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 189875113}
   m_CullTransparentMesh: 0
+--- !u!1 &190763680 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8772887060046076249, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+    type: 3}
+  m_PrefabInstance: {fileID: 1035791035}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &190763681 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8772887060046235001, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+    type: 3}
+  m_PrefabInstance: {fileID: 1035791035}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &190763682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190763680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c73c1ab94e28d244827af556dca1ed2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Use:
+    Filter: 0
+    IgnoreStartedOverGui: 1
+    RequiredFingerCount: 0
+    RequiredMouseButtons: 0
+    RequiredSelectable: {fileID: 0}
+  Camera: {fileID: 0}
+  Relative: 0
+  Sensitivity: 1
+  Damping: -1
+  remainingScale: {x: 0, y: 0, z: 0}
 --- !u!1 &198021446
 GameObject:
   m_ObjectHideFlags: 0
@@ -4043,6 +4078,7 @@ Transform:
   m_Children:
   - {fileID: 718373275}
   - {fileID: 646363545}
+  - {fileID: 190763681}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6798,6 +6834,95 @@ RectTransform:
   m_AnchoredPosition: {x: -0.000030517578, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &1035791035
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 518797184}
+    m_Modifications:
+    - target: {fileID: 8772887060046076249, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_Name
+      value: basemesh_FlyingShrimpMonsterV2 Red
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772887060046076249, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772887060046235001, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772887060046235001, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772887060046235001, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772887060046235001, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772887060046235001, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772887060046235001, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.197
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772887060046235001, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772887060046235001, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772887060046235001, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772887060046235001, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772887060046235001, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772887060046235001, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772887060046235001, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8772887060046235001, guid: 2e0bb55abeb282845b062cbd9d1e9124,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2e0bb55abeb282845b062cbd9d1e9124, type: 3}
 --- !u!1 &1073725212
 GameObject:
   m_ObjectHideFlags: 0
@@ -7000,6 +7125,8 @@ MonoBehaviour:
   Button1: {fileID: 1876259691}
   Button2: {fileID: 155000549}
   Button3: {fileID: 1765140903}
+  Boss: {fileID: 190763680}
+  Skelly: {fileID: 646363546}
   replaceAbilityButton: {fileID: 215079156}
   replaceAbility1: {fileID: 806213840}
   replaceAbility2: {fileID: 296354636}
