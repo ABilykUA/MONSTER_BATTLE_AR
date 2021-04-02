@@ -613,7 +613,7 @@ public class LevelScript : MonoBehaviour
         int A = SIMP.Attack + GainAttack;
         int D = SIMP.Defense + GainDefence;
         int H = (int)(SIMP.Health + GaindHealth);
-        
+
         if (Level == 2)
         {
             for (int i = 0; i < abilities.Length; i++)
@@ -621,7 +621,7 @@ public class LevelScript : MonoBehaviour
                 tempA = abilities[i];
                 if (tempA.type == TypeEnemy && tempA.damage != 0)
                 {
-                    SIMP = new Entity(H, D, A, TypeEnemy,counterType, abilities[i], EmptyAbility);
+                    SIMP = new Entity(H, D, A, TypeEnemy, counterType, abilities[i], EmptyAbility);
                     break;
                 }
             }
@@ -634,15 +634,16 @@ public class LevelScript : MonoBehaviour
                     break;
                 }
             }
+        }
         else
         {
             //level 3 and above enemies have 3 abilities
-			for (int i = 0; i < abilities.Length; i++)
-            { 
+            for (int i = 0; i < abilities.Length; i++)
+            {
                 tempA = abilities[i];
                 if (tempA.type == TypeEnemy && tempA.damage != 0)
                 {
-                    SIMP = new Entity(H, D, A, TypeEnemy,counterType, abilities[i], EmptyAbility);
+                    SIMP = new Entity(H, D, A, TypeEnemy, counterType, abilities[i], EmptyAbility);
                     break;
                 }
             }
@@ -664,7 +665,8 @@ public class LevelScript : MonoBehaviour
                     break;
                 }
             }
-        MaxEnemy = SIMP.Health;
+            MaxEnemy = SIMP.Health;
+        }
     }
     private void AddStats() {
 
