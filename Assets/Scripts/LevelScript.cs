@@ -43,7 +43,7 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI mHealth;
     public TextMeshProUGUI mAttack;
     public TextMeshProUGUI mDefense;
-    
+
     //Level
     public TextMeshProUGUI mTitle;
 
@@ -71,12 +71,15 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI AUses;
 
     public TextMeshPro EnemyGetDamage;
+    public TextMeshPro BossGetDamage;
+
     public TextMeshProUGUI HeroGetDamage;
 
 
     //animations 
     public GameObject PopupHeroText;
     public GameObject FloatingText;
+    public GameObject PopupBossText;
 
     public GameObject ObjrctSkely;
     public GameObject Player;
