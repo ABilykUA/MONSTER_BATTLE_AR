@@ -75,8 +75,17 @@ public class LevelScript : MonoBehaviour
 
     public TextMeshProUGUI HeroGetDamage;
 
+    //Backpack Heals
+    public GameObject potion1;
+    public GameObject potion2;
+    public GameObject potion3;
+    public GameObject potion4;
 
-    //animations 
+    private int potion1Uses = 2;//change the initial values to 0
+    private int potion2Uses = 2;
+    private int potion3Uses = 2;
+    private int potion4Uses = 2;
+    //animations
     public GameObject PopupHeroText;
     public GameObject FloatingText;
     public GameObject PopupBossText;
@@ -284,6 +293,55 @@ public class LevelScript : MonoBehaviour
 
 
 
+    }
+
+    public void HealthPotions(int potionType)
+    {
+       
+        switch (potionType)
+        {
+            case 1:
+                if (potion1Uses > 0)
+                {
+                    HeroGetDamage.SetText("+" + 20);
+                    PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+                    GG.Health += 20;
+                    potion1Uses--;
+                    SwitchCounter = 2;
+                }
+                break;
+            case 2:
+                if (potion2Uses > 0)
+                {
+                    HeroGetDamage.SetText("+" + 60);
+                    PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+                    GG.Health += 60;
+                    potion2Uses--;
+                    SwitchCounter = 2;
+                }
+                break;
+            case 3:
+                if (potion3Uses > 0)
+                {
+                    HeroGetDamage.SetText("+" + 120);
+                    PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+                    GG.Health += 120;
+                    potion3Uses--;
+                    SwitchCounter = 2;
+                }
+                break;
+            case 4:
+                if (potion4Uses > 0)
+                {
+                    HeroGetDamage.SetText("+" + 200);
+                    PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+                    GG.Health += 200;
+                    potion4Uses--;
+                    SwitchCounter = 2;
+                }
+                break;
+
+        }
     }
 
     public void AttackSlot1()
