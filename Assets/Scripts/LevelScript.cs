@@ -85,6 +85,11 @@ public class LevelScript : MonoBehaviour
     private int potion2Uses = 2;
     private int potion3Uses = 2;
     private int potion4Uses = 2;
+
+    public TextMeshProUGUI potion1text;
+    public TextMeshProUGUI potion2text;
+    public TextMeshProUGUI potion3text;
+    public TextMeshProUGUI potion4text;
     //animations
     public GameObject PopupHeroText;
     public GameObject FloatingText;
@@ -304,51 +309,82 @@ public class LevelScript : MonoBehaviour
 
     public void HealthPotions(int potionType)
     {
-       
+        
         switch (potionType)
         {
             case 1:
                 if (potion1Uses > 0)
                 {
-                    HeroGetDamage.SetText("+" + 20);
-                    PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
-                    GG.Health += 20;
-                    potion1Uses--;
-                    SwitchCounter = 2;
+                    if (MaxPlayer >= (GG.Health + 100))
+                    {
+                        GG.Health += 100;
+                        potion1Uses--;
+                        SwitchCounter = 2;
+                    }
+                    else
+                    {
+                        GG.Health = MaxPlayer;
+                        potion1Uses--;
+                        SwitchCounter = 2;
+                    }
                 }
                 break;
             case 2:
                 if (potion2Uses > 0)
                 {
-                    HeroGetDamage.SetText("+" + 60);
-                    PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
-                    GG.Health += 60;
-                    potion2Uses--;
-                    SwitchCounter = 2;
+                    if (MaxPlayer >= (GG.Health + 180))
+                    {
+                        GG.Health += 180;
+                        potion2Uses--;
+                        SwitchCounter = 2;
+                    }
+                    else
+                    {
+                        GG.Health = MaxPlayer;
+                        potion2Uses--;
+                        SwitchCounter = 2;
+                    }
                 }
                 break;
             case 3:
                 if (potion3Uses > 0)
                 {
-                    HeroGetDamage.SetText("+" + 120);
-                    PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
-                    GG.Health += 120;
-                    potion3Uses--;
-                    SwitchCounter = 2;
+                    if (MaxPlayer >= (GG.Health + 260))
+                    {
+                        GG.Health += 260;
+                        potion3Uses--;
+                        SwitchCounter = 2;
+                    }
+                    else
+                    {
+                        GG.Health = MaxPlayer;
+                        potion3Uses--;
+                        SwitchCounter = 2;
+                    }
                 }
                 break;
             case 4:
                 if (potion4Uses > 0)
                 {
-                    HeroGetDamage.SetText("+" + 200);
-                    PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
-                    GG.Health += 200;
-                    potion4Uses--;
-                    SwitchCounter = 2;
+                    if (MaxPlayer >= (GG.Health + 340))
+                    {
+                        GG.Health += 340;
+                        potion4Uses--;
+                        SwitchCounter = 2;
+                    }
+                    else
+                    {
+                        GG.Health = MaxPlayer;
+                        potion4Uses--;
+                        SwitchCounter = 2;
+                    }
                 }
                 break;
-
         }
+        potion1text.text = "" + potion1Uses;
+        potion2text.text = "" + potion2Uses;
+        potion3text.text = "" + potion3Uses;
+        potion4text.text = "" + potion4Uses;
     }
 
     public void AttackSlot1()
@@ -919,7 +955,10 @@ public class LevelScript : MonoBehaviour
         GenerateAbilities();
         GenerateStats();
         GenerateEnemyStats();
-
+        potion1text.text = "" + potion1Uses;
+        potion2text.text = "" + potion2Uses;
+        potion3text.text = "" + potion3Uses;
+        potion4text.text = "" + potion4Uses;
 
         UI.SetActive(true);
 
