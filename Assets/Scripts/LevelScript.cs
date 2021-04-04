@@ -42,6 +42,7 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI mHealth;
     public TextMeshProUGUI mAttack;
     public TextMeshProUGUI mDefense;
+    public TextMeshProUGUI mType;
 
     //Level
     public TextMeshProUGUI mTitle;
@@ -85,7 +86,14 @@ public class LevelScript : MonoBehaviour
     private int potion2Uses = 2;
     private int potion3Uses = 2;
     private int potion4Uses = 2;
-    
+
+	// potions
+    public TextMeshProUGUI potion1text;
+    public TextMeshProUGUI potion2text;
+    public TextMeshProUGUI potion3text;
+    public TextMeshProUGUI potion4text;
+
+
     //animations
     public GameObject PopupHeroText;
     public GameObject PopupHeroHealText;
@@ -283,6 +291,7 @@ public class LevelScript : MonoBehaviour
         LmHealth.SetText("Health: " + MaxPlayer);
         LmAttack.SetText("Attack: " + GG.Attack);
         LmDefense.SetText("Defense: " + GG.Defense);
+        mType.SetText("Your Type: " + GG.Type);
 
         //WUI
         WHealth.SetText("Health: +" + GaindHealth);
@@ -295,8 +304,6 @@ public class LevelScript : MonoBehaviour
         Ability3.text = GG.abilities[2].name + "   " + GG.abilities[2].uses + "/" + GG.abilities[2].MaxUses;
 
         //newAbility
-
-
         ADamage.SetText("Damage: " + newAbility.damage);
         AType.SetText("Type: " + newAbility.type);
         AName.SetText("Name: " + newAbility.name);
@@ -310,52 +317,103 @@ public class LevelScript : MonoBehaviour
 
     public void HealthPotions(int potionType)
     {
-       
+        
         switch (potionType)
         {
             case 1:
                 if (potion1Uses > 0)
                 {
-                    
-                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 20);
+
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 100);
                     PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
-                    GG.Health += 20;
-                    potion1Uses--;
-                    SwitchCounter = 2;
+                  
+                    if (MaxPlayer >= (GG.Health + 100))
+                    {
+                        GG.Health += 100;
+                        potion1Uses--;
+                        SwitchCounter = 2;
+                    }
+                    else
+                    {
+                        GG.Health = MaxPlayer;
+                        potion1Uses--;
+                        SwitchCounter = 2;
+                    }
+					
                 }
                 break;
             case 2:
                 if (potion2Uses > 0)
                 {
-                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 60);
+
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 180);
                     PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
-                    GG.Health += 60;
-                    potion2Uses--;
-                    SwitchCounter = 2;
+                
+                    if (MaxPlayer >= (GG.Health + 180))
+                    {
+                        GG.Health += 180;
+                        potion2Uses--;
+                        SwitchCounter = 2;
+                    }
+                    else
+                    {
+                        GG.Health = MaxPlayer;
+                        potion2Uses--;
+                        SwitchCounter = 2;
+                    }
+
                 }
                 break;
             case 3:
                 if (potion3Uses > 0)
                 {
-                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 120);
+
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 260);
                     PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
-                    GG.Health += 120;
-                    potion3Uses--;
-                    SwitchCounter = 2;
+                
+
+                    if (MaxPlayer >= (GG.Health + 260))
+                    {
+                        GG.Health += 260;
+                        potion3Uses--;
+                        SwitchCounter = 2;
+                    }
+                    else
+                    {
+                        GG.Health = MaxPlayer;
+                        potion3Uses--;
+                        SwitchCounter = 2;
+                    }
+
                 }
                 break;
             case 4:
                 if (potion4Uses > 0)
                 {
-                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 200);
+
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 340);
                     PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
-                    GG.Health += 200;
-                    potion4Uses--;
-                    SwitchCounter = 2;
+                 
+                    if (MaxPlayer >= (GG.Health + 340))
+                    {
+                        GG.Health += 340;
+                        potion4Uses--;
+                        SwitchCounter = 2;
+                    }
+                    else
+                    {
+                        GG.Health = MaxPlayer;
+                        potion4Uses--;
+                        SwitchCounter = 2;
+                    }
+
                 }
                 break;
-
         }
+        potion1text.text = "" + potion1Uses;
+        potion2text.text = "" + potion2Uses;
+        potion3text.text = "" + potion3Uses;
+        potion4text.text = "" + potion4Uses;
     }
 
     public void AttackSlot1()
@@ -399,7 +457,7 @@ public class LevelScript : MonoBehaviour
 
             damage = EntityIsHit(3, ability, SIMP.Type, SIMP.Defense, GG.Attack);
             EnemyGetDamage.SetText("-" + (int)damage);
-            FloatingTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+            FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
             SIMP.Hit(damage);
 
             PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("");
@@ -790,6 +848,7 @@ public class LevelScript : MonoBehaviour
             {
 
             newAbility = abilities[Random.Range(0, abilities.Length - 1)];
+
             Debug.Log(newAbility.name);
                 if (newAbility.name != GG.abilities[0].name 
                 && newAbility.name != GG.abilities[1].name 
@@ -798,7 +857,7 @@ public class LevelScript : MonoBehaviour
                 Debug.Log("If exists");
                     if (GG.abilities[1].name == " ")
                     {
-                        newAbility.uses = newAbility.MaxUses;
+                        
                         //GG.abilities[1] = newAbility;
                         Debug.Log("Activate new button 1");
                         Button2.SetActive(true);
@@ -810,7 +869,7 @@ public class LevelScript : MonoBehaviour
                     }
                     else if (GG.abilities[2].name == " " && added != true)
                     {
-                        newAbility.uses = newAbility.MaxUses;
+                        
                         Debug.Log("Activate new button 2");
                         Button3.SetActive(true);
                         GG.SetAbilities(newAbility, 2);
@@ -879,7 +938,6 @@ public class LevelScript : MonoBehaviour
     }
     public void NextLevel(){
 
-        
         SwitchCounter = 1;
         VictoryRoyal.SetActive(false);
         
@@ -887,10 +945,10 @@ public class LevelScript : MonoBehaviour
         GG.Health = MaxPlayer;
         Skely.SetBool("IsDead", false);
         
-
     }
     public void ReplaceAbility(int i)
     {
+        newAbility.uses = newAbility.MaxUses;
         GG.SetAbilities(newAbility, i);
         if(i == 0)
         {
@@ -949,7 +1007,10 @@ public class LevelScript : MonoBehaviour
         GenerateAbilities();
         GenerateStats();
         GenerateEnemyStats();
-
+        potion1text.text = "" + potion1Uses;
+        potion2text.text = "" + potion2Uses;
+        potion3text.text = "" + potion3Uses;
+        potion4text.text = "" + potion4Uses;
 
         UI.SetActive(true);
 
