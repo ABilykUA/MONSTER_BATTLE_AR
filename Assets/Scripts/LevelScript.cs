@@ -18,7 +18,6 @@ public class LevelScript : MonoBehaviour
 
     public GameObject DefeatUI;
 
-
     public GameObject Button1;
     public GameObject Button2;
     public GameObject Button3;
@@ -81,12 +80,15 @@ public class LevelScript : MonoBehaviour
     public GameObject potion3;
     public GameObject potion4;
 
-    private int potion1Uses = 2;//change the initial values to 0
+    //change the initial values to 0
+    private int potion1Uses = 2;
     private int potion2Uses = 2;
     private int potion3Uses = 2;
     private int potion4Uses = 2;
+    
     //animations
     public GameObject PopupHeroText;
+    public GameObject PopupHeroHealText;
     public GameObject FloatingText;
 
 
@@ -99,7 +101,8 @@ public class LevelScript : MonoBehaviour
 
     private Animator FloatingTxt;
     private Animator PopupHeroTxt;
-
+    private Animator PopupHeroAnimation;
+    private Animator BossAnimator;
 
 
     //All Abilities
@@ -114,6 +117,7 @@ public class LevelScript : MonoBehaviour
 
     //max stats
     private double MaxPlayer;
+
 
     private double MaxEnemy;
 
@@ -148,6 +152,7 @@ public class LevelScript : MonoBehaviour
 
     private void GenerateAbilities()
     {
+    
         abilities[0] = new Abilities(40, "Fire", 0, 15, "Fire bolt", "Grass");
         abilities[1] = new Abilities(40, "Water", 0, 15, "Water gun", "Fire");
         abilities[2] = new Abilities(35, "Grass", 0, 15, "Grass slap", "Water");
@@ -158,6 +163,7 @@ public class LevelScript : MonoBehaviour
         abilities[7] = new Abilities(50, "Fire", 5, 10, "Flare Blitz", "Grass");
         abilities[8] = new Abilities(50, "Grass", 5, 10, "Solar Beam", "Water");
         abilities[9] = new Abilities(80, "Water", 5, 5, "Wave Force", "Fire");
+    
     }
 
 
@@ -310,8 +316,9 @@ public class LevelScript : MonoBehaviour
             case 1:
                 if (potion1Uses > 0)
                 {
-                    HeroGetDamage.SetText("+" + 20);
-                    PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+                    
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 20);
+                    PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
                     GG.Health += 20;
                     potion1Uses--;
                     SwitchCounter = 2;
@@ -320,8 +327,8 @@ public class LevelScript : MonoBehaviour
             case 2:
                 if (potion2Uses > 0)
                 {
-                    HeroGetDamage.SetText("+" + 60);
-                    PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 60);
+                    PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
                     GG.Health += 60;
                     potion2Uses--;
                     SwitchCounter = 2;
@@ -330,8 +337,8 @@ public class LevelScript : MonoBehaviour
             case 3:
                 if (potion3Uses > 0)
                 {
-                    HeroGetDamage.SetText("+" + 120);
-                    PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 120);
+                    PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
                     GG.Health += 120;
                     potion3Uses--;
                     SwitchCounter = 2;
@@ -340,8 +347,8 @@ public class LevelScript : MonoBehaviour
             case 4:
                 if (potion4Uses > 0)
                 {
-                    HeroGetDamage.SetText("+" + 200);
-                    PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 200);
+                    PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
                     GG.Health += 200;
                     potion4Uses--;
                     SwitchCounter = 2;
@@ -353,13 +360,16 @@ public class LevelScript : MonoBehaviour
 
     public void AttackSlot1()
     {
-        
+        PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("");
+        PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
         Attacking(GG.abilities[0]);
         if (GG.abilities[0].uses > 0)
             GG.abilities[0].uses -= 1;
     }
     public void AttackSlot2()
     {
+        PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("");
+        PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
 
         Attacking(GG.abilities[1]);
         if (GG.abilities[1].uses > 0)
@@ -367,7 +377,8 @@ public class LevelScript : MonoBehaviour
     }
     public void AttackSlot3()
     {
-
+        PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("");
+        PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
         Attacking(GG.abilities[2]);
         if(GG.abilities[2].uses > 0)
             GG.abilities[2].uses -= 1;
@@ -385,10 +396,14 @@ public class LevelScript : MonoBehaviour
         double damage;
         if (ability.uses <= 0)
         {
+
             damage = EntityIsHit(3, ability, SIMP.Type, SIMP.Defense, GG.Attack);
             EnemyGetDamage.SetText("-" + (int)damage);
             FloatingTxt.Play("Base Layer.PopupHeroText", -1, 0f);
             SIMP.Hit(damage);
+
+            PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("");
+            PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
         }
         else if (ability.uses > 0 && SIMP.Type == ability.type)
         {
@@ -410,8 +425,10 @@ public class LevelScript : MonoBehaviour
                     {
                         GG.Health = MaxPlayer;
                         //change color to green
-                        EnemyGetDamage.SetText("+" + (int)heal);
-                        FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
+                        PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + (int)heal);
+                        PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
+                        
+                        
                     }
                 }
             }
@@ -424,6 +441,7 @@ public class LevelScript : MonoBehaviour
             damage = EntityIsHit(2, ability, SIMP.Type, SIMP.Defense, GG.Attack);
             
             EnemyGetDamage.SetText("-" + (int)damage);
+
             FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
 
             SIMP.Hit(damage);
@@ -439,8 +457,10 @@ public class LevelScript : MonoBehaviour
                     if (GG.Health > MaxPlayer)
                     {
                         GG.Health = MaxPlayer;
-                        EnemyGetDamage.SetText("+" + (int)heal);
-                        FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
+
+
+                        PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + (int)heal);
+                        PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
                     }
                 }
             }
@@ -453,6 +473,9 @@ public class LevelScript : MonoBehaviour
     private void EnemyAttacking()
     {
         Skely.SetTrigger("IsDamage");
+
+        BossAnimator.SetTrigger("BossTrigger");
+        
         Abilities temp;
         StartCoroutine(ExampleCoroutine());
         if (Level == 1) 
@@ -803,9 +826,12 @@ public class LevelScript : MonoBehaviour
                 if (maxCapacity)
                 {
                     //TODO needs to get the new window where the player chooses which ability to replace!!!
+
+                    
                     replaceAbilityText1.text = GG.abilities[0].name;
                     replaceAbilityText2.text = GG.abilities[1].name;
                     replaceAbilityText3.text = GG.abilities[2].name;
+
                     replaceAbilityButton.SetActive(true);
                     added = true;
                     
@@ -905,7 +931,9 @@ public class LevelScript : MonoBehaviour
     void Start()
     {
         settings = controller.GetComponent<Settings>();
-            
+
+        PopupHeroAnimation = PopupHeroHealText.GetComponent<Animator>();
+    
         FloatingTxt = FloatingText.GetComponent<Animator>();
 
         PopupHeroTxt = PopupHeroText.GetComponent<Animator>();
@@ -913,6 +941,8 @@ public class LevelScript : MonoBehaviour
         Skely = ObjrctSkely.GetComponent<Animator>();
 
         SkelyPlayer = Player.GetComponent<Animator>();
+
+        BossAnimator = Boss.GetComponent<Animator>();
 
         mTitle.SetText(Level.ToString());
 
