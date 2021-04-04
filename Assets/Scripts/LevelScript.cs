@@ -71,8 +71,8 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI AUses;
 
     public TextMeshPro EnemyGetDamage;
-    public TextMeshPro BossGetDamage;
-
+ 
+ 
     public TextMeshProUGUI HeroGetDamage;
 
     //Backpack Heals
@@ -88,7 +88,7 @@ public class LevelScript : MonoBehaviour
     //animations
     public GameObject PopupHeroText;
     public GameObject FloatingText;
-    public GameObject PopupBossText;
+
 
     public GameObject ObjrctSkely;
     public GameObject Player;
@@ -117,9 +117,8 @@ public class LevelScript : MonoBehaviour
 
     private double MaxEnemy;
 
-    private int MaxUses1;
-    private int MaxUses2;
-    private int MaxUses3;
+    private double MaxBoss;
+
 
     // gaind during lvl 
     private int GaindHealth = 0 ;
@@ -143,8 +142,6 @@ public class LevelScript : MonoBehaviour
 
     private Settings settings;
     public GameObject controller;
-
-    
 
 
 
@@ -258,7 +255,17 @@ public class LevelScript : MonoBehaviour
 
 
         //enely
-        EnemyHealth.SetText("Health: " + (int)SIMP.Health + "/" + MaxEnemy);
+        if (Level % 5 == 0)
+        {
+            EnemyHealth.SetText("Health: " + (int)SIMP.Health + "/" + MaxBoss);
+            Debug.Log(SIMP.Health + " " + MaxBoss + " " + SIMP.Type + " "  + SIMP.Attack);
+
+        }
+        else
+        {
+            EnemyHealth.SetText("Health: " + (int)SIMP.Health + "/" + MaxEnemy);
+        }
+            
 
         EnemyType.SetText("Type: " + SIMP.Type);
 
@@ -277,9 +284,9 @@ public class LevelScript : MonoBehaviour
         WDefense.SetText("Defense: +" + GainDefence);
 
         //Current Abilities
-        Ability1.text = GG.abilities[0].name + "   " + GG.abilities[0].uses + "/" + MaxUses1;
-        Ability2.text = GG.abilities[1].name + "   " + GG.abilities[1].uses + "/" + MaxUses2;
-        Ability3.text = GG.abilities[2].name + "   " + GG.abilities[2].uses + "/" + MaxUses3;
+        Ability1.text = GG.abilities[0].name + "   " + GG.abilities[0].uses + "/" + GG.abilities[0].MaxUses;
+        Ability2.text = GG.abilities[1].name + "   " + GG.abilities[1].uses + "/" + GG.abilities[1].MaxUses;
+        Ability3.text = GG.abilities[2].name + "   " + GG.abilities[2].uses + "/" + GG.abilities[2].MaxUses;
 
         //newAbility
 
@@ -290,8 +297,8 @@ public class LevelScript : MonoBehaviour
         AUses.SetText("Uses: " + newAbility.uses);
         AHeal.SetText("Heal: " + newAbility.heal+"%");
 
-
-
+        
+       
 
     }
 
@@ -372,8 +379,9 @@ public class LevelScript : MonoBehaviour
     {
         //animations
         SkelyPlayer.SetTrigger("Attack");
+        double heal;
 
-        
+
         double damage;
         if (ability.uses <= 0)
         {
@@ -381,23 +389,6 @@ public class LevelScript : MonoBehaviour
             EnemyGetDamage.SetText("-" + (int)damage);
             FloatingTxt.Play("Base Layer.PopupHeroText", -1, 0f);
             SIMP.Hit(damage);
-            //If ability heals
-            if (ability.heal > 0)
-            {
-                if (GG.Health < MaxPlayer)
-                {
-                    double heal = (MaxPlayer * ability.heal) / 100;
-                    GG.Health += heal;
-                    //checks if you overhealed so it sets your Health to your max Health instead
-                    if (GG.Health > MaxPlayer)
-                    {
-                        GG.Health = MaxPlayer;
-                        //change color to green
-                        EnemyGetDamage.SetText("+" + (int)heal);
-                        FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
-                    }
-                }
-            }
         }
         else if (ability.uses > 0 && SIMP.Type == ability.type)
         {
@@ -412,7 +403,7 @@ public class LevelScript : MonoBehaviour
             {
                 if (GG.Health < MaxPlayer)
                 {
-                    double heal = (MaxPlayer * ability.heal) / 100;
+                    heal = (MaxPlayer * ability.heal) / 100;
                     GG.Health += heal;
                     //checks if you overhealed so it sets your Health to your max Health instead
                     if (GG.Health > MaxPlayer)
@@ -442,19 +433,20 @@ public class LevelScript : MonoBehaviour
             {
                 if (GG.Health < MaxPlayer)
                 {
-                    GG.Health += ((MaxPlayer * ability.heal) / 100 );
+                    heal = (MaxPlayer * ability.heal) / 100;
+                    GG.Health += heal;
                     //checks if you overhealed so it sets your Health to your max Health instead
                     if (GG.Health > MaxPlayer)
                     {
                         GG.Health = MaxPlayer;
+                        EnemyGetDamage.SetText("+" + (int)heal);
+                        FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
                     }
                 }
             }
         }
 
-
-        SwitchCounter = 2;
-
+        WinOrLoseCheck(2);
 
     }
 
@@ -512,12 +504,11 @@ public class LevelScript : MonoBehaviour
     
 
         StopCoroutine(ExampleCoroutine());
-        SwitchCounter = 1;
 
+        WinOrLoseCheck(1);
     }
 
-    private double EntityIsHit(int damageType, Abilities ability,
-        string targetType, int def, int charAttack) 
+    private double EntityIsHit(int damageType, Abilities ability, string targetType, int def, int charAttack) 
     {
         double PlusMinus = Random.Range(-5, 5);
         double modifier = (100.0 / (100.0 + def));
@@ -534,16 +525,22 @@ public class LevelScript : MonoBehaviour
             Debug.Log("MEGACrit!");
         }
         switch (damageType)
-
         {
-            //Immunity
+            
             case 1:
                 // Add a pop up
+                if (ability.damage == 0)
+                {
+                    return 0; 
+                }
                 return ((((ability.damage + PlusMinus) * charAttack) / 100)) * crit;
-
             //Deals Damage
             case 2:
-                if(ability.counter == targetType)
+                if (ability.damage == 0)
+                {
+                    return 0;
+                }
+                if (ability.counter == targetType)
                 {
                     return (((((ability.damage + PlusMinus) * charAttack) / 100) * modifier)*2)*crit;
                 }
@@ -553,7 +550,10 @@ public class LevelScript : MonoBehaviour
                 }
 
             case 3:
-
+                if (ability.damage == 0)
+                {
+                    return 0;
+                }
                 return (((10 * charAttack) / 100) * modifier) * crit;
             
             default:
@@ -586,7 +586,6 @@ public class LevelScript : MonoBehaviour
                 
                 GG = new Entity(H, D, A, TypeMe,counterType, abilities[i], EmptyAbility);
                 Ability1.text = abilities[i].name;
-                MaxUses1 = abilities[i].uses;
                 break;
             }
         }
@@ -622,8 +621,8 @@ public class LevelScript : MonoBehaviour
 
         }
 		
-        int A = Random.Range(50, 71);
-        int D = Random.Range(20, 41);
+        int A = Random.Range(40, 61);
+        int D = Random.Range(10, 31);
         int H = Random.Range(70, 151);
 
         
@@ -644,22 +643,37 @@ public class LevelScript : MonoBehaviour
         Abilities tempA;
         string TypeEnemy = Type[Random.Range(0, Type.Length)];
         //boss fight every 5 levels
+        int A, D, H;
         if (Level % 5 == 0)
         {
             Boss.SetActive(true);
             Skelly.SetActive(false);
+            A = (GG.Attack - 10);
+            D = (GG.Defense - 5);
+            H = (int)(GG.Health + 100);
+            MaxBoss = (GG.Health + 100);
+
         }
         else
         {
             Boss.SetActive(false);
             Skelly.SetActive(true);
+
+            GainAttack = Random.Range(10, 21);
+
+            GainDefence = Random.Range(5, 11);
+
+            GaindHealth = Random.Range(40, 71);
+
+            SIMP.Health = MaxEnemy;
+            A = SIMP.Attack + GainAttack;
+            D = SIMP.Defense + GainDefence;
+            H = (int)(SIMP.Health + GaindHealth);
+            MaxEnemy = SIMP.Health + GaindHealth;
+            
         }
 
-        GainAttack = Random.Range(10, 21);
-
-        GainDefence = Random.Range(5, 11);
-
-        GaindHealth = Random.Range(40, 71);
+        
         string counterType;
         if (TypeEnemy == "Fire")
             counterType = "Water";
@@ -670,10 +684,7 @@ public class LevelScript : MonoBehaviour
         else
             counterType = "";
 
-        SIMP.Health = MaxEnemy;
-        int A = SIMP.Attack + GainAttack;
-        int D = SIMP.Defense + GainDefence;
-        int H = (int)(SIMP.Health + GaindHealth);
+       
 
         if (Level == 2)
         {
@@ -726,7 +737,8 @@ public class LevelScript : MonoBehaviour
                     break;
                 }
             }
-            MaxEnemy = SIMP.Health;
+            
+            
         }
     }
     private void AddStats() {
@@ -763,24 +775,24 @@ public class LevelScript : MonoBehaviour
                 Debug.Log("If exists");
                     if (GG.abilities[1].name == " ")
                     {
-                        
-                        GG.abilities[1] = newAbility;
+                        newAbility.uses = newAbility.MaxUses;
+                        //GG.abilities[1] = newAbility;
                         Debug.Log("Activate new button 1");
                         Button2.SetActive(true);
                         GG.SetAbilities(newAbility, 1);
                         added = true;
                         Ability2.text = newAbility.name;
-                        MaxUses2 = newAbility.uses;
+
 
                     }
                     else if (GG.abilities[2].name == " " && added != true)
                     {
+                        newAbility.uses = newAbility.MaxUses;
                         Debug.Log("Activate new button 2");
                         Button3.SetActive(true);
                         GG.SetAbilities(newAbility, 2);
                         added = true;
                         Ability3.text = newAbility.name;
-                        MaxUses3 = newAbility.uses;
                     }
                     else 
                     { 
@@ -806,16 +818,16 @@ public class LevelScript : MonoBehaviour
             }
     }
 
-    private void WinOrLoseCheck() {
+    private void WinOrLoseCheck(int state) {
 
         //if health of the entity is lower than 0 switch state
-
+        SwitchCounter = state;
         if (SIMP.Health <= 0) {
 
             //Add death animation
             Skely.SetBool("IsDead", true);
-            
             SwitchCounter = 4;
+            
             Debug.Log("Won 11");
             
         }
@@ -823,9 +835,9 @@ public class LevelScript : MonoBehaviour
         if (GG.Health <= 0)
         {
             SkelyPlayer.SetBool("IsDead", true);
-
             SwitchCounter = 3;
-			
+            
+
             SIMP.Health = MaxEnemy;
         }
 
@@ -853,9 +865,6 @@ public class LevelScript : MonoBehaviour
     }
     public void ReplaceAbility(int i)
     {
-        //replaceAbilityText1.text = GG.abilities[0].name;
-        //replaceAbilityText2.text = GG.abilities[1].name;
-        //replaceAbilityText3.text = GG.abilities[2].name;
         GG.SetAbilities(newAbility, i);
         if(i == 0)
         {
@@ -880,14 +889,22 @@ public class LevelScript : MonoBehaviour
         yield return new WaitForSeconds(2f);
     
         UI.SetActive(true);
+    }
+
+    IEnumerator ChangeState(int input)
+    {
+        yield return new WaitForSeconds(5f);
+        
+        SwitchCounter = input;
+
 
     }
+
 
 
     void Start()
     {
         settings = controller.GetComponent<Settings>();
-
             
         FloatingTxt = FloatingText.GetComponent<Animator>();
 
@@ -897,11 +914,9 @@ public class LevelScript : MonoBehaviour
 
         SkelyPlayer = Player.GetComponent<Animator>();
 
-
         mTitle.SetText(Level.ToString());
 
         GenerateAbilities();
-
         GenerateStats();
         GenerateEnemyStats();
 
@@ -919,13 +934,10 @@ public class LevelScript : MonoBehaviour
 
             case 1:
                 //GG trurn
-                WinOrLoseCheck();
                 break;
-
 
             case 2:
                 //simp turn
-                WinOrLoseCheck();
                 UI.SetActive(false);
                 EnemyAttacking();
                 
@@ -957,6 +969,10 @@ public class LevelScript : MonoBehaviour
 
             case 5:
                 StopAllCoroutines();
+                break;
+
+            case 6:
+                //does nothing
                 break;
 
 

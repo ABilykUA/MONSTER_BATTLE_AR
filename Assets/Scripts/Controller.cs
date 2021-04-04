@@ -8,7 +8,7 @@ public class Controller : MonoBehaviour
 {
        
     public GameObject EnemyUI;
-    public GameObject BossUI;
+
 
     public GameObject PanelUI;
 
@@ -22,13 +22,7 @@ public class Controller : MonoBehaviour
     public void SwitchValue() {
 
         Booltrigger = !Booltrigger;
-
-    }
-        
-    
-    
-    public void OpenPanle() {
-        
+       
         if (Booltrigger == true)
         {
 
@@ -46,6 +40,8 @@ public class Controller : MonoBehaviour
     }
 
 
+
+
     void Update()
     {
 
@@ -53,8 +49,6 @@ public class Controller : MonoBehaviour
     EnemyUI.transform.LookAt(ARcam.transform.position);
     EnemyUI.transform.Rotate(-90, 180, 0);
 
-    BossUI.transform.LookAt(ARcam.transform.position);
-    BossUI.transform.Rotate(-90, 180, 0);
 
     }
 

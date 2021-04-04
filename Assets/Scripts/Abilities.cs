@@ -9,6 +9,7 @@ public class Abilities : Object
     public int heal { get; set; }
     public string type { get; set; }
     public int uses { get; set; }
+    public int MaxUses { get; set; }
 
     public string counter { get; set; }
 
@@ -19,6 +20,7 @@ public class Abilities : Object
         this.type = type;
         this.heal = heal;
         this.uses = uses;
+        this.MaxUses = uses;
         this.counter = counter;
     }
 
