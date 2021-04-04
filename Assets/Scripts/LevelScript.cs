@@ -53,6 +53,15 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI LmAttack;
     public TextMeshProUGUI LmDefense;
 
+
+
+    //AbilityInfoUI
+    public TextMeshProUGUI AbHeal;
+    public TextMeshProUGUI AbDamage;
+    public TextMeshProUGUI AbType;
+    public GameObject AbilityInfoUI;
+
+
     //Win Ui  
     public TextMeshProUGUI WHealth;
     public TextMeshProUGUI WAttack;
@@ -984,7 +993,24 @@ public class LevelScript : MonoBehaviour
 
     }
 
+    public void SetAbilityInfoActive(int abilityPosition)
+    {
+        
+        //AUI
+        AbHeal.SetText("Heal: " + GG.abilities[abilityPosition].heal);
+        AbDamage.SetText("Damage: " + GG.abilities[abilityPosition].damage);
+        AbType.SetText("Type: " + GG.abilities[abilityPosition].type);
+        AbilityInfoUI.SetActive(true);
+    }
 
+    public void SetAbilityInfoInactive()
+    {
+        AbilityInfoUI.SetActive(false);
+        
+
+
+
+    }
 
     void Start()
     {
