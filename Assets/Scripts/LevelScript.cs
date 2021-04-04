@@ -43,6 +43,7 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI mHealth;
     public TextMeshProUGUI mAttack;
     public TextMeshProUGUI mDefense;
+    public TextMeshProUGUI mType;
 
     //Level
     public TextMeshProUGUI mTitle;
@@ -282,6 +283,7 @@ public class LevelScript : MonoBehaviour
         LmHealth.SetText("Health: " + MaxPlayer);
         LmAttack.SetText("Attack: " + GG.Attack);
         LmDefense.SetText("Defense: " + GG.Defense);
+        mType.SetText("Your Type: " + GG.Type);
 
         //WUI
         WHealth.SetText("Health: +" + GaindHealth);
@@ -294,8 +296,6 @@ public class LevelScript : MonoBehaviour
         Ability3.text = GG.abilities[2].name + "   " + GG.abilities[2].uses + "/" + GG.abilities[2].MaxUses;
 
         //newAbility
-
-
         ADamage.SetText("Damage: " + newAbility.damage);
         AType.SetText("Type: " + newAbility.type);
         AName.SetText("Name: " + newAbility.name);
@@ -423,7 +423,7 @@ public class LevelScript : MonoBehaviour
         {
             damage = EntityIsHit(3, ability, SIMP.Type, SIMP.Defense, GG.Attack);
             EnemyGetDamage.SetText("-" + (int)damage);
-            FloatingTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+            FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
             SIMP.Hit(damage);
         }
         else if (ability.uses > 0 && SIMP.Type == ability.type)
@@ -803,6 +803,7 @@ public class LevelScript : MonoBehaviour
             {
 
             newAbility = abilities[Random.Range(0, abilities.Length - 1)];
+
             Debug.Log(newAbility.name);
                 if (newAbility.name != GG.abilities[0].name 
                 && newAbility.name != GG.abilities[1].name 
@@ -811,7 +812,7 @@ public class LevelScript : MonoBehaviour
                 Debug.Log("If exists");
                     if (GG.abilities[1].name == " ")
                     {
-                        newAbility.uses = newAbility.MaxUses;
+                        
                         //GG.abilities[1] = newAbility;
                         Debug.Log("Activate new button 1");
                         Button2.SetActive(true);
@@ -823,7 +824,7 @@ public class LevelScript : MonoBehaviour
                     }
                     else if (GG.abilities[2].name == " " && added != true)
                     {
-                        newAbility.uses = newAbility.MaxUses;
+                        
                         Debug.Log("Activate new button 2");
                         Button3.SetActive(true);
                         GG.SetAbilities(newAbility, 2);
@@ -889,7 +890,6 @@ public class LevelScript : MonoBehaviour
     }
     public void NextLevel(){
 
-        
         SwitchCounter = 1;
         VictoryRoyal.SetActive(false);
         
@@ -897,10 +897,10 @@ public class LevelScript : MonoBehaviour
         GG.Health = MaxPlayer;
         Skely.SetBool("IsDead", false);
         
-
     }
     public void ReplaceAbility(int i)
     {
+        newAbility.uses = newAbility.MaxUses;
         GG.SetAbilities(newAbility, i);
         if(i == 0)
         {
