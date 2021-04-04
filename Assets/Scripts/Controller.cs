@@ -4,20 +4,52 @@ using TMPro;
 using UnityEngine;
 
 
-    public class Controller : MonoBehaviour
-    {
+public class Controller : MonoBehaviour
+{
        
-   
-        public GameObject EnemyUI;
-        public GameObject ARcam;
+    public GameObject EnemyUI;
 
-        // Update is called once per frame
-        void Update()
+
+    public GameObject PanelUI;
+
+
+    public GameObject ARcam;
+
+    private bool Booltrigger = false;
+
+
+
+    public void SwitchValue() {
+
+        Booltrigger = !Booltrigger;
+       
+        if (Booltrigger == true)
         {
-        //fix look at 
-        EnemyUI.transform.LookAt(ARcam.transform.position);
-        EnemyUI.transform.Rotate(-90, 180, 0);
-        //EnemyUI.transform.LookAt(ARcam.transform);
+
+            PanelUI.SetActive(true);
+
+        }
+        else if (Booltrigger == false)
+        {
+
+            PanelUI.SetActive(false);
+
         }
 
+
     }
+
+
+
+
+    void Update()
+    {
+
+    //fix look at 
+    EnemyUI.transform.LookAt(ARcam.transform.position);
+    EnemyUI.transform.Rotate(-90, 180, 0);
+
+
+    }
+
+}
