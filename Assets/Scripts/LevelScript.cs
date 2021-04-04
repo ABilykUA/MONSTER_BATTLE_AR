@@ -43,7 +43,7 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI mHealth;
     public TextMeshProUGUI mAttack;
     public TextMeshProUGUI mDefense;
-    
+
     //Level
     public TextMeshProUGUI mTitle;
 
@@ -71,12 +71,15 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI AUses;
 
     public TextMeshPro EnemyGetDamage;
+ 
+ 
     public TextMeshProUGUI HeroGetDamage;
 
 
     //animations 
     public GameObject PopupHeroText;
     public GameObject FloatingText;
+
 
     public GameObject ObjrctSkely;
     public GameObject Player;
@@ -130,8 +133,6 @@ public class LevelScript : MonoBehaviour
 
     private Settings settings;
     public GameObject controller;
-
-    
 
 
 
@@ -449,8 +450,7 @@ public class LevelScript : MonoBehaviour
         WinOrLoseCheck(1);
     }
 
-    private double EntityIsHit(int damageType, Abilities ability,
-        string targetType, int def, int charAttack) 
+    private double EntityIsHit(int damageType, Abilities ability, string targetType, int def, int charAttack) 
     {
         double PlusMinus = Random.Range(-5, 5);
         double modifier = (100.0 / (100.0 + def));
@@ -841,6 +841,7 @@ public class LevelScript : MonoBehaviour
 
 
     }
+
 
 
     void Start()
