@@ -49,7 +49,7 @@ public class LevelScript : MonoBehaviour
 
     //Lose UI 
     public TextMeshProUGUI LmLevel;
-
+    public TextMeshProUGUI HighscoreText;
 
 
     //AbilityInfoUI
@@ -76,6 +76,9 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI AName;
     public TextMeshProUGUI AUses;
 
+    //Potion added win UI
+    public TextMeshProUGUI APotion;
+
     public TextMeshPro EnemyGetDamage;
  
  
@@ -89,9 +92,9 @@ public class LevelScript : MonoBehaviour
 
     //change the initial values to 0
     private int potion1Uses = 2;
-    private int potion2Uses = 2;
-    private int potion3Uses = 2;
-    private int potion4Uses = 2;
+    private int potion2Uses = 1;
+    private int potion3Uses = 1;
+    private int potion4Uses = 0;
 
 	// potions
     public TextMeshProUGUI potion1text;
@@ -149,6 +152,8 @@ public class LevelScript : MonoBehaviour
 
     private int Level = 1;
 
+    
+
     //for switch
     private int SwitchCounter = 1;
 
@@ -170,7 +175,7 @@ public class LevelScript : MonoBehaviour
         abilities[0] = new Abilities(40, "Fire", 0, 15, "Fire bolt", "Grass");
         abilities[1] = new Abilities(40, "Water", 0, 15, "Water gun", "Fire");
         abilities[2] = new Abilities(35, "Grass", 0, 15, "Grass slap", "Water");
-        abilities[3] = new Abilities(35, "Fire", 0, 10, "Flame Wheel", "Grass");
+        abilities[3] = new Abilities(45, "Fire", 0, 12, "Flame Wheel", "Grass");
         abilities[4] = new Abilities(65, "Water", 0, 10, "Tsunami", "Fire");
         abilities[5] = new Abilities(50, "Grass", 0, 10, "Branch slam", "Water");
         abilities[6] = new Abilities(0, "Grass", 20, 5, "Synthesis", "Water");
@@ -274,7 +279,7 @@ public class LevelScript : MonoBehaviour
         ColorChange(GG);
 
 
-        //enely
+        //enemy or boss decision
         if (Level % 5 == 0)
         {
             EnemyHealth.SetText("Health: " + (int)SIMP.Health + "/" + MaxBoss);
@@ -294,6 +299,8 @@ public class LevelScript : MonoBehaviour
 
         //DUI 
         LmLevel.SetText("You made it to level: " + Level);
+        HighscoreText.SetText("Top Level Reached: " + GetHighscore());
+        //Type
         mType.SetText("Your Type: " + GG.Type);
 
         //WUI
@@ -666,6 +673,7 @@ public class LevelScript : MonoBehaviour
                     {
                         SIMP.Health = MaxEnemy;
                     }
+                
                 }
             }
     
@@ -934,7 +942,7 @@ public class LevelScript : MonoBehaviour
             for (int i = 0; i < abilities.Length; i++)
             {
 
-            newAbility = abilities[Random.Range(0, abilities.Length - 1)];
+            newAbility = abilities[Random.Range(0, abilities.Length)];
 
             Debug.Log(newAbility.name);
                 if (newAbility.name != GG.abilities[0].name 
@@ -993,7 +1001,7 @@ public class LevelScript : MonoBehaviour
 
         //if health of the entity is lower than 0 switch state
         SwitchCounter = state;
-        if (SIMP.Health <= 0) {
+        if (SIMP.Health < 0) {
 
             //Add death animation
             Skely.SetBool("IsDead", true);
@@ -1003,7 +1011,7 @@ public class LevelScript : MonoBehaviour
             
         }
 
-        if (GG.Health <= 0)
+        if (GG.Health < 0)
         {
             SkelyPlayer.SetBool("IsDead", true);
             SwitchCounter = 3;
@@ -1062,20 +1070,13 @@ public class LevelScript : MonoBehaviour
     }
 
 
-    IEnumerator ChangeState(int input)
-    {
-        yield return new WaitForSeconds(5f);
-        
-        SwitchCounter = input;
-
-
-    }
+ 
 
     public void SetAbilityInfoActive(int abilityPosition)
     {
         
         //AUI
-        AbHeal.SetText("Heal: " + GG.abilities[abilityPosition].heal);
+        AbHeal.SetText("Heal: " + GG.abilities[abilityPosition].heal+"%");
         AbDamage.SetText("Damage: " + GG.abilities[abilityPosition].damage);
         AbType.SetText("Type: " + GG.abilities[abilityPosition].type);
         AbilityInfoUI.SetActive(true);
@@ -1084,11 +1085,50 @@ public class LevelScript : MonoBehaviour
     public void SetAbilityInfoInactive()
     {
         AbilityInfoUI.SetActive(false);
-        
-
-
-
     }
+    //Highscore setter
+    public void SetHighscore(int level)
+    {
+        PlayerPrefs.SetInt("highscore", level);
+    }
+    //Highscore getter
+    public int GetHighscore()
+    {
+        return PlayerPrefs.GetInt("highscore");
+    }
+
+    public void addPotions()
+    {
+        int percentage = Random.Range(0, 101);
+        if (percentage >= 0 && percentage <= 10)
+        {
+            potion1Uses++;
+            APotion.SetText("Level 1 potion received");
+        }
+        else if (percentage > 10 && percentage <= 18)
+        {
+            potion2Uses++;
+            APotion.SetText("Level 2 potion received");
+        }
+        else if (percentage > 18 && percentage <= 24)
+        {
+            potion3Uses++;
+            APotion.SetText("Level 3 potion received");
+        }
+        else if (percentage > 24 && percentage <= 28)
+        {
+            potion4Uses++;
+            APotion.SetText("Level 4 potion received");
+        }
+        else
+            APotion.SetText("No potion was received");
+        potion1text.text = "" + potion1Uses;
+        potion2text.text = "" + potion2Uses;
+        potion3text.text = "" + potion3Uses;
+        potion4text.text = "" + potion4Uses;
+    }
+
+   
 
     void Start()
     {
@@ -1143,7 +1183,8 @@ public class LevelScript : MonoBehaviour
             case 3:
                 //lose
                 StopAllCoroutines();
-
+                if (GetHighscore() < Level)
+                    SetHighscore(Level);
                 DefeatUI.SetActive(true);
                 PopupHeroText.SetActive(false);
                 UI.SetActive(false);
@@ -1157,7 +1198,7 @@ public class LevelScript : MonoBehaviour
                 Debug.Log("Won");
                 PopupHeroText.SetActive(false);
                 UI.SetActive(false);
-
+                addPotions();
                 VictoryRoyal.SetActive(true);
                 SwitchCounter = 5;
                 StopAllCoroutines();
