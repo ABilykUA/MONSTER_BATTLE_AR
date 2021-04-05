@@ -49,9 +49,6 @@ public class LevelScript : MonoBehaviour
 
     //Lose UI 
     public TextMeshProUGUI LmLevel;
-    public TextMeshProUGUI LmHealth;
-    public TextMeshProUGUI LmAttack;
-    public TextMeshProUGUI LmDefense;
 
 
 
@@ -297,9 +294,6 @@ public class LevelScript : MonoBehaviour
 
         //DUI 
         LmLevel.SetText("You made it to level: " + Level);
-        LmHealth.SetText("Health: " + MaxPlayer);
-        LmAttack.SetText("Attack: " + GG.Attack);
-        LmDefense.SetText("Defense: " + GG.Defense);
         mType.SetText("Your Type: " + GG.Type);
 
         //WUI
@@ -437,17 +431,16 @@ public class LevelScript : MonoBehaviour
     {
         PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("");
         PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
-
         Attacking(GG.abilities[1]);
         if (GG.abilities[1].uses > 0)
             GG.abilities[1].uses -= 1;
     }
     public void AttackSlot3()
     {
-        PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("");
-        PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
-        Attacking(GG.abilities[2]);
-        if(GG.abilities[2].uses > 0)
+       PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("");
+       PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
+       Attacking(GG.abilities[2]);
+       if(GG.abilities[2].uses > 0)
             GG.abilities[2].uses -= 1;
             
         
@@ -457,15 +450,31 @@ public class LevelScript : MonoBehaviour
     {
         //animations
         SkelyPlayer.SetTrigger("Attack");
+        
         double heal;
-
-
         double damage;
+        double crit = 1;
+
         if (ability.uses <= 0)
         {
 
-            damage = EntityIsHit(3, ability, SIMP.Type, SIMP.Defense, GG.Attack);
-            EnemyGetDamage.SetText("-" + (int)damage);
+            damage = EntityIsHit(3, ability, SIMP.Type, SIMP.Defense, GG.Attack, ref crit);
+
+
+            if (crit == 2.0)
+            {
+                EnemyGetDamage.SetText("-" + (int)damage + " Crit");
+            }
+            else if (crit == 2.5)
+            {
+
+                EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
+
+            }
+            else
+            {
+                EnemyGetDamage.SetText("-" + (int)damage);
+            }
             FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
             SIMP.Hit(damage);
 
@@ -476,10 +485,25 @@ public class LevelScript : MonoBehaviour
         {
             
 
-            damage = EntityIsHit(1, ability, SIMP.Type, SIMP.Defense, GG.Attack);
-           
-            EnemyGetDamage.SetText("-" + (int)damage);
+            damage = EntityIsHit(1, ability, SIMP.Type, SIMP.Defense, GG.Attack, ref crit);
+
+            if (crit == 2.0)
+            {
+                EnemyGetDamage.SetText("-" + (int)damage + " Crit");
+            }
+            else if (crit == 2.5)
+            {
+
+                EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
+
+            }
+            else
+            {
+                EnemyGetDamage.SetText("-" + (int)damage);
+            }
+
             FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
+            SIMP.Hit(damage);
             //If ability heals
             if (ability.heal > 0)
             {
@@ -491,24 +515,37 @@ public class LevelScript : MonoBehaviour
                     if (GG.Health > MaxPlayer)
                     {
                         GG.Health = MaxPlayer;
-                        //change color to green
-                        PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + (int)heal);
-                        PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
                         
                         
                     }
+
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + (int)heal);
+                    PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
                 }
             }
 
-            SIMP.Hit(damage);
+            
         }
         else
         {
             
-            damage = EntityIsHit(2, ability, SIMP.Type, SIMP.Defense, GG.Attack);
-            
-            EnemyGetDamage.SetText("-" + (int)damage);
+            damage = EntityIsHit(2, ability, SIMP.Type, SIMP.Defense, GG.Attack, ref crit);
 
+
+            if (crit == 2.0)
+            {
+                EnemyGetDamage.SetText("-" + (int)damage + " Crit");
+            }
+            else if (crit == 2.5)
+            {
+
+                EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
+
+            }
+            else
+            {
+                EnemyGetDamage.SetText("-" + (int)damage);
+            }
             FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
 
             SIMP.Hit(damage);
@@ -526,9 +563,11 @@ public class LevelScript : MonoBehaviour
                         GG.Health = MaxPlayer;
 
 
-                        PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + (int)heal);
-                        PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
+                       
                     }
+
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + (int)heal);
+                    PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
                 }
             }
         }
@@ -561,20 +600,53 @@ public class LevelScript : MonoBehaviour
 
         double damage;
 
+        double crit = 1;
 
         Debug.Log("Enemy Ability name: " + temp.name);
         if (GG.Type == temp.type)
         {
-            damage = EntityIsHit(1, temp, GG.Type, GG.Defense, SIMP.Attack);
-            HeroGetDamage.SetText("-" + (int)damage);
+            damage = EntityIsHit(1, temp, GG.Type, GG.Defense, SIMP.Attack, ref crit);
+
+
+                if (crit == 2.0)
+                {
+                HeroGetDamage.SetText("-" + (int)damage + " Crit");
+                }
+                else if (crit == 2.5)
+                {
+
+                HeroGetDamage.SetText("-" + (int)damage + " Mega Crit");
+            
+                }
+                else { 
+                HeroGetDamage.SetText("-" + (int)damage);
+                }
+
+
             PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
             GG.Hit(damage);
-
+            
         }
         else
         {
-            damage = EntityIsHit(2, temp, GG.Type, GG.Defense, SIMP.Attack);
-            HeroGetDamage.SetText("-" + (int)damage);
+            damage = EntityIsHit(2, temp, GG.Type, GG.Defense, SIMP.Attack, ref crit);
+
+
+            if (crit == 2.0)
+            {
+                HeroGetDamage.SetText("-" + (int)damage + " Crit");
+            }
+            else if (crit == 2.5)
+            {
+
+                HeroGetDamage.SetText("-" + (int)damage + " Mega Crit");
+
+            }
+            else
+            {
+                HeroGetDamage.SetText("-" + (int)damage);
+            }
+
             PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
             GG.Hit(damage);
         }
@@ -598,12 +670,12 @@ public class LevelScript : MonoBehaviour
         WinOrLoseCheck(1);
     }
 
-    private double EntityIsHit(int damageType, Abilities ability, string targetType, int def, int charAttack) 
+    private double EntityIsHit(int damageType, Abilities ability, string targetType, int def, int charAttack,ref double crit) 
     {
         double PlusMinus = Random.Range(-5, 5);
         double modifier = (100.0 / (100.0 + def));
         int randomizer = Random.Range(0, 101);
-        double crit = 1.0;
+       
         if (randomizer <= 10)
         {
             crit = 2.0;
@@ -614,6 +686,7 @@ public class LevelScript : MonoBehaviour
             crit = 2.5;
             Debug.Log("MEGACrit!");
         }
+
         switch (damageType)
         {
             
@@ -893,12 +966,11 @@ public class LevelScript : MonoBehaviour
                 
                 if (maxCapacity)
                 {
-                    //TODO needs to get the new window where the player chooses which ability to replace!!!
-
                     
-                    replaceAbilityText1.text = GG.abilities[0].name;
-                    replaceAbilityText2.text = GG.abilities[1].name;
-                    replaceAbilityText3.text = GG.abilities[2].name;
+             
+                    replaceAbilityText1.text = GG.abilities[0].name + "   " + GG.abilities[0].uses + "/" + GG.abilities[0].MaxUses; 
+                    replaceAbilityText2.text = GG.abilities[1].name + "   " + GG.abilities[1].uses + "/" + GG.abilities[1].MaxUses; 
+                    replaceAbilityText3.text = GG.abilities[2].name + "   " + GG.abilities[2].uses + "/" + GG.abilities[2].MaxUses; 
 
                     replaceAbilityButton.SetActive(true);
                     added = true;
