@@ -605,6 +605,7 @@ public class LevelScript : MonoBehaviour
         Debug.Log("Enemy Ability name: " + temp.name);
         if (GG.Type == temp.type)
         {
+
             damage = EntityIsHit(1, temp, GG.Type, GG.Defense, SIMP.Attack, ref crit);
 
 
@@ -623,12 +624,15 @@ public class LevelScript : MonoBehaviour
                 }
 
 
-            PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+           // PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+
+
             GG.Hit(damage);
             
         }
         else
         {
+
             damage = EntityIsHit(2, temp, GG.Type, GG.Defense, SIMP.Attack, ref crit);
 
 
@@ -647,7 +651,8 @@ public class LevelScript : MonoBehaviour
                 HeroGetDamage.SetText("-" + (int)damage);
             }
 
-            PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+//            PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+
             GG.Hit(damage);
         }
             //If ability heals
@@ -1052,9 +1057,10 @@ public class LevelScript : MonoBehaviour
     IEnumerator ExampleCoroutine()
     {
         yield return new WaitForSeconds(2f);
-    
         UI.SetActive(true);
+        PopupHeroText.SetActive(true);
     }
+
 
     IEnumerator ChangeState(int input)
     {
@@ -1139,6 +1145,7 @@ public class LevelScript : MonoBehaviour
                 StopAllCoroutines();
 
                 DefeatUI.SetActive(true);
+                PopupHeroText.SetActive(false);
                 UI.SetActive(false);
                 break;
 
@@ -1148,7 +1155,9 @@ public class LevelScript : MonoBehaviour
                 //win
                 AddStats();
                 Debug.Log("Won");
+                PopupHeroText.SetActive(false);
                 UI.SetActive(false);
+
                 VictoryRoyal.SetActive(true);
                 SwitchCounter = 5;
                 StopAllCoroutines();
