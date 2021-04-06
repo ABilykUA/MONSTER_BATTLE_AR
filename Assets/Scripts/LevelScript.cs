@@ -125,9 +125,9 @@ public class LevelScript : MonoBehaviour
     //All Abilities
     private Abilities[] abilities = { null, null, null, null, null, null, null, null,null,null };
 
-    private Abilities EmptyAbility = new Abilities(0, " ", 0, 0, " ", " ");
+    private Abilities EmptyAbility = new Abilities(0, " ", 0, 0, " ", " ",0);
 
-    private Abilities newAbility = new Abilities(0, " ", 0, 0, " ", " ");
+    private Abilities newAbility = new Abilities(0, " ", 0, 0, " ", " ",0);
 
     private string[] Type = { "Water", "Grass", "Fire" };
 
@@ -172,16 +172,16 @@ public class LevelScript : MonoBehaviour
     private void GenerateAbilities()
     {
     
-        abilities[0] = new Abilities(40, "Fire", 0, 15, "Fire bolt", "Grass");
-        abilities[1] = new Abilities(40, "Water", 0, 15, "Water gun", "Fire");
-        abilities[2] = new Abilities(35, "Grass", 0, 15, "Grass slap", "Water");
-        abilities[3] = new Abilities(45, "Fire", 0, 12, "Flame Wheel", "Grass");
-        abilities[4] = new Abilities(65, "Water", 0, 10, "Tsunami", "Fire");
-        abilities[5] = new Abilities(50, "Grass", 0, 10, "Branch slam", "Water");
-        abilities[6] = new Abilities(0, "Grass", 20, 5, "Synthesis", "Water");
-        abilities[7] = new Abilities(50, "Fire", 5, 10, "Flare Blitz", "Grass");
-        abilities[8] = new Abilities(50, "Grass", 5, 10, "Solar Beam", "Water");
-        abilities[9] = new Abilities(80, "Water", 5, 5, "Wave Force", "Fire");
+        abilities[0] = new Abilities(40, "Fire", 0, 15, "Fire bolt", "Grass",100);
+        abilities[1] = new Abilities(40, "Water", 0, 15, "Water gun", "Fire",100);
+        abilities[2] = new Abilities(35, "Grass", 0, 15, "Grass slap", "Water",100);
+        abilities[3] = new Abilities(45, "Fire", 0, 12, "Flame Wheel", "Grass",100);
+        abilities[4] = new Abilities(65, "Water", 0, 10, "Tsunami", "Fire",80);
+        abilities[5] = new Abilities(50, "Grass", 0, 10, "Branch slam", "Water",90);
+        abilities[6] = new Abilities(0, "Grass", 20, 5, "Synthesis", "Water",100);
+        abilities[7] = new Abilities(50, "Fire", 5, 10, "Flare Blitz", "Grass",100);
+        abilities[8] = new Abilities(50, "Grass", 5, 10, "Solar Beam", "Water",100);
+        abilities[9] = new Abilities(80, "Water", 5, 5, "Wave Force", "Fire",70);
     
     }
 
@@ -459,9 +459,9 @@ public class LevelScript : MonoBehaviour
         SkelyPlayer.SetTrigger("Attack");
         
         double heal;
-        double damage;
+        double damage=0;
         double crit = 1;
-
+        int HitOrMiss = Random.Range(0, 101);
         if (ability.uses <= 0)
         {
 
@@ -490,24 +490,27 @@ public class LevelScript : MonoBehaviour
         }
         else if (ability.uses > 0 && SIMP.Type == ability.type)
         {
-            
 
-            damage = EntityIsHit(1, ability, SIMP.Type, SIMP.Defense, GG.Attack, ref crit);
-
-            if (crit == 2.0)
+            if (HitOrMiss <= ability.SuccessRate)
             {
-                EnemyGetDamage.SetText("-" + (int)damage + " Crit");
-            }
-            else if (crit == 2.5)
-            {
+                damage = EntityIsHit(1, ability, SIMP.Type, SIMP.Defense, GG.Attack, ref crit);
 
-                EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
+                if (crit == 2.0)
+                {
+                    EnemyGetDamage.SetText("-" + (int)damage + " Crit");
+                }
+                else if (crit == 2.5)
+                {
 
-            }
-            else
-            {
-                EnemyGetDamage.SetText("-" + (int)damage);
-            }
+                    EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
+
+                }
+                else
+                {
+                    EnemyGetDamage.SetText("-" + (int)damage);
+                }
+            }else
+                EnemyGetDamage.SetText("Attack Missed!");
 
             FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
             SIMP.Hit(damage);
@@ -535,24 +538,27 @@ public class LevelScript : MonoBehaviour
         }
         else
         {
-            
-            damage = EntityIsHit(2, ability, SIMP.Type, SIMP.Defense, GG.Attack, ref crit);
-
-
-            if (crit == 2.0)
+            if (HitOrMiss <= ability.SuccessRate)
             {
-                EnemyGetDamage.SetText("-" + (int)damage + " Crit");
-            }
-            else if (crit == 2.5)
-            {
+                damage = EntityIsHit(2, ability, SIMP.Type, SIMP.Defense, GG.Attack, ref crit);
 
-                EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
 
-            }
-            else
-            {
-                EnemyGetDamage.SetText("-" + (int)damage);
-            }
+                if (crit == 2.0)
+                {
+                    EnemyGetDamage.SetText("-" + (int)damage + " Crit");
+                }
+                else if (crit == 2.5)
+                {
+
+                    EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
+
+                }
+                else
+                {
+                    EnemyGetDamage.SetText("-" + (int)damage);
+                }
+            }else
+                EnemyGetDamage.SetText("Attack Missed!");
             FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
 
             SIMP.Hit(damage);
@@ -605,33 +611,37 @@ public class LevelScript : MonoBehaviour
         }
         
 
-        double damage;
+        double damage=0;
 
         double crit = 1;
-
+        int HitOrMiss = Random.Range(0, 101);
         Debug.Log("Enemy Ability name: " + temp.name);
         if (GG.Type == temp.type)
         {
 
-            damage = EntityIsHit(1, temp, GG.Type, GG.Defense, SIMP.Attack, ref crit);
 
 
+            if (HitOrMiss <= temp.SuccessRate)
+            {
+                damage = EntityIsHit(1, temp, GG.Type, GG.Defense, SIMP.Attack, ref crit);
                 if (crit == 2.0)
                 {
-                HeroGetDamage.SetText("-" + (int)damage + " Crit");
+                    HeroGetDamage.SetText("-" + (int)damage + " Crit");
                 }
                 else if (crit == 2.5)
                 {
 
-                HeroGetDamage.SetText("-" + (int)damage + " Mega Crit");
+                    HeroGetDamage.SetText("-" + (int)damage + " Mega Crit");
+
+                }
+                else
+                {
+                    HeroGetDamage.SetText("-" + (int)damage);
+                }
+            }else
+                HeroGetDamage.SetText("Attack Missed!");
+
             
-                }
-                else { 
-                HeroGetDamage.SetText("-" + (int)damage);
-                }
-
-
-           // PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
 
 
             GG.Hit(damage);
@@ -639,26 +649,29 @@ public class LevelScript : MonoBehaviour
         }
         else
         {
-
-            damage = EntityIsHit(2, temp, GG.Type, GG.Defense, SIMP.Attack, ref crit);
-
-
-            if (crit == 2.0)
+            if (HitOrMiss <= temp.SuccessRate)
             {
-                HeroGetDamage.SetText("-" + (int)damage + " Crit");
-            }
-            else if (crit == 2.5)
-            {
+                damage = EntityIsHit(2, temp, GG.Type, GG.Defense, SIMP.Attack, ref crit);
 
-                HeroGetDamage.SetText("-" + (int)damage + " Mega Crit");
 
+                if (crit == 2.0)
+                {
+                    HeroGetDamage.SetText("-" + (int)damage + " Crit");
+                }
+                else if (crit == 2.5)
+                {
+
+                    HeroGetDamage.SetText("-" + (int)damage + " Mega Crit");
+
+                }
+                else
+                {
+                    HeroGetDamage.SetText("-" + (int)damage);
+                }
             }
             else
-            {
-                HeroGetDamage.SetText("-" + (int)damage);
-            }
-
-//            PopupHeroTxt.Play("Base Layer.PopupHeroText", -1, 0f);
+                HeroGetDamage.SetText("Attack Missed!");
+            
 
             GG.Hit(damage);
         }
@@ -688,7 +701,7 @@ public class LevelScript : MonoBehaviour
         double PlusMinus = Random.Range(-5, 5);
         double modifier = (100.0 / (100.0 + def));
         int randomizer = Random.Range(0, 101);
-       
+        
         if (randomizer <= 10)
         {
             crit = 2.0;
@@ -699,7 +712,8 @@ public class LevelScript : MonoBehaviour
             crit = 2.5;
             Debug.Log("MEGACrit!");
         }
-
+        
+        
         switch (damageType)
         {
             

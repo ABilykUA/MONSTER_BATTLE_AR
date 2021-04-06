@@ -10,10 +10,10 @@ public class Abilities : Object
     public string type { get; set; }
     public int uses { get; set; }
     public int MaxUses { get; set; }
-
+    public int SuccessRate { get; set; }
     public string counter { get; set; }
 
-    public Abilities(int damage, string type,int heal,int uses, string name, string counter)
+    public Abilities(int damage, string type,int heal,int uses, string name, string counter,int SuccessRate)
     {
         this.name = name;
         this.damage = damage;
@@ -22,6 +22,7 @@ public class Abilities : Object
         this.uses = uses;
         this.MaxUses = uses;
         this.counter = counter;
+        this.SuccessRate = SuccessRate;
     }
 
 }
