@@ -123,7 +123,7 @@ public class LevelScript : MonoBehaviour
 
 
     //All Abilities
-    private Abilities[] abilities = { null, null, null, null, null, null, null, null,null,null };
+    private Abilities[] abilities = { null, null, null, null, null, null, null, null,null,null,null,null };
 
     private Abilities EmptyAbility = new Abilities(0, " ", 0, 0, " ", " ",0);
 
@@ -174,7 +174,7 @@ public class LevelScript : MonoBehaviour
     
         abilities[0] = new Abilities(40, "Fire", 0, 15, "Fire bolt", "Grass",100);
         abilities[1] = new Abilities(40, "Water", 0, 15, "Water gun", "Fire",100);
-        abilities[2] = new Abilities(35, "Grass", 0, 15, "Grass slap", "Water",100);
+        abilities[2] = new Abilities(40, "Grass", 0, 15, "Grass slap", "Water",100);
         abilities[3] = new Abilities(45, "Fire", 0, 12, "Flame Wheel", "Grass",100);
         abilities[4] = new Abilities(65, "Water", 0, 10, "Tsunami", "Fire",80);
         abilities[5] = new Abilities(50, "Grass", 0, 10, "Branch slam", "Water",90);
@@ -182,7 +182,8 @@ public class LevelScript : MonoBehaviour
         abilities[7] = new Abilities(50, "Fire", 5, 10, "Flare Blitz", "Grass",100);
         abilities[8] = new Abilities(50, "Grass", 5, 10, "Solar Beam", "Water",100);
         abilities[9] = new Abilities(80, "Water", 5, 5, "Wave Force", "Fire",70);
-    
+        abilities[10] = new Abilities(65, "Chameleon", 0, 7, "Chameleon Whip", "Fire",85);
+        abilities[11] = new Abilities(50, "Chameleon", 10, 5, "Chameleon Glare", "Fire", 80);
     }
 
 
@@ -277,7 +278,14 @@ public class LevelScript : MonoBehaviour
         mAttack.SetText(""+GG.Attack);
 
         ColorChange(GG);
-
+        for (int i = 0; i < 3; i++)
+        {
+            if (GG.abilities[i].name == "Chameleon Whip" || GG.abilities[i].name=="Chameleon Glare")
+            {
+                GG.abilities[i].type = SIMP.Counter;
+                GG.abilities[i].counter = SIMP.Type;
+            }
+        }
 
         //enemy or boss decision
         if (Level % 5 == 0)
@@ -452,7 +460,7 @@ public class LevelScript : MonoBehaviour
             
         
     }
-
+    
     private void Attacking(Abilities ability)
     {
         //animations
@@ -462,6 +470,7 @@ public class LevelScript : MonoBehaviour
         double damage=0;
         double crit = 1;
         int HitOrMiss = Random.Range(0, 101);
+        
         if (ability.uses <= 0)
         {
 
@@ -596,6 +605,7 @@ public class LevelScript : MonoBehaviour
         BossAnimator.SetTrigger("BossTrigger");
         
         Abilities temp;
+        
         StartCoroutine(ExampleCoroutine());
         if (Level == 1) 
         { 
@@ -609,7 +619,7 @@ public class LevelScript : MonoBehaviour
         {
             temp = SIMP.GetAbilities(Random.Range(0, 3));
         }
-        
+       
 
         double damage=0;
 
@@ -949,15 +959,22 @@ public class LevelScript : MonoBehaviour
         GG.Health += GaindHealth;
 
         MaxPlayer = GG.Health;
+        //Adapting the chameleon ability
+        
+        
 
-            //chooses random new ability
-            bool added = false;
+        //chooses random new ability
+        bool added = false;
             bool maxCapacity = false;
             for (int i = 0; i < abilities.Length; i++)
             {
 
             newAbility = abilities[Random.Range(0, abilities.Length)];
-
+            if(newAbility.type == "Chameleon")
+            {
+                newAbility.type = SIMP.Counter;
+                newAbility.counter = SIMP.Type;
+            }
             Debug.Log(newAbility.name);
                 if (newAbility.name != GG.abilities[0].name 
                 && newAbility.name != GG.abilities[1].name 
