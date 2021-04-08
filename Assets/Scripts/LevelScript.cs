@@ -56,6 +56,7 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI AbHeal;
     public TextMeshProUGUI AbDamage;
     public TextMeshProUGUI AbType;
+    public TextMeshProUGUI AbAccuracy;
     public GameObject AbilityInfoUI;
 
 
@@ -75,6 +76,8 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI AType;
     public TextMeshProUGUI AName;
     public TextMeshProUGUI AUses;
+    public TextMeshProUGUI AAccuracy;
+    public TextMeshProUGUI ADescription;
 
     //Potion added win UI
     public TextMeshProUGUI APotion;
@@ -94,7 +97,7 @@ public class LevelScript : MonoBehaviour
     private int potion1Uses = 2;
     private int potion2Uses = 1;
     private int potion3Uses = 1;
-    private int potion4Uses = 0;
+    private int potion4Uses = 2;
 
 	// potions
     public TextMeshProUGUI potion1text;
@@ -123,11 +126,11 @@ public class LevelScript : MonoBehaviour
 
 
     //All Abilities
-    private Abilities[] abilities = { null, null, null, null, null, null, null, null,null,null,null,null };
+    private Abilities[] abilities = { null, null, null, null, null, null, null, null,null,null,null,null,null,null,null,null };
 
-    private Abilities EmptyAbility = new Abilities(0, " ", 0, 0, " ", " ",0);
+    private Abilities EmptyAbility = new Abilities(0, " ", 0, 0, " ", " ",0,"");
 
-    private Abilities newAbility = new Abilities(0, " ", 0, 0, " ", " ",0);
+    private Abilities newAbility = new Abilities(0, " ", 0, 0, " ", " ",0,"");
 
     private string[] Type = { "Water", "Grass", "Fire" };
 
@@ -166,24 +169,37 @@ public class LevelScript : MonoBehaviour
     private Settings settings;
     public GameObject controller;
 
+    //Skill Tree
+    private int sLuck=0;
+    private int sAccuracy=0;
+    private int sCriticalChance=0;
+    private double sCriticalDamage=0.0;
+    private int sHealth = 0;
+    private int sDodge = 0;
+    private int sUseRefill = 0;
 
-
+    public TextMeshProUGUI SkillTreeInfo;
+    SkillTree skillTree;
 
     private void GenerateAbilities()
     {
     
-        abilities[0] = new Abilities(40, "Fire", 0, 15, "Fire bolt", "Grass",100);
-        abilities[1] = new Abilities(40, "Water", 0, 15, "Water gun", "Fire",100);
-        abilities[2] = new Abilities(40, "Grass", 0, 15, "Grass slap", "Water",100);
-        abilities[3] = new Abilities(45, "Fire", 0, 12, "Flame Wheel", "Grass",100);
-        abilities[4] = new Abilities(65, "Water", 0, 10, "Tsunami", "Fire",80);
-        abilities[5] = new Abilities(50, "Grass", 0, 10, "Branch slam", "Water",90);
-        abilities[6] = new Abilities(0, "Grass", 20, 5, "Synthesis", "Water",100);
-        abilities[7] = new Abilities(50, "Fire", 5, 10, "Flare Blitz", "Grass",100);
-        abilities[8] = new Abilities(50, "Grass", 5, 10, "Solar Beam", "Water",100);
-        abilities[9] = new Abilities(80, "Water", 5, 5, "Wave Force", "Fire",70);
-        abilities[10] = new Abilities(65, "Chameleon", 0, 7, "Chameleon Whip", "Fire",85);
-        abilities[11] = new Abilities(50, "Chameleon", 10, 5, "Chameleon Glare", "Fire", 80);
+        abilities[0] = new Abilities(40, "Fire", 0, 15, "Fire bolt", "Grass",100,"A weak starting ability");
+        abilities[1] = new Abilities(40, "Water", 0, 15, "Water gun", "Fire",100, "A weak starting ability");
+        abilities[2] = new Abilities(40, "Grass", 0, 15, "Grass slap", "Water",100, "A weak starting ability");
+        abilities[3] = new Abilities(50, "Fire", 0, 12, "Flame Wheel", "Grass",95,"");
+        abilities[4] = new Abilities(65, "Water", 0, 10, "Tsunami", "Fire",80,"");
+        abilities[5] = new Abilities(75, "Grass", 0, 7, "Branch slam", "Water",85,"");
+        abilities[6] = new Abilities(0, "Grass", 40, 5, "Synthesis", "Water",100, "This ability only heals.");
+        abilities[7] = new Abilities(50, "Fire", 5, 10, "Flare Blitz", "Grass",95, "");
+        abilities[8] = new Abilities(50, "Grass", 5, 10, "Solar Beam", "Water",95, "");
+        abilities[9] = new Abilities(80, "Water", 5, 5, "Wave Force", "Fire",70, "");
+        abilities[10] = new Abilities(65, "Chameleon", 0, 7, "Chameleon Whip", "Fire",85,"Adjusts to always counter the enemy type.");
+        abilities[11] = new Abilities(50, "Chameleon", 10, 5, "Chameleon Glare", "Fire", 80, "Adjusts to always counter the enemy type. Also heals.");
+        abilities[12] = new Abilities(200, "Water", 0, 3, "Poseidon's Fury", "Fire", 30, "A high damage low accuracy ability made for performing miracles.");
+        abilities[13] = new Abilities(75, "Fire", 10, 7, "Implosion", "Grass", 50, "The enemy violently implodes inwards dealing huge fire damage.");
+        abilities[14] = new Abilities(75, "Water", 0, 10, "Moonchild Slam", "Fire", 70, "Blessed by an ability from the stars");
+        abilities[15] = new Abilities(60, "Grass", 28, 10, "Amazons Wrath", "Water", 70, "Call the Amazons to your rescue.");
     }
 
 
@@ -327,6 +343,8 @@ public class LevelScript : MonoBehaviour
         AName.SetText("Name: " + newAbility.name);
         AUses.SetText("Uses: " + newAbility.uses);
         AHeal.SetText("Heal: " + newAbility.heal+"%");
+        AAccuracy.SetText("Accuracy: "+newAbility.SuccessRate);
+        ADescription.SetText(newAbility.description);
 
         
        
@@ -342,12 +360,12 @@ public class LevelScript : MonoBehaviour
                 if (potion1Uses > 0)
                 {
 
-                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 100);
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 180);
                     PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
                   
-                    if (MaxPlayer >= (GG.Health + 100))
+                    if (MaxPlayer >= (GG.Health + 180))
                     {
-                        GG.Health += 100;
+                        GG.Health += 180;
                         potion1Uses--;
                         SwitchCounter = 2;
                     }
@@ -364,12 +382,12 @@ public class LevelScript : MonoBehaviour
                 if (potion2Uses > 0)
                 {
 
-                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 180);
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 260);
                     PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
                 
-                    if (MaxPlayer >= (GG.Health + 180))
+                    if (MaxPlayer >= (GG.Health + 260))
                     {
-                        GG.Health += 180;
+                        GG.Health += 260;
                         potion2Uses--;
                         SwitchCounter = 2;
                     }
@@ -386,13 +404,13 @@ public class LevelScript : MonoBehaviour
                 if (potion3Uses > 0)
                 {
 
-                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 260);
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 380);
                     PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
                 
 
-                    if (MaxPlayer >= (GG.Health + 260))
+                    if (MaxPlayer >= (GG.Health + 380))
                     {
-                        GG.Health += 260;
+                        GG.Health += 380;
                         potion3Uses--;
                         SwitchCounter = 2;
                     }
@@ -409,21 +427,19 @@ public class LevelScript : MonoBehaviour
                 if (potion4Uses > 0)
                 {
 
-                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 340);
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 5 +" uses on all abilities");
                     PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
-                 
-                    if (MaxPlayer >= (GG.Health + 340))
-                    {
-                        GG.Health += 340;
-                        potion4Uses--;
-                        SwitchCounter = 2;
+
+
+                    for (int i = 0; i < 3; i++) {
+                        if (GG.abilities[i].uses + 5 < GG.abilities[i].MaxUses)
+                            GG.abilities[i].uses += 5;
+                        else
+                            GG.abilities[i].uses = GG.abilities[i].MaxUses;
                     }
-                    else
-                    {
-                        GG.Health = MaxPlayer;
-                        potion4Uses--;
-                        SwitchCounter = 2;
-                    }
+                    potion4Uses--;
+                    SwitchCounter = 2;
+                    
 
                 }
                 break;
@@ -474,14 +490,14 @@ public class LevelScript : MonoBehaviour
         if (ability.uses <= 0)
         {
 
-            damage = EntityIsHit(3, ability, SIMP.Type, SIMP.Defense, GG.Attack, ref crit);
+            damage = EntityIsHit(3, ability, SIMP.Type,SIMP.Counter, SIMP.Defense, GG.Attack, ref crit,true);
 
 
-            if (crit == 2.0)
+            if (crit >= 1.5 && crit<2.0)
             {
                 EnemyGetDamage.SetText("-" + (int)damage + " Crit");
             }
-            else if (crit == 2.5)
+            else if (crit >= 2.0)
             {
 
                 EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
@@ -500,15 +516,15 @@ public class LevelScript : MonoBehaviour
         else if (ability.uses > 0 && SIMP.Type == ability.type)
         {
 
-            if (HitOrMiss <= ability.SuccessRate)
+            if (HitOrMiss <= ability.SuccessRate+sAccuracy)
             {
-                damage = EntityIsHit(1, ability, SIMP.Type, SIMP.Defense, GG.Attack, ref crit);
+                damage = EntityIsHit(1, ability, SIMP.Type,SIMP.Counter, SIMP.Defense, GG.Attack, ref crit,true);
 
-                if (crit == 2.0)
+                if (crit >= 1.5 && crit<2.0)
                 {
                     EnemyGetDamage.SetText("-" + (int)damage + " Crit");
                 }
-                else if (crit == 2.5)
+                else if (crit >= 2.0)
                 {
 
                     EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
@@ -547,16 +563,16 @@ public class LevelScript : MonoBehaviour
         }
         else
         {
-            if (HitOrMiss <= ability.SuccessRate)
+            if (HitOrMiss <= ability.SuccessRate + sAccuracy)
             {
-                damage = EntityIsHit(2, ability, SIMP.Type, SIMP.Defense, GG.Attack, ref crit);
+                damage = EntityIsHit(2, ability, SIMP.Type,SIMP.Counter, SIMP.Defense, GG.Attack, ref crit,true);
 
 
-                if (crit == 2.0)
+                if (crit >= 1.5 && crit<2.0)
                 {
                     EnemyGetDamage.SetText("-" + (int)damage + " Crit");
                 }
-                else if (crit == 2.5)
+                else if (crit >= 2.0)
                 {
 
                     EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
@@ -629,28 +645,34 @@ public class LevelScript : MonoBehaviour
         if (GG.Type == temp.type)
         {
 
-
-
-            if (HitOrMiss <= temp.SuccessRate)
+            int percentForDodge = Random.Range(1, 101);
+            if (percentForDodge <= sDodge)
             {
-                damage = EntityIsHit(1, temp, GG.Type, GG.Defense, SIMP.Attack, ref crit);
-                if (crit == 2.0)
+                HeroGetDamage.SetText("Attack Dodged!");
+            }
+            else
+            {
+                if (HitOrMiss <= temp.SuccessRate)
                 {
-                    HeroGetDamage.SetText("-" + (int)damage + " Crit");
-                }
-                else if (crit == 2.5)
-                {
+                    damage = EntityIsHit(1, temp, GG.Type, GG.Counter, GG.Defense, SIMP.Attack, ref crit, false);
+                    if (crit >= 1.5 && crit < 2.0)
+                    {
+                        HeroGetDamage.SetText("-" + (int)damage + " Crit");
+                    }
+                    else if (crit >= 2.0)
+                    {
 
-                    HeroGetDamage.SetText("-" + (int)damage + " Mega Crit");
+                        HeroGetDamage.SetText("-" + (int)damage + " Mega Crit");
 
+                    }
+                    else
+                    {
+                        HeroGetDamage.SetText("-" + (int)damage);
+                    }
                 }
                 else
-                {
-                    HeroGetDamage.SetText("-" + (int)damage);
-                }
-            }else
-                HeroGetDamage.SetText("Attack Missed!");
-
+                    HeroGetDamage.SetText("Attack Missed!");
+            }
             
 
 
@@ -659,28 +681,36 @@ public class LevelScript : MonoBehaviour
         }
         else
         {
-            if (HitOrMiss <= temp.SuccessRate)
+            int percentForDodge = Random.Range(0, 101);
+            if (percentForDodge <= sDodge)
             {
-                damage = EntityIsHit(2, temp, GG.Type, GG.Defense, SIMP.Attack, ref crit);
-
-
-                if (crit == 2.0)
-                {
-                    HeroGetDamage.SetText("-" + (int)damage + " Crit");
-                }
-                else if (crit == 2.5)
-                {
-
-                    HeroGetDamage.SetText("-" + (int)damage + " Mega Crit");
-
-                }
-                else
-                {
-                    HeroGetDamage.SetText("-" + (int)damage);
-                }
+                HeroGetDamage.SetText("Attack Dodged!");
             }
             else
-                HeroGetDamage.SetText("Attack Missed!");
+            {
+                if (HitOrMiss <= temp.SuccessRate)
+                {
+                    damage = EntityIsHit(2, temp, GG.Type, GG.Counter, GG.Defense, SIMP.Attack, ref crit, false);
+
+
+                    if (crit >= 1.5 && crit < 2.0)
+                    {
+                        HeroGetDamage.SetText("-" + (int)damage + " Crit");
+                    }
+                    else if (crit >= 2.0)
+                    {
+
+                        HeroGetDamage.SetText("-" + (int)damage + " Mega Crit");
+
+                    }
+                    else
+                    {
+                        HeroGetDamage.SetText("-" + (int)damage);
+                    }
+                }
+                else
+                    HeroGetDamage.SetText("Attack Missed!");
+            }
             
 
             GG.Hit(damage);
@@ -706,22 +736,44 @@ public class LevelScript : MonoBehaviour
         WinOrLoseCheck(1);
     }
 
-    private double EntityIsHit(int damageType, Abilities ability, string targetType, int def, int charAttack,ref double crit) 
+    private double EntityIsHit(int damageType, Abilities ability, string targetType,string targetCounter, int def, int charAttack,ref double crit,bool player) 
     {
         double PlusMinus = Random.Range(-5, 5);
         double modifier = (100.0 / (100.0 + def));
         int randomizer = Random.Range(0, 101);
         
-        if (randomizer <= 10)
+        if (player)
         {
-            crit = 2.0;
-            Debug.Log("Crit!");
+            if (randomizer <= 10 + sCriticalChance)
+            {
+                Debug.Log("Player.Randomizer for crit: " + randomizer);
+                crit = 1.5+ (1.5 * (sCriticalDamage / 100.0));
+                Debug.Log("Crit multiplier: "+crit);
+            }
+            else if (randomizer > 10 + sCriticalChance && randomizer <= 13 + (sCriticalChance * 2))
+            {
+                Debug.Log("Player.Randomizer for crit: " + randomizer);
+                crit = 2.0 + (2.0 * (sCriticalDamage / 100.0));
+                Debug.Log("MEGACrit! multiplier: "+crit);
+            }
         }
-        else if (randomizer > 10 && randomizer <= 13)
+        else
         {
-            crit = 2.5;
-            Debug.Log("MEGACrit!");
+            
+            if (randomizer <= 10)
+            {
+                Debug.Log("Enemy. Randomizer for crit: " + randomizer);
+                crit = 1.5;
+                Debug.Log("Crit!");
+            }
+            else if (randomizer > 10 && randomizer <= 13)
+            {
+                Debug.Log("Enemy.Randomizer for crit: " + randomizer);
+                crit = 2.0;
+                Debug.Log("MEGACrit!");
+            }
         }
+        
         
         
         switch (damageType)
@@ -744,10 +796,11 @@ public class LevelScript : MonoBehaviour
                 {
                     return (((((ability.damage + PlusMinus) * charAttack) / 100) * modifier)*2)*crit;
                 }
-                else
+                else if(ability.type==targetCounter)
                 {
-                    return ((((ability.damage + PlusMinus) * charAttack) / 100) * modifier)*crit;
-                }
+                    return (((((ability.damage + PlusMinus) * charAttack) / 100) * modifier)/2)*crit;
+                }else
+                    return ((((ability.damage + PlusMinus) * charAttack) / 100) * modifier) * crit;
 
             case 3:
                 if (ability.damage == 0)
@@ -941,11 +994,26 @@ public class LevelScript : MonoBehaviour
             
         }
     }
+    
     private void AddStats() {
+
+        
+        if(Level % 5 == 0)
+        {
+            skillTree.AvailableSkillPoints+=2;
+        }
+        else
+            skillTree.AvailableSkillPoints++;
 
         Level++;
         mTitle.SetText(Level.ToString());
-
+        for (int i = 0; i < 3; i++)
+        {
+            if ((GG.abilities[i].uses + sUseRefill) <= GG.abilities[i].MaxUses)
+                GG.abilities[i].uses += sUseRefill;
+            else
+                GG.abilities[i].uses = GG.abilities[i].MaxUses;
+        }
         GainAttack = Random.Range(10, 21);
 
         GainDefence = Random.Range(5, 11);
@@ -1067,6 +1135,7 @@ public class LevelScript : MonoBehaviour
         VictoryRoyal.SetActive(false);
         
         GenerateNextEnemy();
+        MaxPlayer += sHealth;
         GG.Health = MaxPlayer;
         Skely.SetBool("IsDead", false);
         
@@ -1110,6 +1179,7 @@ public class LevelScript : MonoBehaviour
         AbHeal.SetText("Heal: " + GG.abilities[abilityPosition].heal+"%");
         AbDamage.SetText("Damage: " + GG.abilities[abilityPosition].damage);
         AbType.SetText("Type: " + GG.abilities[abilityPosition].type);
+        AbAccuracy.SetText("Accuracy: " + GG.abilities[abilityPosition].SuccessRate + "% + " + sAccuracy + "%");
         AbilityInfoUI.SetActive(true);
     }
 
@@ -1131,25 +1201,27 @@ public class LevelScript : MonoBehaviour
     public void addPotions()
     {
         int percentage = Random.Range(0, 101);
-        if (percentage >= 0 && percentage <= 10)
+        Debug.Log("Percentage: " + percentage + " total luck: " + sLuck);
+        if (percentage >= 0 && percentage <= 10+ sLuck)
         {
             potion1Uses++;
-            APotion.SetText("Level 1 potion received");
+            
+            APotion.SetText("Level 1 health potion received");
         }
-        else if (percentage > 10 && percentage <= 18)
+        else if (percentage > 10 + sLuck && percentage <= 18 + (sLuck*2))
         {
             potion2Uses++;
-            APotion.SetText("Level 2 potion received");
+            APotion.SetText("Level 2 health potion received");
         }
-        else if (percentage > 18 && percentage <= 24)
+        else if (percentage > 18 + (sLuck*2) && percentage <= 24 + (sLuck*3))
         {
             potion3Uses++;
-            APotion.SetText("Level 3 potion received");
+            APotion.SetText("Level 3 health potion received");
         }
-        else if (percentage > 24 && percentage <= 28)
+        else if (percentage > 24 + (sLuck*3) && percentage <= 33 + (sLuck*4))
         {
             potion4Uses++;
-            APotion.SetText("Level 4 potion received");
+            APotion.SetText("Uses refill received");
         }
         else
             APotion.SetText("No potion was received");
@@ -1158,12 +1230,60 @@ public class LevelScript : MonoBehaviour
         potion3text.text = "" + potion3Uses;
         potion4text.text = "" + potion4Uses;
     }
+    //Skill Tree adjustments
+    public void sDamageSkill()
+    {
+        GG.Attack += 15;
+        SkillTreeInfo.text = "+15 Attack. Total: " + GG.Attack;
+    }
+    public void sDefenseSkill()
+    {
+        GG.Defense += 10;
+        SkillTreeInfo.text = "+10 Defense. Total: " + GG.Defense;
+    }
+    public void sHealthSkill()
+    {
+        sHealth += 50;
+        SkillTreeInfo.text = "+50 Max HP.";
+    }
+    public void sDodgeSkill()
+    {
+        sDodge += 5;
+        SkillTreeInfo.text = "+5% Dodge Chance. Total: "+sDodge+"%";
+    }
+    public void sLuckSkill()
+    {
+        sLuck += 3;
+        SkillTreeInfo.text = "+3% Luck. Total: +"+sLuck+"%";
+    }
+    public void sCriticalChanceSkill()
+    {
+        sCriticalChance += 3;
+        SkillTreeInfo.text = "+3% Critical Chance. Total: +" + sCriticalChance + "%";
+    }
+    public void sCriticalDamageSkill()
+    {
+        sCriticalDamage += 5;
+        SkillTreeInfo.text = "+5% Critical Damage. Total: +" + sCriticalDamage + "%";
+    }
+    public void sAccuracySkill()
+    {
+        sAccuracy += 5;
+        SkillTreeInfo.text = "+5% Accuracy. Total: +" + sAccuracy + "%";
+    }
+    public void sUseRefillSkill()
+    {
+        sUseRefill += 1;
+        SkillTreeInfo.text = "You will refill for "+ sUseRefill+" all current abilities each level.";
+    }
 
-   
+
+
 
     void Start()
     {
         settings = controller.GetComponent<Settings>();
+        skillTree = controller.GetComponent<SkillTree>();
 
         PopupHeroAnimation = PopupHeroHealText.GetComponent<Animator>();
     
@@ -1193,7 +1313,7 @@ public class LevelScript : MonoBehaviour
 
     void Update()
     {
-
+        
         UpdateUI(SIMP, GG);
         switch (SwitchCounter)
         {
