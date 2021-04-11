@@ -503,7 +503,8 @@ public class LevelScript : MonoBehaviour
     private void Attacking(Abilities ability)
     {
         //animations
-        SkelyPlayer.SetTrigger("Attack");
+        int rand = Random.Range(0, 3);
+        SkelyPlayer.SetTrigger("Attack" + rand);
         
         double heal;
         double damage=0;
@@ -665,7 +666,10 @@ public class LevelScript : MonoBehaviour
         //Trigger animations
         Skely.SetTrigger("IsDamage");
 
-        BossAnimator.SetTrigger("BossTrigger");
+        int rand = Random.Range(0, 4);
+        
+
+        BossAnimator.SetTrigger("BossTrigger" + rand);
         
         Abilities temp;
         //Enemy can use up to 3 abilities after level 3
