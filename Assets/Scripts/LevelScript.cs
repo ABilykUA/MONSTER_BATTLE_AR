@@ -16,6 +16,7 @@ public class LevelScript : MonoBehaviour
     public GameObject SkillTreeTutorial;
 
     public GameObject VictoryRoyal;
+    public GameObject VictoryWithTutorial;
     public GameObject SettingsScreen;
 
     public GameObject DefeatUI;
@@ -1209,7 +1210,9 @@ public class LevelScript : MonoBehaviour
 
         SwitchCounter = 1;
         VictoryRoyal.SetActive(false);
-        
+        VictoryWithTutorial.SetActive(false);
+
+
         GenerateNextEnemy();
         MaxPlayer += sHealth;
         GG.Health = MaxPlayer;
@@ -1463,6 +1466,7 @@ public class LevelScript : MonoBehaviour
                 UI.SetActive(false);
                 addPotions();
                 VictoryRoyal.SetActive(true);
+                VictoryWithTutorial.SetActive(true);
                 SwitchCounter = 5;
                 StopAllCoroutines();
 

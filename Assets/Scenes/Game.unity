@@ -4094,7 +4094,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 305250032}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4103,13 +4103,13 @@ RectTransform:
   - {fileID: 573415337}
   - {fileID: 1389393609}
   - {fileID: 1104479477}
-  m_Father: {fileID: 1674408013}
-  m_RootOrder: 7
+  m_Father: {fileID: 951934260}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -65.627014, y: 4.5999756}
-  m_SizeDelta: {x: -173.58209, y: -82.601685}
+  m_AnchoredPosition: {x: -74.2428, y: -3.597412}
+  m_SizeDelta: {x: 842.205, y: 1499.0696}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &305250034
 MonoBehaviour:
@@ -7106,8 +7106,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
-  m_fontSizeBase: 60
+  m_fontSize: 55
+  m_fontSizeBase: 55
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -11585,6 +11585,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &951934259
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 951934260}
+  m_Layer: 0
+  m_Name: VictoryWithTutorial
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &951934260
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951934259}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1674408013}
+  - {fileID: 305250033}
+  m_Father: {fileID: 2130033166}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &954195235
 GameObject:
   m_ObjectHideFlags: 0
@@ -12904,6 +12936,7 @@ MonoBehaviour:
   RunOutUI: {fileID: 905364646}
   SkillTreeTutorial: {fileID: 305250032}
   VictoryRoyal: {fileID: 1674408012}
+  VictoryWithTutorial: {fileID: 951934259}
   SettingsScreen: {fileID: 1893078766}
   DefeatUI: {fileID: 827482625}
   Button1: {fileID: 1876259691}
@@ -16075,8 +16108,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 44
+  m_fontSizeBase: 44
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -19677,7 +19710,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1674408012}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -19688,14 +19721,13 @@ RectTransform:
   - {fileID: 54213666}
   - {fileID: 215079157}
   - {fileID: 1815072001}
-  - {fileID: 305250033}
-  m_Father: {fileID: 2130033166}
-  m_RootOrder: 4
+  m_Father: {fileID: 951934260}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.040000003, y: 0.12024984}
   m_AnchorMax: {x: 0.9291799, y: 0.9071986}
-  m_AnchoredPosition: {x: 8.123169, y: -34.69995}
-  m_SizeDelta: {x: 49.93164, y: 62.01111}
+  m_AnchoredPosition: {x: -8.615686, y: -8.197378}
+  m_SizeDelta: {x: 1015.7871, y: 1581.6713}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1674408014
 MonoBehaviour:
@@ -24532,7 +24564,7 @@ RectTransform:
   - {fileID: 1879038983}
   - {fileID: 77370078}
   - {fileID: 1357057970}
-  - {fileID: 1674408013}
+  - {fileID: 951934260}
   - {fileID: 708279376}
   - {fileID: 827482626}
   - {fileID: 1712318029}
