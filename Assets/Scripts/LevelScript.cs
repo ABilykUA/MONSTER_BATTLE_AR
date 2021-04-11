@@ -12,6 +12,8 @@ using Debug = UnityEngine.Debug;
 public class LevelScript : MonoBehaviour
 {
     public GameObject UI;
+    public GameObject RunOutUI;
+    public GameObject SkillTreeTutorial;
 
     public GameObject VictoryRoyal;
     public GameObject SettingsScreen;
@@ -77,6 +79,7 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI AName;
     public TextMeshProUGUI AUses;
     public TextMeshProUGUI AAccuracy;
+    public TextMeshProUGUI AStun;
     public TextMeshProUGUI ADescription;
 
     //Potion added win UI
@@ -104,6 +107,9 @@ public class LevelScript : MonoBehaviour
     public TextMeshProUGUI potion2text;
     public TextMeshProUGUI potion3text;
     public TextMeshProUGUI potion4text;
+    public TextMeshProUGUI potion1info;
+    public TextMeshProUGUI potion2info;
+    public TextMeshProUGUI potion3info;
 
 
     //animations
@@ -126,11 +132,11 @@ public class LevelScript : MonoBehaviour
 
 
     //All Abilities
-    private Abilities[] abilities = { null, null, null, null, null, null, null, null,null,null,null,null,null,null,null,null };
+    private Abilities[] abilities = { null, null, null, null, null, null, null, null,null,null,null,null,null,null,null,null,null,null,null };
 
-    private Abilities EmptyAbility = new Abilities(0, " ", 0, 0, " ", " ",0,"");
+    private Abilities EmptyAbility = new Abilities(0, " ", 0, 0, " ", " ",0,"",0);
 
-    private Abilities newAbility = new Abilities(0, " ", 0, 0, " ", " ",0,"");
+    private Abilities newAbility = new Abilities(0, " ", 0, 0, " ", " ",0,"",0);
 
     private string[] Type = { "Water", "Grass", "Fire" };
 
@@ -177,32 +183,43 @@ public class LevelScript : MonoBehaviour
     private int sHealth = 0;
     private int sDodge = 0;
     private int sUseRefill = 0;
+    //Stun
+    private bool sStun = false;
+    private bool eStun = false;
 
+    //enemyinfo
+    public TextMeshProUGUI enemySpellInfo;
+    public GameObject enemyInfoCanvas;
     public TextMeshProUGUI SkillTreeInfo;
+    private int enemyAccuracy=0;
     SkillTree skillTree;
 
+    //All the available abilities the user and enemy can get.
     private void GenerateAbilities()
     {
     
-        abilities[0] = new Abilities(40, "Fire", 0, 15, "Fire bolt", "Grass",100,"A weak starting ability");
-        abilities[1] = new Abilities(40, "Water", 0, 15, "Water gun", "Fire",100, "A weak starting ability");
-        abilities[2] = new Abilities(40, "Grass", 0, 15, "Grass slap", "Water",100, "A weak starting ability");
-        abilities[3] = new Abilities(50, "Fire", 0, 12, "Flame Wheel", "Grass",95,"");
-        abilities[4] = new Abilities(65, "Water", 0, 10, "Tsunami", "Fire",80,"");
-        abilities[5] = new Abilities(75, "Grass", 0, 7, "Branch slam", "Water",85,"");
-        abilities[6] = new Abilities(0, "Grass", 40, 5, "Synthesis", "Water",100, "This ability only heals.");
-        abilities[7] = new Abilities(50, "Fire", 5, 10, "Flare Blitz", "Grass",95, "");
-        abilities[8] = new Abilities(50, "Grass", 5, 10, "Solar Beam", "Water",95, "");
-        abilities[9] = new Abilities(80, "Water", 5, 5, "Wave Force", "Fire",70, "");
-        abilities[10] = new Abilities(65, "Chameleon", 0, 7, "Chameleon Whip", "Fire",85,"Adjusts to always counter the enemy type.");
-        abilities[11] = new Abilities(50, "Chameleon", 10, 5, "Chameleon Glare", "Fire", 80, "Adjusts to always counter the enemy type. Also heals.");
-        abilities[12] = new Abilities(200, "Water", 0, 3, "Poseidon's Fury", "Fire", 30, "A high damage low accuracy ability made for performing miracles.");
-        abilities[13] = new Abilities(75, "Fire", 10, 7, "Implosion", "Grass", 50, "The enemy violently implodes inwards dealing huge fire damage.");
-        abilities[14] = new Abilities(75, "Water", 0, 10, "Moonchild Slam", "Fire", 70, "Blessed by an ability from the stars");
-        abilities[15] = new Abilities(60, "Grass", 28, 10, "Amazons Wrath", "Water", 70, "Call the Amazons to your rescue.");
+        abilities[0] = new Abilities(40, "Fire", 0, 15, "Fire bolt", "Grass",100,"A weak starting ability",0);
+        abilities[1] = new Abilities(40, "Water", 0, 15, "Water gun", "Fire",100, "A weak starting ability",0);
+        abilities[2] = new Abilities(40, "Grass", 0, 15, "Grass slap", "Water",100, "A weak starting ability",0);
+        abilities[3] = new Abilities(50, "Fire", 0, 12, "Flame Wheel", "Grass",95,"",0);
+        abilities[4] = new Abilities(65, "Water", 0, 10, "Tsunami", "Fire",80,"",0);
+        abilities[5] = new Abilities(75, "Grass", 0, 8, "Branch slam", "Water",85,"",0);
+        abilities[6] = new Abilities(0, "Grass", 30, 6, "Synthesis", "Water",100, "This ability heals and has 40% chance to stun.",40);
+        abilities[7] = new Abilities(50, "Fire", 5, 10, "Flare Blitz", "Grass",95, "",0);
+        abilities[8] = new Abilities(50, "Grass", 5, 10, "Solar Beam", "Water",95, "",0);
+        abilities[9] = new Abilities(80, "Water", 5, 6, "Wave Force", "Fire",70, "",0);
+        abilities[10] = new Abilities(65, "Chameleon", 0, 8, "Chameleon Whip", "Fire",85,"Adjusts to always counter the enemy type.",0);
+        abilities[11] = new Abilities(50, "Chameleon", 10,6, "Chameleon Glare", "Fire", 80, "Adjusts to always counter the enemy type. Also heals.",0);
+        abilities[12] = new Abilities(200, "Water", 0, 3, "Poseidon's Fury", "Fire", 30, "A high damage low accuracy ability made for performing miracles.",0);
+        abilities[13] = new Abilities(70, "Fire", 10, 8, "Implosion", "Grass", 50, "The enemy violently implodes inwards dealing huge fire damage.",0);
+        abilities[14] = new Abilities(75, "Water", 0, 8, "Moonchild Slam", "Fire", 70, "Blessed by an ability from the stars. 10% chance to stun.",10);
+        abilities[15] = new Abilities(50, "Grass", 15, 10, "Amazons Wrath", "Water", 70, "Call the Amazons to your rescue.",0);
+        abilities[16] = new Abilities(40, "Grass", 0, 7, "Root", "Water", 80, "Has a 30% chance to stun the enemy.", 30);
+        abilities[17] = new Abilities(50, "Fire", 5, 7, "Flame Chains", "Grass", 80, "Has a 20% chance to stun the enemy.", 20);
+        abilities[18] = new Abilities(50, "Water", 10, 7, "Bubble", "Fire", 80, "Has a 15% chance to stun the enemy.", 15);
     }
 
-
+    //Color blind support. Changes the colors to fit a specific color blind type.
     private void ColorChange(Entity GG)
     {
 
@@ -265,7 +282,7 @@ public class LevelScript : MonoBehaviour
             }
         }
         else
-        {
+        {//Reset to the default colors if the user chooses 'None'
             
             for (int i = 0; i < buttons.Length; i++)
             {
@@ -286,7 +303,7 @@ public class LevelScript : MonoBehaviour
     }
 
 
-
+    //Updating every frame the UI.
     private void UpdateUI(Entity SIMP, Entity GG) {
         //player
         mHealth.SetText((int)GG.Health + "/" + MaxPlayer);
@@ -341,9 +358,10 @@ public class LevelScript : MonoBehaviour
         ADamage.SetText("Damage: " + newAbility.damage);
         AType.SetText("Type: " + newAbility.type);
         AName.SetText("Name: " + newAbility.name);
-        AUses.SetText("Uses: " + newAbility.uses);
+        AUses.SetText("Uses: " + newAbility.MaxUses);
         AHeal.SetText("Heal: " + newAbility.heal+"%");
         AAccuracy.SetText("Accuracy: "+newAbility.SuccessRate);
+        
         ADescription.SetText(newAbility.description);
 
         
@@ -351,21 +369,22 @@ public class LevelScript : MonoBehaviour
 
     }
 
+    //Health packs and use refill function. Heal for a % of your max health.
     public void HealthPotions(int potionType)
     {
-        
+        //Balance this!
         switch (potionType)
         {
             case 1:
                 if (potion1Uses > 0)
                 {
 
-                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 180);
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" +  (int)(MaxPlayer * (25.0 / 100.0)));
                     PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
                   
-                    if (MaxPlayer >= (GG.Health + 180))
+                    if (MaxPlayer >= GG.Health+(MaxPlayer * (25.0/100.0)))
                     {
-                        GG.Health += 180;
+                        GG.Health += (MaxPlayer * (25.0 / 100.0));
                         potion1Uses--;
                         SwitchCounter = 2;
                     }
@@ -382,12 +401,12 @@ public class LevelScript : MonoBehaviour
                 if (potion2Uses > 0)
                 {
 
-                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 260);
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + (int)(MaxPlayer * (35.0 / 100.0)));
                     PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
                 
-                    if (MaxPlayer >= (GG.Health + 260))
+                    if (MaxPlayer >= GG.Health+(MaxPlayer * (35.0 / 100.0)))
                     {
-                        GG.Health += 260;
+                        GG.Health += (MaxPlayer * (35.0 / 100.0));
                         potion2Uses--;
                         SwitchCounter = 2;
                     }
@@ -404,13 +423,13 @@ public class LevelScript : MonoBehaviour
                 if (potion3Uses > 0)
                 {
 
-                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + 380);
+                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + (int)(MaxPlayer * (45.0 / 100.0)));
                     PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
                 
 
-                    if (MaxPlayer >= (GG.Health + 380))
+                    if (MaxPlayer >= (GG.Health +(MaxPlayer * (45.0 / 100.0))))
                     {
-                        GG.Health += 380;
+                        GG.Health +=  (MaxPlayer * (45.0 / 100.0));
                         potion3Uses--;
                         SwitchCounter = 2;
                     }
@@ -450,6 +469,7 @@ public class LevelScript : MonoBehaviour
         potion4text.text = "" + potion4Uses;
     }
 
+    //Click function for slot 1
     public void AttackSlot1()
     {
         PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("");
@@ -458,6 +478,7 @@ public class LevelScript : MonoBehaviour
         if (GG.abilities[0].uses > 0)
             GG.abilities[0].uses -= 1;
     }
+    //Click function for slot 2
     public void AttackSlot2()
     {
         PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("");
@@ -466,6 +487,7 @@ public class LevelScript : MonoBehaviour
         if (GG.abilities[1].uses > 0)
             GG.abilities[1].uses -= 1;
     }
+    //Click function for slot 3
     public void AttackSlot3()
     {
        PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("");
@@ -476,7 +498,7 @@ public class LevelScript : MonoBehaviour
             
         
     }
-    
+    //Whenever the player attacks call this function
     private void Attacking(Abilities ability)
     {
         //animations
@@ -485,144 +507,167 @@ public class LevelScript : MonoBehaviour
         double heal;
         double damage=0;
         double crit = 1;
+        int runOut = 0;
         int HitOrMiss = Random.Range(0, 101);
-        
-        if (ability.uses <= 0)
+        for (int i= 0; i < GG.abilities.Length; i++)
         {
-
-            damage = EntityIsHit(3, ability, SIMP.Type,SIMP.Counter, SIMP.Defense, GG.Attack, ref crit,true);
-
-
-            if (crit >= 1.5 && crit<2.0)
+            if (GG.abilities[i].uses == 0)
+                runOut++;
+        }
+        if (runOut == 3)
+        {
+            GG.Health -= MaxPlayer * (10 / 100);
+            RunOutUI.SetActive(true);
+        }
+        if (!eStun)//Check if the player is stunned
+        {
+            if (ability.uses <= 0)//Check if you run out of uses.
             {
-                EnemyGetDamage.SetText("-" + (int)damage + " Crit");
+
+                damage = EntityIsHit(3, ability, SIMP.Type, SIMP.Counter, SIMP.Defense, GG.Attack, ref crit, true);
+
+                //Change the UI text in case the player crits to inform them.
+                if (crit >= 1.5 && crit < 2.0)
+                {
+                    EnemyGetDamage.SetText("-" + (int)damage + " Crit");
+                }
+                else if (crit >= 2.0)
+                {
+
+                    EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
+
+                }
+                else
+                {
+                    EnemyGetDamage.SetText("-" + (int)damage);
+                }
+                FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
+                SIMP.Hit(damage);
+
+                PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("");
+                PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
             }
-            else if (crit >= 2.0)
+            else if (ability.uses > 0 && SIMP.Type == ability.type)
             {
 
-                EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
+                if (HitOrMiss <= ability.SuccessRate + sAccuracy)//Check if an attack missed based on accuracy of ability and accuracy the player has.
+                {
+                    damage = EntityIsHit(1, ability, SIMP.Type, SIMP.Counter, SIMP.Defense, GG.Attack, ref crit, true);
+
+                    if (crit >= 1.5 && crit < 2.0)
+                    {
+                        EnemyGetDamage.SetText("-" + (int)damage + " Crit");
+                    }
+                    else if (crit >= 2.0)
+                    {
+
+                        EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
+
+                    }
+                    else
+                    {
+                        EnemyGetDamage.SetText("-" + (int)damage);
+                    }
+                }
+                else
+                    EnemyGetDamage.SetText("Attack Missed!");
+
+                FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
+                SIMP.Hit(damage);
+                //If ability heals
+                if (ability.heal > 0)
+                {
+                    if (GG.Health < MaxPlayer)
+                    {
+                        heal = (MaxPlayer * ability.heal) / 100;
+                        GG.Health += heal;
+                        //checks if you overhealed so it sets your Health to your max Health instead
+                        if (GG.Health > MaxPlayer)
+                        {
+                            GG.Health = MaxPlayer;
+
+
+                        }
+
+                        PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + (int)heal);
+                        PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
+                    }
+                }
+
 
             }
             else
             {
-                EnemyGetDamage.SetText("-" + (int)damage);
-            }
-            FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
-            SIMP.Hit(damage);
-
-            PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("");
-            PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
-        }
-        else if (ability.uses > 0 && SIMP.Type == ability.type)
-        {
-
-            if (HitOrMiss <= ability.SuccessRate+sAccuracy)
-            {
-                damage = EntityIsHit(1, ability, SIMP.Type,SIMP.Counter, SIMP.Defense, GG.Attack, ref crit,true);
-
-                if (crit >= 1.5 && crit<2.0)
+                if (HitOrMiss <= ability.SuccessRate + sAccuracy)//Check if an attack missed based on accuracy of ability and accuracy the player has.
                 {
-                    EnemyGetDamage.SetText("-" + (int)damage + " Crit");
-                }
-                else if (crit >= 2.0)
-                {
+                    damage = EntityIsHit(2, ability, SIMP.Type, SIMP.Counter, SIMP.Defense, GG.Attack, ref crit, true);
 
-                    EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
 
+                    if (crit >= 1.5 && crit < 2.0)
+                    {
+                        EnemyGetDamage.SetText("-" + (int)damage + " Crit");
+                    }
+                    else if (crit >= 2.0)
+                    {
+
+                        EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
+
+                    }
+                    else
+                    {
+                        EnemyGetDamage.SetText("-" + (int)damage);
+                    }
                 }
                 else
-                {
-                    EnemyGetDamage.SetText("-" + (int)damage);
-                }
-            }else
-                EnemyGetDamage.SetText("Attack Missed!");
+                    EnemyGetDamage.SetText("Attack Missed!");
 
-            FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
-            SIMP.Hit(damage);
-            //If ability heals
-            if (ability.heal > 0)
-            {
-                if (GG.Health < MaxPlayer)
+                FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
+
+                SIMP.Hit(damage);
+
+                //If ability heals
+                if (ability.heal > 0)
                 {
-                    heal = (MaxPlayer * ability.heal) / 100;
-                    GG.Health += heal;
-                    //checks if you overhealed so it sets your Health to your max Health instead
-                    if (GG.Health > MaxPlayer)
+                    if (GG.Health < MaxPlayer)
                     {
-                        GG.Health = MaxPlayer;
-                        
-                        
-                    }
+                        heal = (MaxPlayer * ability.heal) / 100;
+                        GG.Health += heal;
+                        //checks if you overhealed so it sets your Health to your max Health instead
+                        if (GG.Health > MaxPlayer)
+                        {
+                            GG.Health = MaxPlayer;
 
-                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + (int)heal);
-                    PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
+
+
+                        }
+
+                        PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + (int)heal);
+                        PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
+                    }
                 }
             }
-
-            
         }
-        else
+        else//If the player is stunned don't allow them to use get the effect of the ability.
         {
-            if (HitOrMiss <= ability.SuccessRate + sAccuracy)
-            {
-                damage = EntityIsHit(2, ability, SIMP.Type,SIMP.Counter, SIMP.Defense, GG.Attack, ref crit,true);
-
-
-                if (crit >= 1.5 && crit<2.0)
-                {
-                    EnemyGetDamage.SetText("-" + (int)damage + " Crit");
-                }
-                else if (crit >= 2.0)
-                {
-
-                    EnemyGetDamage.SetText("-" + (int)damage + " Mega Crit");
-
-                }
-                else
-                {
-                    EnemyGetDamage.SetText("-" + (int)damage);
-                }
-            }else
-                EnemyGetDamage.SetText("Attack Missed!");
+            EnemyGetDamage.SetText("You are stunned!");
             FloatingTxt.Play("Base Layer.FloatingText", -1, 0f);
-
-            SIMP.Hit(damage);
-
-            //If ability heals
-            if (ability.heal > 0)
-            {
-                if (GG.Health < MaxPlayer)
-                {
-                    heal = (MaxPlayer * ability.heal) / 100;
-                    GG.Health += heal;
-                    //checks if you overhealed so it sets your Health to your max Health instead
-                    if (GG.Health > MaxPlayer)
-                    {
-                        GG.Health = MaxPlayer;
-
-
-                       
-                    }
-
-                    PopupHeroHealText.GetComponent<TextMeshProUGUI>().SetText("+" + (int)heal);
-                    PopupHeroAnimation.Play("Base Layer.Heathpopup", -1, 0f);
-                }
-            }
+            eStun = false;
         }
 
         WinOrLoseCheck(2);
 
     }
 
+    //Call this function whenever the enemy attacks
     private void EnemyAttacking()
     {
+        //Trigger animations
         Skely.SetTrigger("IsDamage");
 
         BossAnimator.SetTrigger("BossTrigger");
         
         Abilities temp;
-        
-        StartCoroutine(ExampleCoroutine());
+        //Enemy can use up to 3 abilities after level 3
         if (Level == 1) 
         { 
             temp = SIMP.GetAbilities(0);
@@ -635,113 +680,131 @@ public class LevelScript : MonoBehaviour
         {
             temp = SIMP.GetAbilities(Random.Range(0, 3));
         }
-       
+        enemyInfoCanvas.SetActive(true);
+        enemySpellInfo.SetText("Enemy used " + temp.name + ".");
+        StartCoroutine(ExampleCoroutine());
 
         double damage=0;
 
         double crit = 1;
         int HitOrMiss = Random.Range(0, 101);
         Debug.Log("Enemy Ability name: " + temp.name);
-        if (GG.Type == temp.type)
+        if (!sStun)
         {
-
-            int percentForDodge = Random.Range(1, 101);
-            if (percentForDodge <= sDodge)
+            if (GG.Type == temp.type)
             {
-                HeroGetDamage.SetText("Attack Dodged!");
+
+                int percentForDodge = Random.Range(0, 101);
+                if (percentForDodge <= sDodge&&sDodge>0)
+                {
+                    HeroGetDamage.SetText("Attack Dodged!");
+                }
+                else
+                {
+                    if (HitOrMiss <= temp.SuccessRate+enemyAccuracy)//Chance for the enemy to miss
+                    {
+                        //Play animations according to the specific type of hit. Crit, mega crit or normal.
+                        damage = EntityIsHit(1, temp, GG.Type, GG.Counter, GG.Defense, SIMP.Attack, ref crit, false);
+                        if (crit >= 1.5 && crit < 2.0)
+                        {
+                            HeroGetDamage.SetText("-" + (int)damage + " Crit");
+                        }
+                        else if (crit >= 2.0)
+                        {
+
+                            HeroGetDamage.SetText("-" + (int)damage + " Mega Crit");
+
+                        }
+                        else
+                        {
+                            HeroGetDamage.SetText("-" + (int)damage);
+                        }
+                    }
+                    else
+                        HeroGetDamage.SetText("Attack Missed!");
+                }
+
+
+
+                GG.Hit(damage);
+
             }
             else
             {
-                if (HitOrMiss <= temp.SuccessRate)
+                int percentForDodge = Random.Range(0, 101);
+                //A chance for the player to dodge 
+                if (percentForDodge <= sDodge && sDodge > 0)
                 {
-                    damage = EntityIsHit(1, temp, GG.Type, GG.Counter, GG.Defense, SIMP.Attack, ref crit, false);
-                    if (crit >= 1.5 && crit < 2.0)
-                    {
-                        HeroGetDamage.SetText("-" + (int)damage + " Crit");
-                    }
-                    else if (crit >= 2.0)
-                    {
-
-                        HeroGetDamage.SetText("-" + (int)damage + " Mega Crit");
-
-                    }
-                    else
-                    {
-                        HeroGetDamage.SetText("-" + (int)damage);
-                    }
+                    HeroGetDamage.SetText("Attack Dodged!");
                 }
                 else
-                    HeroGetDamage.SetText("Attack Missed!");
-            }
-            
-
-
-            GG.Hit(damage);
-            
-        }
-        else
-        {
-            int percentForDodge = Random.Range(0, 101);
-            if (percentForDodge <= sDodge)
-            {
-                HeroGetDamage.SetText("Attack Dodged!");
-            }
-            else
-            {
-                if (HitOrMiss <= temp.SuccessRate)
                 {
-                    damage = EntityIsHit(2, temp, GG.Type, GG.Counter, GG.Defense, SIMP.Attack, ref crit, false);
-
-
-                    if (crit >= 1.5 && crit < 2.0)
+                    if (HitOrMiss <= temp.SuccessRate+ enemyAccuracy)
                     {
-                        HeroGetDamage.SetText("-" + (int)damage + " Crit");
-                    }
-                    else if (crit >= 2.0)
-                    {
+                        damage = EntityIsHit(2, temp, GG.Type, GG.Counter, GG.Defense, SIMP.Attack, ref crit, false);
 
-                        HeroGetDamage.SetText("-" + (int)damage + " Mega Crit");
 
+                        if (crit >= 1.5 && crit < 2.0)
+                        {
+                            HeroGetDamage.SetText("-" + (int)damage + " Crit");
+                        }
+                        else if (crit >= 2.0)
+                        {
+
+                            HeroGetDamage.SetText("-" + (int)damage + " Mega Crit");
+
+                        }
+                        else
+                        {
+                            HeroGetDamage.SetText("-" + (int)damage);
+                        }
                     }
                     else
-                    {
-                        HeroGetDamage.SetText("-" + (int)damage);
-                    }
+                        HeroGetDamage.SetText("Attack Missed!");
                 }
-                else
-                    HeroGetDamage.SetText("Attack Missed!");
-            }
-            
 
-            GG.Hit(damage);
-        }
+
+                GG.Hit(damage);
+            }
             //If ability heals
             if (temp.heal > 0)
             {
                 if (SIMP.Health < MaxEnemy)
                 {
-                    SIMP.Health += ((MaxEnemy * temp.heal) / 100 );
+                    SIMP.Health += ((MaxEnemy * (temp.heal-5)) / 100);
                     //checks if you overhealed so it sets your Health to your max Health instead
                     if (SIMP.Health > MaxEnemy)
                     {
                         SIMP.Health = MaxEnemy;
                     }
-                
+
                 }
             }
-    
+        }
+        else
+        {
+            HeroGetDamage.SetText("Enemy is stunned!");
+            sStun = false;
+        }
 
+        
         StopCoroutine(ExampleCoroutine());
 
         WinOrLoseCheck(1);
     }
-
+ 
     private double EntityIsHit(int damageType, Abilities ability, string targetType,string targetCounter, int def, int charAttack,ref double crit,bool player) 
     {
         double PlusMinus = Random.Range(-5, 5);
         double modifier = (100.0 / (100.0 + def));
         int randomizer = Random.Range(0, 101);
-        
+        int stunChance = Random.Range(0, 101);
+        if (ability.stun>0&& stunChance <= ability.stun && player)
+        {
+            sStun = true;
+        }else if (ability.stun > 0 && stunChance <= ability.stun && !player)
+            eStun = true;
+
         if (player)
         {
             if (randomizer <= 10 + sCriticalChance)
@@ -820,9 +883,9 @@ public class LevelScript : MonoBehaviour
         //whatever type you get for enemy or you you get the same type of ability
         TypeMe = Type[Random.Range(0, Type.Length)];
         
-		int A = Random.Range(50, 71);
-        int D = Random.Range(20, 41);
-        int H = Random.Range(200, 301);
+		int A = Random.Range(30, 41);
+        int D = Random.Range(20, 31);
+        int H = Random.Range(110, 131);
         string counterType;
         if (TypeMe == "Fire")
             counterType = "Water";
@@ -846,6 +909,7 @@ public class LevelScript : MonoBehaviour
         MaxPlayer = GG.Health;
 
     }
+    //Generate initial enemy stats
     private void GenerateEnemyStats()
     {
         string TypeEnemy = Type[Random.Range(0, Type.Length)];
@@ -874,9 +938,9 @@ public class LevelScript : MonoBehaviour
 
         }
 		
-        int A = Random.Range(40, 61);
-        int D = Random.Range(10, 31);
-        int H = Random.Range(70, 151);
+        int A = Random.Range(25, 33);
+        int D = Random.Range(15, 26);
+        int H = Random.Range(90, 111);
 
         
 
@@ -890,21 +954,21 @@ public class LevelScript : MonoBehaviour
 		
         MaxEnemy = SIMP.Health;
     }
-    //Scaling enemy stats
+    //Scaling enemy stats every level
     private void GenerateNextEnemy()
     {
         Abilities tempA;
         string TypeEnemy = Type[Random.Range(0, Type.Length)];
         //boss fight every 5 levels
         int A, D, H;
-        if (Level % 5 == 0)
+        if (Level % 5 == 0)//Every 5 levels you get a boss battle that has your stats that are slightly stronger than you.
         {
             Boss.SetActive(true);
             Skelly.SetActive(false);
-            A = (GG.Attack - 10);
-            D = (GG.Defense - 5);
-            H = (int)(GG.Health + 100);
-            MaxBoss = (GG.Health + 100);
+            A = GG.Attack+ (int)(GG.Attack * (5.0 / 100.0));
+            D = GG.Defense;
+            H = (int)(GG.Health + (GG.Health*(20.0/100.0)));
+            MaxBoss = (int)(GG.Health + (GG.Health * (20.0 / 100.0)));
 
         }
         else
@@ -912,11 +976,11 @@ public class LevelScript : MonoBehaviour
             Boss.SetActive(false);
             Skelly.SetActive(true);
 
-            GainAttack = Random.Range(10, 21);
+            GainAttack = Random.Range(15, 21);
 
-            GainDefence = Random.Range(5, 11);
+            GainDefence = Random.Range(13, 18);
 
-            GaindHealth = Random.Range(40, 71);
+            GaindHealth = Random.Range(50, 57);
 
             SIMP.Health = MaxEnemy;
             A = SIMP.Attack + GainAttack;
@@ -925,8 +989,15 @@ public class LevelScript : MonoBehaviour
             MaxEnemy = SIMP.Health + GaindHealth;
             
         }
+        //Every 11 levels the enemy gets additional stats.
+        if(Level % 11 == 0)
+        {
+            A += 15;
+            D += 10;
 
-        
+        }
+
+        //find the coutner type of an enemy.
         string counterType;
         if (TypeEnemy == "Fire")
             counterType = "Water";
@@ -937,7 +1008,9 @@ public class LevelScript : MonoBehaviour
         else
             counterType = "";
 
-       
+        //Every 4 levels increase the enemies accuracy by 3.
+        if (Level % 4 == 0)
+            enemyAccuracy += 3;
 
         if (Level == 2)
         {
@@ -966,7 +1039,7 @@ public class LevelScript : MonoBehaviour
             for (int i = 0; i < abilities.Length; i++)
             {
                 tempA = abilities[i];
-                if (tempA.type == TypeEnemy && tempA.damage != 0)
+                if (tempA.type == TypeEnemy && tempA.damage != 0)//Give the enemy an ability that is his type 
                 {
                     SIMP = new Entity(H, D, A, TypeEnemy, counterType, abilities[i], EmptyAbility);
                     break;
@@ -974,7 +1047,7 @@ public class LevelScript : MonoBehaviour
             }
             for (int i = 0; i < abilities.Length; i++)
             {
-                tempA = abilities[i];
+                tempA = abilities[Random.Range(0,abilities.Length)];
                 if (tempA.type == TypeEnemy && tempA.damage != 0 && SIMP.GetAbilities(0).name != tempA.name)
                 {
                     SIMP.SetAbilities(tempA, 1);
@@ -983,7 +1056,7 @@ public class LevelScript : MonoBehaviour
             }
             for (int i = 0; i < abilities.Length; i++)
             {
-                tempA = abilities[i];
+                tempA = abilities[Random.Range(0, abilities.Length)];
                 if (tempA.type == TypeEnemy && tempA.damage != 0 && SIMP.GetAbilities(0).name != tempA.name && SIMP.GetAbilities(1).name != tempA.name)
                 {
                     SIMP.SetAbilities(tempA, 2);
@@ -994,10 +1067,10 @@ public class LevelScript : MonoBehaviour
             
         }
     }
-    
+    //Add stats to the player every level
     private void AddStats() {
 
-        
+        //If you defeat a boss you get 2 instead of 1 skill points.
         if(Level % 5 == 0)
         {
             skillTree.AvailableSkillPoints+=2;
@@ -1014,11 +1087,11 @@ public class LevelScript : MonoBehaviour
             else
                 GG.abilities[i].uses = GG.abilities[i].MaxUses;
         }
-        GainAttack = Random.Range(10, 21);
+        GainAttack = Random.Range(15, 26);
 
-        GainDefence = Random.Range(5, 11);
+        GainDefence = Random.Range(10, 15);
 
-        GaindHealth = Random.Range(50, 81);
+        GaindHealth = Random.Range(60, 71);
 
         GG.Health = MaxPlayer;
 
@@ -1049,36 +1122,36 @@ public class LevelScript : MonoBehaviour
                 && newAbility.name != GG.abilities[2].name)
                 {
                 Debug.Log("If exists");
-                    if (GG.abilities[1].name == " ")
-                    {
+                if (GG.abilities[1].name == " ")
+                {
                         
-                        //GG.abilities[1] = newAbility;
-                        Debug.Log("Activate new button 1");
-                        Button2.SetActive(true);
-                        GG.SetAbilities(newAbility, 1);
-                        added = true;
-                        Ability2.text = newAbility.name;
+                    //GG.abilities[1] = newAbility;
+                    Debug.Log("Activate new button 1");
+                    Button2.SetActive(true);
+                    GG.SetAbilities(newAbility, 1);
+                    added = true;
+                    Ability2.text = newAbility.name;
 
 
-                    }
-                    else if (GG.abilities[2].name == " " && added != true)
-                    {
+                }
+                else if (GG.abilities[2].name == " " && added != true)
+                {
                         
-                        Debug.Log("Activate new button 2");
-                        Button3.SetActive(true);
-                        GG.SetAbilities(newAbility, 2);
-                        added = true;
-                        Ability3.text = newAbility.name;
-                    }
-                    else 
-                    { 
-                        maxCapacity = true;
-                    }
+                    Debug.Log("Activate new button 2");
+                    Button3.SetActive(true);
+                    GG.SetAbilities(newAbility, 2);
+                    added = true;
+                    Ability3.text = newAbility.name;
+                }
+                else 
+                { 
+                    maxCapacity = true;
+                }
                     
                 
                 if (maxCapacity)
                 {
-                    
+                    //If you have 3 abilities give the option to replace them.
              
                     replaceAbilityText1.text = GG.abilities[0].name + "   " + GG.abilities[0].uses + "/" + GG.abilities[0].MaxUses; 
                     replaceAbilityText2.text = GG.abilities[1].name + "   " + GG.abilities[1].uses + "/" + GG.abilities[1].MaxUses; 
@@ -1095,7 +1168,7 @@ public class LevelScript : MonoBehaviour
             }
             }
     }
-
+    //Checks every round if you or the enemy die.
     private void WinOrLoseCheck(int state) {
 
         //if health of the entity is lower than 0 switch state
@@ -1120,15 +1193,18 @@ public class LevelScript : MonoBehaviour
         }
 
     }
+    //Go back to the main menu
     public void BacktoMain()
     {
         SceneManager.LoadScene(0);
     }
+    //Exit the game completely. Close the app
     public void ExitGame()
     {
         Application.Quit();
 
     }
+    //Proceed to the next level.
     public void NextLevel(){
 
         SwitchCounter = 1;
@@ -1140,6 +1216,7 @@ public class LevelScript : MonoBehaviour
         Skely.SetBool("IsDead", false);
         
     }
+    //Replace an ability you currently have with a brand new one.
     public void ReplaceAbility(int i)
     {
         newAbility.uses = newAbility.MaxUses;
@@ -1161,17 +1238,18 @@ public class LevelScript : MonoBehaviour
         }
         
     }
-
+    //Wait for animations to finish and then do something.
     IEnumerator ExampleCoroutine()
     {
         yield return new WaitForSeconds(2f);
         UI.SetActive(true);
         PopupHeroText.SetActive(true);
+        enemySpellInfo.SetText("");
+        enemyInfoCanvas.SetActive(false);
+        RunOutUI.SetActive(false);
     }
-
-
- 
-
+    
+    //Initialize the ability info of one of the 3 abilities you currently have.
     public void SetAbilityInfoActive(int abilityPosition)
     {
         
@@ -1180,9 +1258,10 @@ public class LevelScript : MonoBehaviour
         AbDamage.SetText("Damage: " + GG.abilities[abilityPosition].damage);
         AbType.SetText("Type: " + GG.abilities[abilityPosition].type);
         AbAccuracy.SetText("Accuracy: " + GG.abilities[abilityPosition].SuccessRate + "% + " + sAccuracy + "%");
+        AStun.SetText("Stun: " + GG.abilities[abilityPosition].stun + "%");
         AbilityInfoUI.SetActive(true);
     }
-
+    //Disable the info UI when the player presses the close button on AbilityInfoUI
     public void SetAbilityInfoInactive()
     {
         AbilityInfoUI.SetActive(false);
@@ -1197,7 +1276,7 @@ public class LevelScript : MonoBehaviour
     {
         return PlayerPrefs.GetInt("highscore");
     }
-
+    //Earn potions randomly each level you win.
     public void addPotions()
     {
         int percentage = Random.Range(0, 101);
@@ -1231,57 +1310,80 @@ public class LevelScript : MonoBehaviour
         potion4text.text = "" + potion4Uses;
     }
     //Skill Tree adjustments
+    //Buff damage skill
     public void sDamageSkill()
     {
-        GG.Attack += 15;
-        SkillTreeInfo.text = "+15 Attack. Total: " + GG.Attack;
+        GG.Attack += 5;
+        SkillTreeInfo.text = "+5 Attack. Total: " + GG.Attack;
     }
+    //Buff defense skill
     public void sDefenseSkill()
     {
-        GG.Defense += 10;
-        SkillTreeInfo.text = "+10 Defense. Total: " + GG.Defense;
+        GG.Defense += 5;
+        SkillTreeInfo.text = "+5 Defense. Total: " + GG.Defense;
     }
+    //Buff max health 
     public void sHealthSkill()
     {
         sHealth += 50;
-        SkillTreeInfo.text = "+50 Max HP.";
+        SkillTreeInfo.text = "+" + sHealth + " Max HP.";
     }
+    //Buff dodge percentage 
     public void sDodgeSkill()
     {
         sDodge += 5;
         SkillTreeInfo.text = "+5% Dodge Chance. Total: "+sDodge+"%";
     }
+    //Buff luck percentage
     public void sLuckSkill()
     {
         sLuck += 3;
         SkillTreeInfo.text = "+3% Luck. Total: +"+sLuck+"%";
     }
+    //Buff critical chance percentage
     public void sCriticalChanceSkill()
     {
         sCriticalChance += 3;
         SkillTreeInfo.text = "+3% Critical Chance. Total: +" + sCriticalChance + "%";
     }
+    //Buff critical damage dealt
     public void sCriticalDamageSkill()
     {
         sCriticalDamage += 5;
         SkillTreeInfo.text = "+5% Critical Damage. Total: +" + sCriticalDamage + "%";
     }
+    //Buff the accuracy. (Player misses attacks less)
     public void sAccuracySkill()
     {
         sAccuracy += 5;
         SkillTreeInfo.text = "+5% Accuracy. Total: +" + sAccuracy + "%";
     }
+    //Earn refill of ability uses every round.
     public void sUseRefillSkill()
     {
         sUseRefill += 1;
         SkillTreeInfo.text = "You will refill for "+ sUseRefill+" all current abilities each level.";
     }
 
+    //Disable tutorials after they are first seen.
+    public void TutorialDisable(int index)
+    {
+        switch (index)
+        {
+            case 1:
+                PlayerPrefs.SetInt("SkillTreeButtonT", 1);
+                break;
 
-
+        }
+    }
 
     void Start()
     {
+        //Check if the player has seen the tutorial before.
+        if (PlayerPrefs.GetInt("SkillTreeButtonT", 0) == 0)
+            SkillTreeTutorial.SetActive(true);
+
+
         settings = controller.GetComponent<Settings>();
         skillTree = controller.GetComponent<SkillTree>();
 
@@ -1310,16 +1412,24 @@ public class LevelScript : MonoBehaviour
         UI.SetActive(true);
 
     }
+    //Update potion UI to represent the amount they are going to heal the player. (Visual aid for more strategical plays)
+    private void UpdatePotions()
+    {
+        potion1info.text = "+"+ (int)(MaxPlayer * (25.0 / 100.0));
+        potion2info.text = "+" + (int)(MaxPlayer * (35.0 / 100.0));
+        potion3info.text = "+" + (int)(MaxPlayer * (45.0 / 100.0));
+    }
 
     void Update()
     {
-        
+        UpdatePotions();
         UpdateUI(SIMP, GG);
         switch (SwitchCounter)
         {
 
             case 1:
                 //GG trurn
+                
                 break;
 
             case 2:
@@ -1333,6 +1443,8 @@ public class LevelScript : MonoBehaviour
 
             case 3:
                 //lose
+                enemyInfoCanvas.SetActive(false);
+                RunOutUI.SetActive(false);
                 StopAllCoroutines();
                 if (GetHighscore() < Level)
                     SetHighscore(Level);

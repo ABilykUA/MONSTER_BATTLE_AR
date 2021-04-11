@@ -29,7 +29,7 @@ public class SkillTree : MonoBehaviour
     //Accuracy
     public TextMeshProUGUI AccuracyLevel;
     private int Accuracy { get; set; }
-    //Accuracy
+    //Skill to refill uses of all abilities each round.
     public TextMeshProUGUI UseRefillText;
     private int UseRefill { get; set; }
     //Available skill points
@@ -37,6 +37,7 @@ public class SkillTree : MonoBehaviour
     public TextMeshProUGUI AvailableSkillPointsButton;
     public int AvailableSkillPoints { get; set; }
 
+    //Other scripts.
     public GameObject controller;
     private LevelScript levelscript;
 
@@ -60,25 +61,26 @@ public class SkillTree : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DamageLevel.text = Damage + "/5";
-        DefenseLevel.text = Defense + "/5";
+        DamageLevel.text = Damage + "/10";
+        DefenseLevel.text = Defense + "/10";
         LuckLevel.text = Luck + "/5";
         CriticalChanceLevel.text = CriticalChance + "/5";
         CriticalDamageLevel.text = CriticalDamage + "/5";
         AccuracyLevel.text = Accuracy + "/5";
         AvailableSkillPointsText.text = "Available Skill Points: " + AvailableSkillPoints;
         AvailableSkillPointsButton.text = AvailableSkillPoints + "";
-        MaxHealthText.text = MaxHealth + "/8";
+        MaxHealthText.text = MaxHealth + "/10";
         DodgeText.text = Dodge + "/5";
         UseRefillText.text = UseRefill + "/3";
     }
+    //This function checks the limit for skills and adds skill points only if you have available skill points to spend.
     public void AddSkillPoint(int index)
     {
         
         switch (index)
         {
             case 1:
-                if (Damage < 5 && AvailableSkillPoints>=1) {
+                if (Damage < 10 && AvailableSkillPoints>=1) {
                     Damage++;
                     AvailableSkillPoints--;
                     levelscript.sDamageSkill();
@@ -86,7 +88,7 @@ public class SkillTree : MonoBehaviour
                     
                 break;
             case 2:
-                if (Defense < 5 && AvailableSkillPoints >= 1)
+                if (Defense < 10 && AvailableSkillPoints >= 1)
                 {
                     Defense++;
                     AvailableSkillPoints--;
@@ -130,7 +132,7 @@ public class SkillTree : MonoBehaviour
                     
                 break;
             case 7:
-                if (MaxHealth < 8 && AvailableSkillPoints >= 1)
+                if (MaxHealth < 10 && AvailableSkillPoints >= 1)
                 {
                     MaxHealth++;
                     AvailableSkillPoints--;

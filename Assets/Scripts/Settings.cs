@@ -5,7 +5,7 @@ using TMPro;
 
 public class Settings : MonoBehaviour
 {
-    //This is a work in progress and will eventually be done with a vector instead of individual things but for now this will do.
+    //This is a work in progress and will eventually be done with an array instead of individual things but for now this will do.
     public TextMeshProUGUI scaleTutorial;
     public TextMeshProUGUI DisabilityTitle;
     public TextMeshProUGUI ColorBlindText;
@@ -26,11 +26,12 @@ public class Settings : MonoBehaviour
 
 
 
-
+    //Variables 
     public static float fontSizeTitles;
     public static float fontSizeButtons;
+    public int ColorBlindVal;
 
-
+    //Scaling text titles of the game to support the blurred vision community
     public void TextSizeTitles(float fontSize)
     {
         fontSizeTitles = fontSize;
@@ -46,39 +47,19 @@ public class Settings : MonoBehaviour
     void Update()
     {
 
-        /*scaleTutorial.fontSize = fontSizeTitles;
-        DisabilityTitle.fontSize = fontSizeTitles;
-        PlayButtonText.fontSize = fontSizeButtons;
-        ExitButtonText.fontSize = fontSizeButtons;
-        ColorBlindText.fontSize = fontSizeButtons;
-        BlurredVisionText.fontSize = fontSizeButtons;
-        NormalVisionText.fontSize = fontSizeButtons;
-        BackButtonText.fontSize = fontSizeButtons;
-        PlayButtonTextBlurredVision.fontSize = fontSizeButtons;
-        BackButtonTextBlurredVision.fontSize = fontSizeButtons;*/
+        
 
 
     }
     void Start()
     {
+        //Set to none by default
         ColorBlindVal = 5;
-        /*fontSizeTitles = 90;
-        fontSizeButtons = 60;
-        scaleTutorial.fontSize = 90;
-        DisabilityTitle.fontSize = 90;
-        PlayButtonText.fontSize = 60;
-        ExitButtonText.fontSize = 60;
-        ColorBlindText.fontSize = 60;
-        BlurredVisionText.fontSize = 60;
-        NormalVisionText.fontSize = 60;
-        BackButtonText.fontSize = 60;
-        PlayButtonTextBlurredVision.fontSize = 60;
-        BackButtonTextBlurredVision.fontSize = 60;
-        AttackText=*/
+        
     }
 
 
-
+    //Scaling button text of the game to support the blurred vision community
     public void TextSizeButtons(float fontSize)
     {
         fontSizeButtons = fontSize;
@@ -92,7 +73,7 @@ public class Settings : MonoBehaviour
         Ability2.fontSize = fontSizeButtons;
         Ability3.fontSize = fontSizeButtons;
     }
-    public int ColorBlindVal;
+    //Change value of the color blind type.
     public void HandleDropdown(int val)
     {
         ColorBlindVal = val;
